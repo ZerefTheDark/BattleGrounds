@@ -11,44 +11,9 @@ const TokenPanel = ({ onClose }) => {
   
   const [showTokenModal, setShowTokenModal] = useState(false);
 
-  const handleCreateToken = () => {
-    console.log('handleCreateToken called with:', newToken);
-    
-    if (newToken.name.trim()) {
-      const tokenToAdd = {
-        ...newToken,
-        x: 0,
-        y: 0,
-        hp: { current: 100, max: 100 },
-        conditions: []
-      };
-      
-      console.log('Adding token:', tokenToAdd);
-      addToken(tokenToAdd);
-      
-      // Save to custom tokens storage
-      const customTokens = JSON.parse(localStorage.getItem('custom_tokens') || '[]');
-      const customToken = {
-        id: Date.now().toString(),
-        name: newToken.name,
-        shape: newToken.shape,
-        size: newToken.size,
-        color: newToken.color,
-        created: Date.now()
-      };
-      customTokens.push(customToken);
-      localStorage.setItem('custom_tokens', JSON.stringify(customTokens));
-      
-      setNewToken({
-        name: '',
-        shape: 'circle',
-        size: 25,
-        color: '#3b82f6'
-      });
-      setShowTokenCreator(false);
-    } else {
-      console.log('Token name is empty, aborting creation');
-    }
+  const handleCreateToken = (tokenData) => {
+    console.log('Creating token with data:', tokenData);
+    addToken(tokenData);
   };
 
   const tokenColors = [
