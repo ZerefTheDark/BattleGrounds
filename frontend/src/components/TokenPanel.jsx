@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
+import { Label } from './ui/label';
+import { Slider } from './ui/slider';
 import { Plus, X, Edit, Trash2, Users } from 'lucide-react';
 import { useBattleMapStore } from '../store/battleMapStore';
 import TokenCreationModal from './TokenCreationModal';
