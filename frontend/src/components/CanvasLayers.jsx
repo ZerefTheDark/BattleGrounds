@@ -29,12 +29,15 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect }, ref) => {
     backgroundImage,
     fogEnabled,
     fogReveals,
+    fogBrushSize,
+    fogPaintMode,
     ruler,
     tokens,
     selectedTokenId,
     setCamera,
     setRuler,
     addFogReveal,
+    removeFogReveal,
     addToken,
     updateToken
   } = useBattleMapStore();
