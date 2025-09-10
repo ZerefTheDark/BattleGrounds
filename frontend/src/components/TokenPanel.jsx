@@ -19,6 +19,8 @@ const TokenPanel = ({ onClose }) => {
   });
 
   const handleCreateToken = () => {
+    console.log('handleCreateToken called with:', newToken);
+    
     if (newToken.name.trim()) {
       const tokenToAdd = {
         ...newToken,
