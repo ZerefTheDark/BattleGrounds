@@ -16,7 +16,7 @@ export class CanvasEffects {
     return gradient;
   }
 
-  static drawEnhancedToken(ctx, token, scale, isSelected = false, isPlayerView = false) {
+  static drawEnhancedToken(ctx, token, scale, isSelected = false) {
     ctx.save();
     
     // Draw the token image if available, otherwise draw colored shape
