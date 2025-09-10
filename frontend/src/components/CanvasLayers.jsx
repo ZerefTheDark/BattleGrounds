@@ -305,7 +305,7 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect }, ref) => {
         addToken(newToken);
         break;
     }
-  }, [selectedTool, screenToWorld, findTokenAt, onTokenSelect, setRuler, fogEnabled, addFogReveal, tokens.length, gridSize, addToken]);
+  }, [selectedTool, screenToWorld, findTokenAt, onTokenSelect, setRuler, fogEnabled, fogBrushSize, fogPaintMode, addFogReveal, removeFogReveal, tokens.length, gridSize, addToken]);
 
   const handlePointerMove = useCallback((e) => {
     if (!isDragging.current) return;
