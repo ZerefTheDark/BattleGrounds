@@ -26,7 +26,9 @@ import {
   PackagePlus,
   Triangle,
   Circle,
-  Paintbrush
+  Paintbrush,
+  UserCheck,
+  Shield
 } from 'lucide-react';
 import CanvasLayers from './CanvasLayers';
 import TokenPanel from './TokenPanel';
