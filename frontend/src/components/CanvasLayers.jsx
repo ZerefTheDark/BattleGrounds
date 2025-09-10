@@ -240,7 +240,7 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
     if (activeTool && activeTool.type === 'circle') {
       CanvasEffects.drawCircle(ctx, activeTool, camera.scale, gridSize);
     }
-  }, [fogEnabled, fogReveals, ruler, gridSize, camera, setupCanvas, applyTransform, DPR]);
+  }, [fogEnabled, fogReveals, ruler, gridSize, camera, activeTool, tokens, setupCanvas, applyTransform, DPR]);
 
   // Find token at position
   const findTokenAt = useCallback((worldX, worldY) => {
