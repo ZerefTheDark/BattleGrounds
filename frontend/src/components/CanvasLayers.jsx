@@ -379,15 +379,20 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect }, ref) => {
     });
   }, [camera, screenToWorld, setCamera]);
 
-  // Consolidated rendering system with debounced redraw
-  const redrawAllLayers = useCallback(
+  // Immediate rendering for smooth operations
+  const redrawAllLayers = useCallback(() => {
+    drawBackground();
+    drawGrid();
+    drawTokens();
+    drawTools();
+  }, [drawBackground, drawGrid, drawTokens, drawTools]);
+
+  // Debounced rendering for non-critical updates
+  const debouncedRedraw = useCallback(
     debounce(() => {
-      drawBackground();
-      drawGrid();
-      drawTokens();
-      drawTools();
-    }, 16), // 60fps max
-    [drawBackground, drawGrid, drawTokens, drawTools]
+      redrawAllLayers();
+    }, 16),
+    [redrawAllLayers]
   );
 
   // Single useEffect for all canvas updates (excluding camera for smooth panning)
