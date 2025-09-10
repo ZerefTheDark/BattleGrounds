@@ -6,7 +6,7 @@ import { Badge } from './ui/badge';
 import { X, Plus, Trash2, SkipForward, RotateCcw, Dice6 } from 'lucide-react';
 import { useBattleMapStore } from '../store/battleMapStore';
 
-const InitiativeTracker = ({ onClose }) => {
+const InitiativeTracker = ({ onClose, isPlayerView = false }) => {
   const {
     initiative,
     tokens,
