@@ -394,7 +394,7 @@ export class CanvasEffects {
     return affectedTokens;
   }
 
-  static drawCircle(ctx, circle, scale) {
+  static drawCircle(ctx, circle, scale, gridSize = 25) {
     if (!circle.active || !circle.start || !circle.end) return;
     
     ctx.save();
@@ -403,8 +403,12 @@ export class CanvasEffects {
     const dy = circle.end.y - circle.start.y;
     const radius = Math.sqrt(dx * dx + dy * dy);
     
+    // Calculate radius in feet (assuming 5ft per grid square)
+    const radiusInSquares = radius / gridSize;
+    const radiusInFeet = Math.round(radiusInSquares * 5);
+    
     // Draw circle with semi-transparent fill
-    ctx.fillStyle = 'rgba(0, 150, 255, 0.2)';
+    ctx.fillStyle = 'rgba(0, 150, 255, 0.25)';
     ctx.strokeStyle = '#0096ff';
     ctx.lineWidth = Math.max(2, 3 / scale);
     ctx.setLineDash([8 / scale, 4 / scale]);
@@ -419,7 +423,7 @@ export class CanvasEffects {
     
     // Draw radius line
     ctx.strokeStyle = '#0096ff';
-    ctx.lineWidth = Math.max(1, 1 / scale);
+    ctx.lineWidth = Math.max(1, 2 / scale);
     ctx.beginPath();
     ctx.moveTo(circle.start.x, circle.start.y);
     ctx.lineTo(circle.end.x, circle.end.y);
@@ -428,8 +432,30 @@ export class CanvasEffects {
     // Draw center point
     ctx.fillStyle = '#0096ff';
     ctx.beginPath();
-    ctx.arc(circle.start.x, circle.start.y, 3 / scale, 0, Math.PI * 2);
+    ctx.arc(circle.start.x, circle.start.y, 4 / scale, 0, Math.PI * 2);
     ctx.fill();
+    
+    // Show radius in feet
+    const midX = circle.start.x + dx / 2;
+    const midY = circle.start.y + dy / 2;
+    
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    ctx.fillRect(
+      midX - 30 / scale,
+      midY - 15 / scale,
+      60 / scale,
+      20 / scale
+    );
+    
+    ctx.fillStyle = '#ffffff';
+    ctx.strokeStyle = '#0096ff';
+    ctx.lineWidth = 1 / scale;
+    ctx.font = `bold ${Math.max(12, 14 / scale)}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
+    ctx.strokeText(`${radiusInFeet} ft`, midX, midY);
+    ctx.fillText(`${radiusInFeet} ft`, midX, midY);
     
     ctx.restore();
   }
