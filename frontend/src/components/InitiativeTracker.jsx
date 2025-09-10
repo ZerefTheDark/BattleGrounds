@@ -258,7 +258,12 @@ const InitiativeTracker = ({ onClose, isPlayerView = false }) => {
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium">{combatant.name}</span>
+                      <span className="font-medium">
+                        {isPlayerView && combatant.hideNameFromPlayers ? 
+                          `${combatant.characterClass || 'Creature'} ${index + 1}` : 
+                          combatant.name
+                        }
+                      </span>
                       {index === initiative.turn && (
                         <Badge className="bg-blue-600 text-xs">Current</Badge>
                       )}
