@@ -160,6 +160,64 @@ const BattleMap = () => {
                 </TooltipContent>
               </Tooltip>
             ))}
+            
+            <div className="flex items-center gap-1 border border-gray-600 rounded p-1">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant={selectedTool === 'fog' ? 'secondary' : 'outline'}
+                    size="sm"
+                    onClick={() => setSelectedTool('fog')}
+                    className="h-7"
+                  >
+                    <Paintbrush className="w-4 h-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Fog of War Brush</p>
+                </TooltipContent>
+              </Tooltip>
+              
+              {selectedTool === 'fog' && (
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      // Toggle fog mode
+                      console.log('Toggle fog mode');
+                    }}
+                    className="h-7 text-xs px-2"
+                  >
+                    Paint
+                  </Button>
+                  
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      // Clear all fog
+                      console.log('Clear all fog');
+                    }}
+                    className="h-7 text-xs px-2"
+                  >
+                    Clear All
+                  </Button>
+                  
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      // Cover all with fog
+                      console.log('Cover all with fog');
+                    }}
+                    className="h-7 text-xs px-2"
+                  >
+                    Cover All
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Controls */}
