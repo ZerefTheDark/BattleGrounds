@@ -230,6 +230,16 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
     
     // Draw enhanced ruler
     CanvasEffects.drawEnhancedRuler(ctx, ruler, gridSize, camera.scale);
+    
+    // Draw active cone tool
+    if (activeTool && activeTool.type === 'cone') {
+      CanvasEffects.drawCone(ctx, activeTool, camera.scale, tokens, gridSize);
+    }
+    
+    // Draw active circle tool
+    if (activeTool && activeTool.type === 'circle') {
+      CanvasEffects.drawCircle(ctx, activeTool, camera.scale, gridSize);
+    }
   }, [fogEnabled, fogReveals, ruler, gridSize, camera, setupCanvas, applyTransform, DPR]);
 
   // Find token at position
