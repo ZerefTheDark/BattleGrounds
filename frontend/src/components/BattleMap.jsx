@@ -477,6 +477,13 @@ const BattleMap = () => {
                 }} />
               </div>
             )}
+
+            {/* Party Manager Panel */}
+            {showPartyManager && (
+              <div className="w-80 max-w-[300px] h-full border-l-2 border-blue-500/30 bg-gray-900 pointer-events-auto">
+                <PartyManager onClose={() => setShowPartyManager(false)} />
+              </div>
+            )}
           </div>
 
           {/* Side Panel Controls */}
