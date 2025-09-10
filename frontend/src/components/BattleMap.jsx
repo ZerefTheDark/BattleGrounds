@@ -407,6 +407,10 @@ const BattleMap = () => {
               ref={canvasRef}
               selectedTool={selectedTool}
               onTokenSelect={selectToken}
+              activeTool={activeTool}
+              toolPreview={toolPreview}
+              setActiveTool={setActiveTool}
+              setToolPreview={setToolPreview}
               isPlayerView={isPlayerView}
             />
             
