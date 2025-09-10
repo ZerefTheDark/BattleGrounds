@@ -372,6 +372,13 @@ const BattleMap = () => {
                 <StoragePanel onClose={() => setShowStoragePanel(false)} />
               </div>
             )}
+
+            {/* Upload Expansion Panel */}
+            {showUploadExpansion && (
+              <div className="w-[600px] max-w-[500px] h-full border-l-2 border-purple-500/30 bg-gray-900 pointer-events-auto">
+                <UploadExpansion onClose={() => setShowUploadExpansion(false)} />
+              </div>
+            )}
           </div>
 
           {/* Side Panel Controls */}
