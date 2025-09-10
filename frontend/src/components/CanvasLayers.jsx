@@ -364,7 +364,7 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect }, ref) => {
     }
     
     lastPointer.current = { x: screenX, y: screenY };
-  }, [selectedTool, screenToWorld, selectedTokenId, tokens, updateToken, camera, setCamera, setRuler, fogEnabled, addFogReveal]);
+  }, [selectedTool, screenToWorld, selectedTokenId, tokens, updateToken, camera, setCamera, setRuler, fogEnabled, fogBrushSize, fogPaintMode, addFogReveal, removeFogReveal]);
 
   const handlePointerUp = useCallback(() => {
     isDragging.current = false;
