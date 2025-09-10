@@ -358,7 +358,7 @@ export class CanvasEffects {
     });
   }
 
-  static drawEnhancedBackground(ctx, backgroundImage, scale) {
+  static drawEnhancedBackground(ctx, backgroundImage) {
     if (!backgroundImage) return;
     
     ctx.save();
