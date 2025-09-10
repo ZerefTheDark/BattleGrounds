@@ -22,7 +22,7 @@ export class CanvasEffects {
     // Draw the token image if available, otherwise draw colored shape
     if (token.appearanceImage) {
       try {
-        const img = new Image();
+        const img = new Image(); // eslint-disable-line no-undef
         img.onload = () => {
           ctx.save();
           
