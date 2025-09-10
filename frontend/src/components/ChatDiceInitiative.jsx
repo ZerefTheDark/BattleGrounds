@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 import { useBattleMapStore } from '../store/battleMapStore';
 
-const ChatDiceInitiative = ({ onClose }) => {
+const ChatDiceInitiative = ({ onClose, isPlayerView = false }) => {
   const {
     chatMessages,
     addChatMessage,
