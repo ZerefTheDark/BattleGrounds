@@ -406,7 +406,11 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
     if (selectedTool === 'ruler') {
       setRuler(prev => ({ ...prev, active: false }));
     }
-  }, [selectedTool, setRuler]);
+    
+    if (selectedTool === 'cone' || selectedTool === 'circle') {
+      setActiveTool(null);
+    }
+  }, [selectedTool, setRuler, setActiveTool]);
 
   const handleWheel = useCallback((e) => {
     e.preventDefault();
