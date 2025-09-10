@@ -261,6 +261,98 @@ export class CanvasEffects {
     ctx.restore();
   }
 
+  static drawCone(ctx, cone, scale) {
+    if (!cone.active || !cone.start || !cone.end) return;
+    
+    ctx.save();
+    
+    const dx = cone.end.x - cone.start.x;
+    const dy = cone.end.y - cone.start.y;
+    const length = Math.sqrt(dx * dx + dy * dy);
+    const angle = Math.atan2(dy, dx);
+    
+    // Cone width increases with length (15 degree cone)
+    const coneWidth = length * Math.tan(Math.PI / 12); // 15 degrees in radians
+    
+    // Calculate cone points
+    const endX = cone.start.x + Math.cos(angle) * length;
+    const endY = cone.start.y + Math.sin(angle) * length;
+    
+    const leftX = endX + Math.cos(angle + Math.PI / 2) * coneWidth;
+    const leftY = endY + Math.sin(angle + Math.PI / 2) * coneWidth;
+    
+    const rightX = endX + Math.cos(angle - Math.PI / 2) * coneWidth;
+    const rightY = endY + Math.sin(angle - Math.PI / 2) * coneWidth;
+    
+    // Draw cone with semi-transparent fill
+    ctx.fillStyle = 'rgba(255, 165, 0, 0.3)';
+    ctx.strokeStyle = '#ff6b35';
+    ctx.lineWidth = Math.max(2, 3 / scale);
+    ctx.setLineDash([10 / scale, 5 / scale]);
+    
+    ctx.beginPath();
+    ctx.moveTo(cone.start.x, cone.start.y);
+    ctx.lineTo(leftX, leftY);
+    ctx.lineTo(rightX, rightY);
+    ctx.closePath();
+    
+    ctx.fill();
+    ctx.stroke();
+    
+    // Reset line dash
+    ctx.setLineDash([]);
+    
+    // Draw center line
+    ctx.strokeStyle = '#ff6b35';
+    ctx.lineWidth = Math.max(1, 2 / scale);
+    ctx.beginPath();
+    ctx.moveTo(cone.start.x, cone.start.y);
+    ctx.lineTo(endX, endY);
+    ctx.stroke();
+    
+    ctx.restore();
+  }
+
+  static drawCircle(ctx, circle, scale) {
+    if (!circle.active || !circle.start || !circle.end) return;
+    
+    ctx.save();
+    
+    const dx = circle.end.x - circle.start.x;
+    const dy = circle.end.y - circle.start.y;
+    const radius = Math.sqrt(dx * dx + dy * dy);
+    
+    // Draw circle with semi-transparent fill
+    ctx.fillStyle = 'rgba(0, 150, 255, 0.2)';
+    ctx.strokeStyle = '#0096ff';
+    ctx.lineWidth = Math.max(2, 3 / scale);
+    ctx.setLineDash([8 / scale, 4 / scale]);
+    
+    ctx.beginPath();
+    ctx.arc(circle.start.x, circle.start.y, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    
+    // Reset line dash
+    ctx.setLineDash([]);
+    
+    // Draw radius line
+    ctx.strokeStyle = '#0096ff';
+    ctx.lineWidth = Math.max(1, 1 / scale);
+    ctx.beginPath();
+    ctx.moveTo(circle.start.x, circle.start.y);
+    ctx.lineTo(circle.end.x, circle.end.y);
+    ctx.stroke();
+    
+    // Draw center point
+    ctx.fillStyle = '#0096ff';
+    ctx.beginPath();
+    ctx.arc(circle.start.x, circle.start.y, 3 / scale, 0, Math.PI * 2);
+    ctx.fill();
+    
+    ctx.restore();
+  }
+
   static drawEnhancedFog(ctx, fogReveals, camera, canvasWidth, canvasHeight) {
     if (fogReveals.length === 0) return;
     
