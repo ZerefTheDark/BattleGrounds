@@ -15,7 +15,7 @@ const debounce = (func, wait) => {
   };
 };
 
-const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect }, ref) => {
+const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, toolPreview, setActiveTool, setToolPreview, isPlayerView }, ref) => {
   const backgroundCanvasRef = useRef(null);
   const gridCanvasRef = useRef(null);
   const tokensCanvasRef = useRef(null);
