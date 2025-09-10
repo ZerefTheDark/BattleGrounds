@@ -273,6 +273,23 @@ const BattleMap = () => {
                 <p>New Scenario</p>
               </TooltipContent>
             </Tooltip>
+            
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => setShowUploadExpansion(true)}
+                  className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white border-purple-500"
+                >
+                  <PackagePlus className="w-4 h-4 mr-1" />
+                  Upload Expansion
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Upload D&D Content Files</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
 
