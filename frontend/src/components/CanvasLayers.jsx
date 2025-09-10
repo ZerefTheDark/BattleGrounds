@@ -293,6 +293,22 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
         }
         break;
         
+      case 'cone':
+        setActiveTool({
+          type: 'cone',
+          start: worldPos,
+          end: worldPos
+        });
+        break;
+        
+      case 'circle':
+        setActiveTool({
+          type: 'circle',
+          start: worldPos,
+          end: worldPos
+        });
+        break;
+        
       case 'token':
         const newToken = {
           name: `Token ${tokens.length + 1}`,
