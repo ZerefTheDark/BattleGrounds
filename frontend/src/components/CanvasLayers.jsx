@@ -357,15 +357,7 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect }, ref) => {
     if (selectedTool === 'ruler') {
       setRuler(prev => ({ ...prev, active: false }));
     }
-    
-    // Force redraw after dragging ends
-    setTimeout(() => {
-      drawBackground();
-      drawGrid(); 
-      drawTokens();
-      drawTools();
-    }, 10);
-  }, [selectedTool, setRuler, drawBackground, drawGrid, drawTokens, drawTools]);
+  }, [selectedTool, setRuler]);
 
   const handleWheel = useCallback((e) => {
     e.preventDefault();
