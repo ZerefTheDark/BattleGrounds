@@ -377,6 +377,24 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
           }
         }
         break;
+        
+      case 'cone':
+        if (activeTool && activeTool.type === 'cone') {
+          setActiveTool({
+            ...activeTool,
+            end: worldPos
+          });
+        }
+        break;
+        
+      case 'circle':
+        if (activeTool && activeTool.type === 'circle') {
+          setActiveTool({
+            ...activeTool,
+            end: worldPos
+          });
+        }
+        break;
     }
     
     lastPointer.current = { x: screenX, y: screenY };
