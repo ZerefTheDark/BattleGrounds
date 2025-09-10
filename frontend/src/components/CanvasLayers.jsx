@@ -419,7 +419,17 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect }, ref) => {
   // Handle resize and initial setup (separate from renders)
   useEffect(() => {
     const handleResize = debounce(() => {
-      // Force canvas resize
+      const container = containerRef.current;
+      if (!container) return;
+      
+      // Force container to full size first
+      const parentRect = container.parentElement?.getBoundingClientRect();
+      if (parentRect) {
+        container.style.width = parentRect.width + 'px';
+        container.style.height = parentRect.height + 'px';
+      }
+      
+      // Force canvas resize with actual container dimensions
       const canvases = [
         backgroundCanvasRef.current,
         gridCanvasRef.current,
@@ -428,22 +438,32 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect }, ref) => {
       ];
       
       canvases.forEach(canvas => {
-        if (canvas) setupCanvas(canvas);
+        if (canvas) {
+          // Force canvas to match container size
+          const containerRect = container.getBoundingClientRect();
+          canvas.style.width = containerRect.width + 'px';
+          canvas.style.height = containerRect.height + 'px';
+          canvas.width = containerRect.width * DPR;
+          canvas.height = containerRect.height * DPR;
+          
+          const ctx = canvas.getContext('2d');
+          ctx.scale(DPR, DPR);
+        }
       });
       
       // Redraw after resize
       setTimeout(redrawAllLayers, 20);
     }, 100);
     
-    // Initial setup
-    handleResize();
+    // Initial setup with delay to ensure DOM is ready
+    setTimeout(handleResize, 100);
     
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
       redrawAllLayers.cancel && redrawAllLayers.cancel();
     };
-  }, [setupCanvas, redrawAllLayers]);
+  }, [redrawAllLayers, DPR]);
 
   return (
     <div
