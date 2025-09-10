@@ -140,7 +140,6 @@ const BattleMap = () => {
             {[
               { id: 'move', icon: Move, label: 'Pan & Move' },
               { id: 'ruler', icon: Ruler, label: 'Ruler Tool' },
-              { id: 'fog', icon: Paintbrush, label: 'Fog of War Brush' },
               { id: 'cone', icon: Triangle, label: 'Cone Tool' },
               { id: 'circle', icon: Circle, label: 'Circle Tool' },
               { id: 'token', icon: Users, label: 'Add Token' }
