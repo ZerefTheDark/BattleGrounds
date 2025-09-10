@@ -52,6 +52,7 @@ const BattleMap = () => {
   const [showSubmapManager, setShowSubmapManager] = useState(false);
   const [showStoragePanel, setShowStoragePanel] = useState(false);
   const [showUploadExpansion, setShowUploadExpansion] = useState(false);
+  const [showPartyManager, setShowPartyManager] = useState(false);
   
   const {
     camera,
