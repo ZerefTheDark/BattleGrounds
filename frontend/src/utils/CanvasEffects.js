@@ -364,7 +364,7 @@ export class CanvasEffects {
     ctx.save();
     
     // Add subtle texture overlay
-    const img = new Image();
+    const img = new Image(); // eslint-disable-line no-undef
     img.onload = () => {
       const imgWidth = backgroundImage.width * (backgroundImage.scale || 1.2);
       const imgHeight = backgroundImage.height * (backgroundImage.scale || 1.2);
