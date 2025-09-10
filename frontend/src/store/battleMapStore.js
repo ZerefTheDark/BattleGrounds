@@ -21,11 +21,35 @@ const useBattleMapStore = create(
       // Fog of War
       fogEnabled: false,
       fogReveals: [],
+      fogBrushSize: 50,
+      fogPaintMode: true, // true = reveal, false = hide
       setFogEnabled: (enabled) => set({ fogEnabled: enabled }),
+      setFogBrushSize: (size) => set({ fogBrushSize: size }),
+      setFogPaintMode: (mode) => set({ fogPaintMode: mode }),
       addFogReveal: (reveal) => set((state) => ({
         fogReveals: [...state.fogReveals, reveal]
       })),
+      removeFogReveal: (reveal) => set((state) => ({
+        fogReveals: state.fogReveals.filter(r => {
+          const dx = r.x - reveal.x;
+          const dy = r.y - reveal.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          return distance > Math.max(r.radius, reveal.radius);
+        })
+      })),
       clearFogReveals: () => set({ fogReveals: [] }),
+      coverAllWithFog: () => set({ fogReveals: [] }),
+      clearAllFog: () => set((state) => {
+        // Create a large reveal that covers the entire visible area
+        return {
+          fogReveals: [{
+            x: 0,
+            y: 0,
+            radius: 5000, // Large radius to cover entire map
+            id: Date.now().toString()
+          }]
+        };
+      }),
 
       // Ruler
       ruler: { active: false, start: null, end: null },
