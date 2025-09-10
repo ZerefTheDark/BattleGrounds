@@ -166,7 +166,7 @@ const UploadExpansion = ({ onClose }) => {
   };
 
   const xmlToJson = (xml) => {
-    const obj = {};
+    let obj = {};
     if (xml.nodeType === 1) {
       if (xml.attributes.length > 0) {
         obj['@attributes'] = {};
