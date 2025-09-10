@@ -281,12 +281,15 @@ const UploadExpansion = ({ onClose }) => {
             <p className="text-xs text-gray-400 mb-3">
               Supports D&D 5e JSON/XML files, homebrew content, and official modules
             </p>
-            <input
-              type="file"
-              accept=".json,.xml,.5e"
-              onChange={handleFileSelect}
-              className="w-full p-3 bg-gray-800 border border-green-500/30 rounded-lg text-white file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-600 file:text-white hover:file:bg-green-700"
-            />
+            <div className="relative">
+              <input
+                type="file"
+                accept=".json,.xml,.5e"
+                onChange={handleFileSelect}
+                className="w-full p-3 bg-gray-800 border-2 border-purple-500/50 rounded-lg text-white cursor-pointer hover:bg-gray-700 hover:border-purple-400 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-700 file:cursor-pointer"
+                style={{ pointerEvents: 'auto' }}
+              />
+            </div>
           </div>
 
           {selectedFile && (
