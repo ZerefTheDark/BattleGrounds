@@ -62,13 +62,18 @@ const BattleMap = () => {
   } = useBattleMapStore();
 
   const handleFileUpload = useCallback((event) => {
+    console.log('File upload triggered:', event.target.files);
     const file = event.target.files[0];
     if (file && file.type.startsWith('image/')) {
+      console.log('Valid image file selected:', file.name, file.type);
       const reader = new FileReader();
       reader.onload = (e) => {
+        console.log('Image loaded, calling loadBackgroundImage');
         loadBackgroundImage(e.target.result);
       };
       reader.readAsDataURL(file);
+    } else {
+      console.log('Invalid file type or no file selected');
     }
   }, [loadBackgroundImage]);
 
