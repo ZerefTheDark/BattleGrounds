@@ -380,9 +380,13 @@ const BattleMap = () => {
             )}
 
             {/* Upload Expansion Panel */}
+            {console.log('Rendering panels, showUploadExpansion:', showUploadExpansion)}
             {showUploadExpansion && (
               <div className="w-[600px] max-w-[500px] h-full border-l-2 border-purple-500/30 bg-gray-900 pointer-events-auto">
-                <UploadExpansion onClose={() => setShowUploadExpansion(false)} />
+                <UploadExpansion onClose={() => {
+                  console.log('Closing Upload Expansion');
+                  setShowUploadExpansion(false);
+                }} />
               </div>
             )}
           </div>
