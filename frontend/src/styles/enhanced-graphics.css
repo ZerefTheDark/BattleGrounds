@@ -644,6 +644,23 @@
   }
 }
 
+/* Canvas Full Screen Fix */
+.canvas-container {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+.canvas-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
 /* Panel Layout Management */
 .panel-container {
   max-width: 70vw;
