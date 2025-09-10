@@ -220,7 +220,8 @@ const useBattleMapStore = create(
           tokens: scenario.tokens || [],
           chatMessages: scenario.chatMessages || [],
           initiative: scenario.initiative || { round: 1, turn: 0, combatants: [] },
-          submaps: scenario.submaps || []
+          submaps: scenario.submaps || [],
+          partyMembers: scenario.partyMembers || []
         });
       },
 
