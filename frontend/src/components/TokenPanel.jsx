@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Slider } from './ui/slider';
-import { X, Plus, Trash2, Edit } from 'lucide-react';
+import { Badge } from './ui/badge';
+import { Plus, X, Edit, Trash2, Users } from 'lucide-react';
 import { useBattleMapStore } from '../store/battleMapStore';
+import TokenCreationModal from './TokenCreationModal';
 
 const TokenPanel = ({ onClose }) => {
   const { tokens, addToken, removeToken, updateToken, selectToken, selectedTokenId } = useBattleMapStore();
