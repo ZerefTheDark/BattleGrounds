@@ -257,8 +257,19 @@ const UploadExpansion = ({ onClose }) => {
           <Upload className="w-6 h-6 text-green-400" />
           <CardTitle className="text-lg dragon-stones-title">Upload D&D Expansion</CardTitle>
         </div>
-        <Button variant="ghost" size="sm" onClick={onClose} className="fantasy-button-emerald p-1">
-          <X className="w-4 h-4" />
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Closing upload expansion');
+            onClose();
+          }}
+          className="text-red-400 hover:text-red-300 hover:bg-red-900/30 border border-red-600/50 rounded-full w-8 h-8 p-0"
+          title="Close Upload Expansion"
+        >
+          <X className="w-5 h-5" />
         </Button>
       </CardHeader>
 
