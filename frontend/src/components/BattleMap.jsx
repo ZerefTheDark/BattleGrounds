@@ -31,6 +31,7 @@ import CharacterSheet from './CharacterSheet';
 import ChatDiceInitiative from './ChatDiceInitiative';
 import SubmapManager from './SubmapManager';
 import StoragePanel from './StoragePanel';
+import UploadExpansion from './UploadExpansion';
 import { useBattleMapStore } from '../store/battleMapStore';
 
 const BattleMap = () => {
