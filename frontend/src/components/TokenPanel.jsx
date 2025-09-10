@@ -68,7 +68,17 @@ const TokenPanel = ({ onClose }) => {
     <Card className="fantasy-card w-80 text-white h-full shadow-lg shadow-green-500/10 fantasy-scrollbar">
       <CardHeader className="flex flex-row items-center justify-between bg-gradient-to-r from-gray-900 to-gray-800 border-b border-green-500/30">
         <CardTitle className="text-lg dragon-stones-title">Token Manager</CardTitle>
-        <Button variant="ghost" size="sm" onClick={onClose} className="fantasy-button-emerald p-1">
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Close button clicked');
+            onClose();
+          }} 
+          className="fantasy-button-emerald p-1"
+        >
           <X className="w-4 h-4" />
         </Button>
       </CardHeader>
