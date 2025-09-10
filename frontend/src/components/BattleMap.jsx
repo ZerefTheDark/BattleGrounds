@@ -279,7 +279,13 @@ const BattleMap = () => {
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  onClick={() => setShowUploadExpansion(true)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Upload Expansion clicked, current state:', showUploadExpansion);
+                    setShowUploadExpansion(true);
+                    console.log('Set showUploadExpansion to true');
+                  }}
                   className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white border-purple-500"
                 >
                   <PackagePlus className="w-4 h-4 mr-1" />
