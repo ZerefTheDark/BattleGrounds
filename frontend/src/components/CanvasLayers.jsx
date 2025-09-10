@@ -395,9 +395,32 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect }, ref) => {
     [redrawAllLayers]
   );
 
-  // Single useEffect for all canvas updates (excluding camera for smooth panning)
+  // Separate camera change handler for smooth panning
   useEffect(() => {
-    redrawAllLayers();
+    let animationFrame;
+    
+    const handleCameraChange = () => {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+      
+      animationFrame = requestAnimationFrame(() => {
+        redrawAllLayers();
+      });
+    };
+    
+    handleCameraChange();
+    
+    return () => {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+    };
+  }, [camera, redrawAllLayers]);
+
+  // Single useEffect for all other canvas updates  
+  useEffect(() => {
+    debouncedRedraw();
   }, [
     backgroundImage, 
     gridEnabled, 
@@ -407,7 +430,7 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect }, ref) => {
     ruler, 
     fogEnabled, 
     fogReveals,
-    redrawAllLayers
+    debouncedRedraw
   ]);
 
   // Handle resize and initial setup (separate from renders)
