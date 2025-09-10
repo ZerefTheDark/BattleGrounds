@@ -159,7 +159,8 @@ const useBattleMapStore = create(
           tokens: state.tokens,
           chatMessages: state.chatMessages,
           initiative: state.initiative,
-          submaps: state.submaps
+          submaps: state.submaps,
+          partyMembers: state.partyMembers
         };
         
         // Save to localStorage
