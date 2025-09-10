@@ -37,6 +37,8 @@ import { useBattleMapStore } from '../store/battleMapStore';
 const BattleMap = () => {
   const canvasRef = useRef(null);
   const [selectedTool, setSelectedTool] = useState('move');
+  const [activeTool, setActiveTool] = useState(null); // For cone/circle drawing
+  const [toolPreview, setToolPreview] = useState(null); // Preview shape while drawing
   const [showTokenPanel, setShowTokenPanel] = useState(false);
   const [showCharacterSheet, setShowCharacterSheet] = useState(false);
   const [showChatPanel, setShowChatPanel] = useState(false);
