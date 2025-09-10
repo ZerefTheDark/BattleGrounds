@@ -335,6 +335,7 @@ const BattleMap = () => {
               ref={canvasRef}
               selectedTool={selectedTool}
               onTokenSelect={selectToken}
+              isPlayerView={isPlayerView}
             />
             
             {/* Scale Badge */}
