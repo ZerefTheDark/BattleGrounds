@@ -23,7 +23,10 @@ import {
   Database,
   ChevronUp,
   ChevronDown,
-  PackagePlus
+  PackagePlus,
+  Triangle,
+  Circle,
+  Paintbrush
 } from 'lucide-react';
 import CanvasLayers from './CanvasLayers';
 import TokenPanel from './TokenPanel';
