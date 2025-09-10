@@ -73,7 +73,7 @@ export class CanvasEffects {
           }
         };
         img.src = token.appearanceImage;
-      } catch (error) {
+      } catch {
         // Fallback to colored shape if image fails
         this.drawColoredToken(ctx, token, scale, isSelected);
       }
