@@ -22,7 +22,8 @@ import {
   FileText,
   Database,
   ChevronUp,
-  ChevronDown
+  ChevronDown,
+  PackagePlus
 } from 'lucide-react';
 import CanvasLayers from './CanvasLayers';
 import TokenPanel from './TokenPanel';
