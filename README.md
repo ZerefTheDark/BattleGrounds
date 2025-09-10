@@ -68,6 +68,32 @@ A comprehensive D&D battle map application with enhanced fantasy graphics, featu
 ✅ **D&D Mechanics Teaching**  
 ✅ **Character Sheet Management**  
 
+## 🔧 **Troubleshooting**
+
+If you encounter issues:
+
+### **Tokens Not Creating/Closing:**
+1. **Open Developer Console** (F12 → Console tab)
+2. **Look for Error Messages** when clicking buttons
+3. **Check Browser Compatibility** (Chrome/Firefox recommended)
+4. **Clear Browser Cache** and refresh the page
+
+### **Map Not Full Screen:**
+1. **Refresh the page** after initial load
+2. **Check browser zoom** (should be 100%)
+3. **Resize browser window** to trigger layout recalculation
+4. **Try different screen resolution** if layout appears broken
+
+### **Features Not Working:**
+- **JavaScript Required**: Ensure JavaScript is enabled in your browser
+- **Modern Browser**: Use Chrome, Firefox, Safari, or Edge (latest versions)
+- **Local Storage**: Some browsers block localStorage on file:// URLs
+
+### **Performance Issues:**
+- **Close Unused Tabs** for better performance
+- **Use Incognito Mode** to test without extensions
+- **Clear Browser Storage** if app becomes sluggish
+
 ## 🆓 **Want Full Multiplayer?**
 
 For real-time collaboration and cloud persistence:
