@@ -453,7 +453,13 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect }, ref) => {
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onWheel={handleWheel}
-      style={{ touchAction: 'none' }}
+      style={{ 
+        touchAction: 'none',
+        width: '100%',
+        height: '100%',
+        minWidth: '100%',
+        minHeight: '100%'
+      }}
     >
       <canvas
         ref={backgroundCanvasRef}
