@@ -492,6 +492,28 @@ const BattleMap = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
+                  variant={showPartyManager ? 'default' : 'ghost'}
+                  className="p-3 rounded-none border-b border-gray-700"
+                  onClick={() => {
+                    setShowPartyManager(!showPartyManager);
+                    if (showTokenPanel) setShowTokenPanel(false);
+                    if (showCharacterSheet) setShowCharacterSheet(false);
+                    if (showChatPanel) setShowChatPanel(false);
+                    if (showSubmapManager) setShowSubmapManager(false);
+                    if (showStoragePanel) setShowStoragePanel(false);
+                  }}
+                >
+                  <UserPlus className="w-5 h-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="left">
+                <p>Party Manager</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
                   variant={showTokenPanel ? 'default' : 'ghost'}
                   className="p-3 rounded-none border-b border-gray-700"
                   onClick={() => {
@@ -499,6 +521,7 @@ const BattleMap = () => {
                     if (showCharacterSheet) setShowCharacterSheet(false);
                     if (showChatPanel) setShowChatPanel(false);
                     if (showSubmapManager) setShowSubmapManager(false);
+                    if (showPartyManager) setShowPartyManager(false);
                   }}
                 >
                   <Users className="w-5 h-5" />
