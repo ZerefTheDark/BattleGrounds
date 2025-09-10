@@ -348,7 +348,7 @@ const BattleMap = () => {
 
             {/* Character Sheet */}
             {showCharacterSheet && selectedToken && (
-              <div className="w-[420px] max-w-[400px] h-full border-l-2 border-green-500/30 bg-gray-900 pointer-events-auto">
+              <div className="w-[800px] max-w-[750px] h-full border-l-2 border-red-500/30 bg-gray-900 pointer-events-auto">
                 <CharacterSheet
                   token={selectedToken}
                   onClose={() => {
