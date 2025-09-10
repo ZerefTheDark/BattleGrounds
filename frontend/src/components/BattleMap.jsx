@@ -37,6 +37,7 @@ import ChatDiceInitiative from './ChatDiceInitiative';
 import SubmapManager from './SubmapManager';
 import StoragePanel from './StoragePanel';
 import UploadExpansion from './UploadExpansion';
+import PartyManager from './PartyManager';
 import { useBattleMapStore } from '../store/battleMapStore';
 
 const BattleMap = () => {
