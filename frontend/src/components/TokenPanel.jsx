@@ -53,6 +53,8 @@ const TokenPanel = ({ onClose }) => {
         color: '#3b82f6'
       });
       setShowTokenCreator(false);
+    } else {
+      console.log('Token name is empty, aborting creation');
     }
   };
 
