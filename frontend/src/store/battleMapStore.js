@@ -242,7 +242,8 @@ const useBattleMapStore = create(
         selectedTokenId: null,
         chatMessages: [],
         initiative: { round: 1, turn: 0, combatants: [] },
-        submaps: []
+        submaps: [],
+        partyMembers: []
       })
     }),
     {
