@@ -16,65 +16,130 @@ export class CanvasEffects {
     return gradient;
   }
 
-  static drawEnhancedToken(ctx, token, scale, isSelected = false) {
-    const { x, y, size, color, shape } = token;
-    
+  static drawEnhancedToken(ctx, token, scale, isSelected = false, isPlayerView = false) {
     ctx.save();
     
-    // Add glow effect for selected tokens
-    if (isSelected) {
-      ctx.shadowColor = '#fbbf24';
-      ctx.shadowBlur = 20 / scale;
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 0;
-    }
-    
-    // Create gradient for token
-    const gradient = this.createRadialGradient(
-      ctx, x, y, 0, size / 2,
-      [color, this.darkenColor(color, 30)]
-    );
-    
-    // Draw main token shape
-    ctx.fillStyle = gradient;
-    ctx.strokeStyle = isSelected ? '#fbbf24' : '#ffffff';
-    ctx.lineWidth = Math.max(2, 3 / scale);
-    
-    if (shape === 'circle') {
-      ctx.beginPath();
-      ctx.arc(x, y, size / 2, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
+    // Draw the token image if available, otherwise draw colored shape
+    if (token.appearanceImage) {
+      try {
+        const img = new Image();
+        img.onload = () => {
+          ctx.save();
+          
+          // Create circular or square clipping path
+          if (token.shape === 'circle') {
+            ctx.beginPath();
+            ctx.arc(token.x, token.y, token.size, 0, Math.PI * 2);
+            ctx.clip();
+          } else {
+            ctx.beginPath();
+            ctx.rect(token.x - token.size, token.y - token.size, token.size * 2, token.size * 2);
+            ctx.clip();
+          }
+          
+          // Draw the image
+          ctx.drawImage(
+            img,
+            token.x - token.size,
+            token.y - token.size,
+            token.size * 2,
+            token.size * 2
+          );
+          
+          ctx.restore();
+          
+          // Draw border
+          if (isSelected) {
+            ctx.strokeStyle = '#fbbf24';
+            ctx.lineWidth = 4 / scale;
+            ctx.shadowColor = '#fbbf24';
+            ctx.shadowBlur = 15 / scale;
+          } else {
+            ctx.strokeStyle = token.color;
+            ctx.lineWidth = 3 / scale;
+          }
+          
+          if (token.shape === 'circle') {
+            ctx.beginPath();
+            ctx.arc(token.x, token.y, token.size, 0, Math.PI * 2);
+            ctx.stroke();
+          } else {
+            ctx.strokeRect(
+              token.x - token.size, 
+              token.y - token.size, 
+              token.size * 2, 
+              token.size * 2
+            );
+          }
+        };
+        img.src = token.appearanceImage;
+      } catch (error) {
+        // Fallback to colored shape if image fails
+        this.drawColoredToken(ctx, token, scale, isSelected);
+      }
     } else {
-      ctx.fillRect(x - size / 2, y - size / 2, size, size);
-      ctx.strokeRect(x - size / 2, y - size / 2, size, size);
+      // Draw colored shape
+      this.drawColoredToken(ctx, token, scale, isSelected);
     }
     
-    // Add inner highlight
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-    ctx.beginPath();
-    if (shape === 'circle') {
-      ctx.arc(x, y - size / 6, size / 3, 0, Math.PI * 2);
-    } else {
-      ctx.fillRect(x - size / 3, y - size / 3, size / 1.5, size / 4);
-    }
-    ctx.fill();
-    
-    // Draw name with enhanced styling
+    // Draw token name below the token
     if (token.name) {
-      ctx.fillStyle = '#ffffff';
-      ctx.strokeStyle = '#000000';
-      ctx.lineWidth = Math.max(2, 2 / scale);
-      ctx.font = `bold ${Math.max(12, 14 / scale)}px sans-serif`;
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+      ctx.font = `${Math.max(10, 12 / scale)}px Arial`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
+      ctx.lineWidth = 2 / scale;
       
-      const textY = y + size / 2 + 8 / scale;
-      ctx.strokeText(token.name, x, textY);
-      ctx.fillText(token.name, x, textY);
+      const textY = token.y + token.size + 5 / scale;
+      ctx.strokeText(token.name, token.x, textY);
+      ctx.fillText(token.name, token.x, textY);
     }
     
     ctx.restore();
+  }
+
+  static drawColoredToken(ctx, token, scale, isSelected) {
+    const gradient = ctx.createRadialGradient(
+      token.x, token.y, 0,
+      token.x, token.y, token.size
+    );
+    gradient.addColorStop(0, token.color);
+    gradient.addColorStop(0.7, token.color);
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0.3)');
+    
+    // Selection glow
+    if (isSelected) {
+      ctx.shadowColor = '#fbbf24';
+      ctx.shadowBlur = 15 / scale;
+      ctx.strokeStyle = '#fbbf24';
+      ctx.lineWidth = 3 / scale;
+    } else {
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.lineWidth = 2 / scale;
+    }
+    
+    ctx.fillStyle = gradient;
+    
+    if (token.shape === 'circle') {
+      ctx.beginPath();
+      ctx.arc(token.x, token.y, token.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+    } else {
+      ctx.fillRect(
+        token.x - token.size, 
+        token.y - token.size, 
+        token.size * 2, 
+        token.size * 2
+      );
+      ctx.strokeRect(
+        token.x - token.size, 
+        token.y - token.size, 
+        token.size * 2, 
+        token.size * 2
+      );
+    }
   }
 
   static drawEnhancedGrid(ctx, camera, gridSize, canvasWidth, canvasHeight) {
