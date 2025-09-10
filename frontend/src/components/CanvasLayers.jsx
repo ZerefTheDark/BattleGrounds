@@ -464,22 +464,42 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect }, ref) => {
       <canvas
         ref={backgroundCanvasRef}
         className="absolute inset-0 pointer-events-none"
-        style={{ zIndex: 1 }}
+        style={{ 
+          zIndex: 1,
+          width: '100%',
+          height: '100%',
+          display: 'block'
+        }}
       />
       <canvas
         ref={gridCanvasRef}
         className="absolute inset-0 pointer-events-none"
-        style={{ zIndex: 2 }}
+        style={{ 
+          zIndex: 2,
+          width: '100%',
+          height: '100%',
+          display: 'block'
+        }}
       />
       <canvas
         ref={tokensCanvasRef}
         className="absolute inset-0 pointer-events-none"
-        style={{ zIndex: 3 }}
+        style={{ 
+          zIndex: 3,
+          width: '100%',
+          height: '100%',
+          display: 'block'
+        }}
       />
       <canvas
         ref={toolsCanvasRef}
         className="absolute inset-0 pointer-events-none"
-        style={{ zIndex: 4 }}
+        style={{ 
+          zIndex: 4,
+          width: '100%',
+          height: '100%',
+          display: 'block'
+        }}
       />
     </div>
   );
