@@ -472,15 +472,25 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect }, ref) => {
       setTimeout(redrawAllLayers, 20);
     }, 100);
     
+    // Background image load handler
+    const handleBackgroundLoad = () => {
+      redrawAllLayers();
+    };
+    
     // Initial setup with delay to ensure DOM is ready
     setTimeout(handleResize, 100);
     
     window.addEventListener('resize', handleResize);
+    window.addEventListener('backgroundImageLoaded', handleBackgroundLoad);
+    
     return () => {
       window.removeEventListener('resize', handleResize);
-      redrawAllLayers.cancel && redrawAllLayers.cancel();
+      window.removeEventListener('backgroundImageLoaded', handleBackgroundLoad);
+      if (debouncedRedraw.cancel) {
+        debouncedRedraw.cancel();
+      }
     };
-  }, [redrawAllLayers, DPR]);
+  }, [redrawAllLayers, debouncedRedraw, DPR]);
 
   return (
     <div
