@@ -178,6 +178,15 @@ const TokenPanel = ({ onClose }) => {
           )}
         </div>
       </CardContent>
+      
+      <TokenCreationModal
+        isOpen={showTokenModal}
+        onClose={() => setShowTokenModal(false)}
+        onCreateToken={(tokenData) => {
+          handleCreateToken(tokenData);
+          setShowTokenModal(false);
+        }}
+      />
     </Card>
   );
 };
