@@ -491,7 +491,7 @@ const BattleMap = () => {
           </div>
 
           {/* Side Panel Controls */}
-          <div className="bg-gray-800 border-l border-gray-700 flex flex-col">
+          <div className="absolute top-0 right-0 bg-gray-800 border-l border-gray-700 flex flex-col z-30">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
