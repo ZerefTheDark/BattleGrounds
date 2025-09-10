@@ -119,6 +119,51 @@ user_problem_statement: "Comprehensive testing of Battle Map application includi
         - agent: "main"
         - comment: "✅ COMPLETED SUCCESSFULLY - Party Manager panel opens correctly, displays proper empty state, Add Member button functional, integrated with side panel controls, supports full character creation workflow as per user wireframe requirements"
 
+  - task: "Enhanced Fog of War System Implementation"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/BattleMap.jsx, /app/frontend/src/components/CanvasLayers.jsx, /app/frontend/src/store/battleMapStore.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+        - agent: "main"
+        - comment: "Initial implementation - Enhanced fog of war with adjustable brush size (20-200px), paint/erase toggle (Reveal/Hide modes), Clear All and Cover All functionality, visual brush size indicator, color-coded buttons for different modes"
+        - working: true
+        - agent: "main"
+        - comment: "✅ COMPLETED SUCCESSFULLY - Enhanced fog of war controls visible in toolbar when fog brush selected, brush size slider working, paint/erase toggle functional with visual feedback, Clear All/Cover All buttons implemented with proper styling"
+
+  - task: "Cone & Circle Tools Implementation"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/utils/CanvasEffects.js, /app/frontend/src/components/CanvasLayers.jsx, /app/frontend/src/components/BattleMap.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+        - agent: "main"
+        - comment: "Initial implementation - 53-degree cone tool with token collision highlighting, expanding circle tool with radius display in feet, interactive drawing with drag functionality, proper visual feedback during use"
+        - working: true
+        - agent: "main"
+        - comment: "✅ COMPLETED SUCCESSFULLY - Cone and Circle tools are selectable from toolbar, interactive drawing functionality implemented, CanvasEffects.js contains drawing logic with proper measurements and token highlighting"
+
+  - task: "Player View Implementation"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/BattleMap.jsx, /app/frontend/src/components/ChatDiceInitiative.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+        - agent: "main"
+        - comment: "Initial implementation - Player View toggle button to switch between GM and Player perspectives, filters token information to show only appearance and health for players, hides NPC names in initiative tracker from player view"
+        - working: true
+        - agent: "main"
+        - comment: "✅ COMPLETED SUCCESSFULLY - Player View toggle button working correctly, changes from 'GM View' to 'Player View' with visual feedback, properly integrated with initiative tracker to hide sensitive information from players"
+
 frontend:
   - task: "Core Canvas Pan and Zoom Functionality"
     implemented: true
