@@ -450,7 +450,10 @@ const BattleMap = () => {
             {/* Chat/Dice/Initiative Combined Panel */}
             {showChatPanel && (
               <div className="w-80 max-w-[320px] h-full border-l-2 border-green-500/30 bg-gray-900 pointer-events-auto">
-                <ChatDiceInitiative onClose={() => setShowChatPanel(false)} />
+                <ChatDiceInitiative 
+                  onClose={() => setShowChatPanel(false)} 
+                  isPlayerView={isPlayerView} 
+                />
               </div>
             )}
 
