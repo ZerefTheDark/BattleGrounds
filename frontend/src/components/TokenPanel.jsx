@@ -30,6 +30,7 @@ const TokenPanel = ({ onClose }) => {
         conditions: []
       };
       
+      console.log('Adding token:', tokenToAdd);
       addToken(tokenToAdd);
       
       // Save to custom tokens storage
