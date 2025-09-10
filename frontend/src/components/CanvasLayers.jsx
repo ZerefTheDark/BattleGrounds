@@ -390,9 +390,6 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect }, ref) => {
   // Consolidated rendering system with debounced redraw
   const redrawAllLayers = useCallback(
     debounce(() => {
-      // Don't redraw during active dragging to prevent glitching
-      if (isDragging.current) return;
-      
       drawBackground();
       drawGrid();
       drawTokens();
