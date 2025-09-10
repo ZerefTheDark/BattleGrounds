@@ -269,9 +269,9 @@ const BattleMap = () => {
         </div>
 
         {/* Main Content Area */}
-        <div className="flex-1 flex relative">
+        <div className="flex-1 flex relative" style={{ height: 'calc(100vh - 120px)' }}>
           {/* Canvas Container - Ensure full screen coverage */}
-          <div className="flex-1 relative overflow-hidden h-full w-full" style={{ minHeight: '0', minWidth: '0' }}>
+          <div className="absolute inset-0 overflow-hidden" style={{ width: '100%', height: '100%' }}>
             <CanvasLayers
               ref={canvasRef}
               selectedTool={selectedTool}
