@@ -450,29 +450,35 @@ export class CanvasEffects {
     });
   }
 
-  static drawEnhancedBackground(ctx, backgroundImage) {
+  static drawEnhancedBackground(ctx, backgroundImage, camera) {
     if (!backgroundImage) return;
     
-    ctx.save();
+    // Use cached image if available, otherwise create and cache it
+    if (!backgroundImage._cachedImage) {
+      backgroundImage._cachedImage = new Image();
+      backgroundImage._cachedImage.src = backgroundImage.dataUrl;
+    }
     
-    // Add subtle texture overlay
-    const img = new Image(); // eslint-disable-line no-undef
-    img.onload = () => {
+    const img = backgroundImage._cachedImage;
+    
+    // Only draw if image is loaded
+    if (img.complete && img.naturalWidth > 0) {
+      // Calculate scaled dimensions
       const imgWidth = backgroundImage.width * (backgroundImage.scale || 1.2);
       const imgHeight = backgroundImage.height * (backgroundImage.scale || 1.2);
       
-      // Draw main image
-      ctx.drawImage(img, -imgWidth / 2, -imgHeight / 2, imgWidth, imgHeight);
+      // Center the image
+      const x = -imgWidth / 2;
+      const y = -imgHeight / 2;
       
-      // Add enhancement overlay
-      ctx.globalCompositeOperation = 'overlay';
-      ctx.fillStyle = 'rgba(16, 185, 129, 0.05)';
-      ctx.fillRect(-imgWidth / 2, -imgHeight / 2, imgWidth, imgHeight);
-      
-      ctx.globalCompositeOperation = 'source-over';
-    };
-    img.src = backgroundImage.dataUrl;
-    
-    ctx.restore();
+      ctx.drawImage(img, x, y, imgWidth, imgHeight);
+    } else if (!img.onload) {
+      // Set onload handler if not already set
+      img.onload = () => {
+        // Trigger a redraw when image loads
+        const event = new CustomEvent('backgroundImageLoaded');
+        window.dispatchEvent(event);
+      };
+    }
   }
 }
