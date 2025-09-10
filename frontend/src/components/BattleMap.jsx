@@ -307,6 +307,23 @@ const BattleMap = () => {
                 <p>Upload D&D Content Files</p>
               </TooltipContent>
             </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={isPlayerView ? 'secondary' : 'outline'}
+                  size="sm"
+                  onClick={() => setIsPlayerView(!isPlayerView)}
+                  className={isPlayerView ? 'bg-blue-600 hover:bg-blue-700 text-white' : ''}
+                >
+                  {isPlayerView ? <UserCheck className="w-4 h-4 mr-1" /> : <Shield className="w-4 h-4 mr-1" />}
+                  {isPlayerView ? 'Player View' : 'GM View'}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{isPlayerView ? 'Switch to GM View' : 'Switch to Player View'}</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
 
