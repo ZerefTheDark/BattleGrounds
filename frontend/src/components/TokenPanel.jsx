@@ -8,13 +8,8 @@ import TokenCreationModal from './TokenCreationModal';
 
 const TokenPanel = ({ onClose }) => {
   const { tokens, addToken, removeToken, updateToken, selectToken, selectedTokenId } = useBattleMapStore();
-  const [showTokenCreator, setShowTokenCreator] = useState(false);
-  const [newToken, setNewToken] = useState({
-    name: '',
-    shape: 'circle',
-    size: 25,
-    color: '#3b82f6'
-  });
+  
+  const [showTokenModal, setShowTokenModal] = useState(false);
 
   const handleCreateToken = () => {
     console.log('handleCreateToken called with:', newToken);
