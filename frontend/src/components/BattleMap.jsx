@@ -190,25 +190,34 @@ const BattleMap = () => {
               {selectedTool === 'fog' && (
                 <>
                   <Button
-                    variant="outline"
+                    variant={fogPaintMode ? 'default' : 'outline'}
                     size="sm"
-                    onClick={() => {
-                      // Toggle fog mode
-                      console.log('Toggle fog mode');
-                    }}
-                    className="h-7 text-xs px-2"
+                    onClick={() => setFogPaintMode(!fogPaintMode)}
+                    className={`h-7 text-xs px-2 ${
+                      fogPaintMode ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'
+                    }`}
                   >
-                    Paint
+                    {fogPaintMode ? 'Reveal' : 'Hide'}
                   </Button>
+                  
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs text-gray-300">{fogBrushSize}px</span>
+                    <input
+                      type="range"
+                      min="20"
+                      max="200"
+                      step="10"
+                      value={fogBrushSize}
+                      onChange={(e) => setFogBrushSize(parseInt(e.target.value))}
+                      className="w-16 h-4 accent-purple-500"
+                    />
+                  </div>
                   
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => {
-                      // Clear all fog
-                      console.log('Clear all fog');
-                    }}
-                    className="h-7 text-xs px-2"
+                    onClick={clearAllFog}
+                    className="h-7 text-xs px-2 border-green-500 text-green-400 hover:bg-green-900/30"
                   >
                     Clear All
                   </Button>
@@ -216,11 +225,8 @@ const BattleMap = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => {
-                      // Cover all with fog
-                      console.log('Cover all with fog');
-                    }}
-                    className="h-7 text-xs px-2"
+                    onClick={coverAllWithFog}
+                    className="h-7 text-xs px-2 border-red-500 text-red-400 hover:bg-red-900/30"
                   >
                     Cover All
                   </Button>
