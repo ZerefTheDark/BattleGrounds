@@ -114,6 +114,20 @@ const useBattleMapStore = create(
         submaps: state.submaps.filter(submap => submap.id !== id)
       })),
 
+      // Party management
+      partyMembers: [],
+      addPartyMember: (member) => set((state) => ({
+        partyMembers: [...state.partyMembers, { ...member, id: Date.now().toString() }]
+      })),
+      updatePartyMember: (id, updates) => set((state) => ({
+        partyMembers: state.partyMembers.map(member =>
+          member.id === id ? { ...member, ...updates } : member
+        )
+      })),
+      removePartyMember: (id) => set((state) => ({
+        partyMembers: state.partyMembers.filter(member => member.id !== id)
+      })),
+
       // File operations
       loadBackgroundImage: (dataUrl) => {
         const img = new Image();
