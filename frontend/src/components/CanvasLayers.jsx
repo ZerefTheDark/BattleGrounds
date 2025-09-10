@@ -390,19 +390,19 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect }, ref) => {
     [drawBackground, drawGrid, drawTokens, drawTools]
   );
 
-  // Single useEffect for all canvas updates
+  // Single useEffect for all canvas updates (excluding camera for smooth panning)
   useEffect(() => {
     redrawAllLayers();
   }, [
     backgroundImage, 
     gridEnabled, 
     gridSize, 
-    camera, 
     tokens, 
     selectedTokenId, 
     ruler, 
     fogEnabled, 
-    fogReveals
+    fogReveals,
+    redrawAllLayers
   ]);
 
   // Handle resize and initial setup (separate from renders)
