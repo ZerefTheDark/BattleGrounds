@@ -270,8 +270,8 @@ const BattleMap = () => {
 
         {/* Main Content Area */}
         <div className="flex-1 flex relative">
-          {/* Canvas Container - Fixed pointer events issue */}
-          <div className="flex-1 relative overflow-hidden" style={{ pointerEvents: showChatPanel ? 'auto' : 'auto' }}>
+          {/* Canvas Container - Ensure full screen coverage */}
+          <div className="flex-1 relative overflow-hidden h-full w-full" style={{ minHeight: '0', minWidth: '0' }}>
             <CanvasLayers
               ref={canvasRef}
               selectedTool={selectedTool}
