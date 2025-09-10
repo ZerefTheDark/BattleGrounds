@@ -279,11 +279,17 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect }, ref) => {
         
       case 'fog':
         if (fogEnabled) {
-          addFogReveal({
+          const fogAction = {
             x: worldPos.x,
             y: worldPos.y,
-            radius: 50
-          });
+            radius: fogBrushSize
+          };
+          
+          if (fogPaintMode) {
+            addFogReveal(fogAction);
+          } else {
+            removeFogReveal(fogAction);
+          }
         }
         break;
         
