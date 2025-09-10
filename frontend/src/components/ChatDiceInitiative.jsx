@@ -532,7 +532,12 @@ const ChatDiceInitiative = ({ onClose, isPlayerView = false }) => {
                       <div className="flex justify-between items-center">
                         <div className="flex-1">
                           <div className="flex items-center gap-1">
-                            <span className="font-medium text-sm">{combatant.name}</span>
+                            <span className="font-medium text-sm">
+                              {isPlayerView && combatant.hideNameFromPlayers ? 
+                                `${combatant.characterClass || 'Creature'} ${index + 1}` : 
+                                combatant.name
+                              }
+                            </span>
                             {index === initiative.turn && (
                               <Badge className="bg-blue-600 text-xs h-4">Current</Badge>
                             )}
