@@ -261,7 +261,7 @@ export class CanvasEffects {
     ctx.restore();
   }
 
-  static drawCone(ctx, cone, scale) {
+  static drawCone(ctx, cone, scale, tokens = [], gridSize = 25) {
     if (!cone.active || !cone.start || !cone.end) return;
     
     ctx.save();
@@ -271,8 +271,9 @@ export class CanvasEffects {
     const length = Math.sqrt(dx * dx + dy * dy);
     const angle = Math.atan2(dy, dx);
     
-    // Cone width increases with length (15 degree cone)
-    const coneWidth = length * Math.tan(Math.PI / 12); // 15 degrees in radians
+    // 53-degree cone (26.5 degrees on each side)
+    const halfAngle = (53 * Math.PI) / (180 * 2); // 26.5 degrees in radians
+    const coneWidth = length * Math.tan(halfAngle);
     
     // Calculate cone points
     const endX = cone.start.x + Math.cos(angle) * length;
@@ -285,7 +286,7 @@ export class CanvasEffects {
     const rightY = endY + Math.sin(angle - Math.PI / 2) * coneWidth;
     
     // Draw cone with semi-transparent fill
-    ctx.fillStyle = 'rgba(255, 165, 0, 0.3)';
+    ctx.fillStyle = 'rgba(255, 165, 0, 0.4)';
     ctx.strokeStyle = '#ff6b35';
     ctx.lineWidth = Math.max(2, 3 / scale);
     ctx.setLineDash([10 / scale, 5 / scale]);
@@ -310,7 +311,87 @@ export class CanvasEffects {
     ctx.lineTo(endX, endY);
     ctx.stroke();
     
+    // Highlight tokens within cone
+    const affectedTokens = this.getTokensInCone(cone, tokens);
+    affectedTokens.forEach(token => {
+      ctx.strokeStyle = '#ff0000';
+      ctx.lineWidth = Math.max(3, 4 / scale);
+      ctx.shadowColor = '#ff0000';
+      ctx.shadowBlur = 10 / scale;
+      
+      if (token.shape === 'circle') {
+        ctx.beginPath();
+        ctx.arc(token.x, token.y, token.size + 3, 0, Math.PI * 2);
+        ctx.stroke();
+      } else {
+        ctx.strokeRect(
+          token.x - token.size - 3,
+          token.y - token.size - 3,
+          (token.size + 3) * 2,
+          (token.size + 3) * 2
+        );
+      }
+    });
+    
+    // Show distance in feet
+    const squares = Math.round(length / gridSize);
+    const feet = squares * 5;
+    
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    ctx.fillRect(
+      cone.start.x - 30 / scale,
+      cone.start.y - 40 / scale,
+      60 / scale,
+      20 / scale
+    );
+    
+    ctx.fillStyle = '#ffffff';
+    ctx.strokeStyle = '#ff6b35';
+    ctx.lineWidth = 1 / scale;
+    ctx.font = `bold ${Math.max(12, 14 / scale)}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
+    ctx.strokeText(`${feet} ft`, cone.start.x, cone.start.y - 30 / scale);
+    ctx.fillText(`${feet} ft`, cone.start.x, cone.start.y - 30 / scale);
+    
     ctx.restore();
+  }
+
+  static getTokensInCone(cone, tokens) {
+    const affectedTokens = [];
+    const startX = cone.start.x;
+    const startY = cone.start.y;
+    const dx = cone.end.x - startX;
+    const dy = cone.end.y - startY;
+    const coneLength = Math.sqrt(dx * dx + dy * dy);
+    const coneAngle = Math.atan2(dy, dx);
+    const halfAngle = (53 * Math.PI) / (180 * 2); // 26.5 degrees
+    
+    tokens.forEach(token => {
+      const tokenDx = token.x - startX;
+      const tokenDy = token.y - startY;
+      const tokenDistance = Math.sqrt(tokenDx * tokenDx + tokenDy * tokenDy);
+      
+      // Skip if token is beyond cone length
+      if (tokenDistance > coneLength) return;
+      
+      // Calculate angle to token
+      const tokenAngle = Math.atan2(tokenDy, tokenDx);
+      let angleDiff = Math.abs(tokenAngle - coneAngle);
+      
+      // Normalize angle difference to 0-π
+      if (angleDiff > Math.PI) {
+        angleDiff = 2 * Math.PI - angleDiff;
+      }
+      
+      // Check if token is within cone angle
+      if (angleDiff <= halfAngle) {
+        affectedTokens.push(token);
+      }
+    });
+    
+    return affectedTokens;
   }
 
   static drawCircle(ctx, circle, scale) {
