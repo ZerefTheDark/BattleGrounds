@@ -83,7 +83,7 @@ const BattleMap = () => {
 
   return (
     <TooltipProvider>
-      <div className="h-screen bg-gray-900 text-white flex flex-col relative">
+      <div className="h-screen w-screen bg-gray-900 text-white flex flex-col relative overflow-hidden">
         {/* Decorative Vine Borders - Non-interfering */}
         <div className="absolute top-0 left-0 right-0 h-5 z-10 pointer-events-none overflow-hidden">
           <div className="text-center text-xs leading-5" style={{
