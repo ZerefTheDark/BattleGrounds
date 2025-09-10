@@ -48,12 +48,7 @@ const TokenPanel = ({ onClose }) => {
       
       <CardContent className="space-y-4">
         <Button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Create Token button clicked, current state:', showTokenCreator);
-            setShowTokenCreator(!showTokenCreator);
-          }}
+          onClick={() => setShowTokenModal(true)}
           className="fantasy-button-emerald w-full"
         >
           <Plus className="w-4 h-4 mr-2" />
