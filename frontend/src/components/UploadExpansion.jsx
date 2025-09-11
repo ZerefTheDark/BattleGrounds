@@ -51,14 +51,19 @@ const UploadExpansion = ({ onClose }) => {
 
       // Handle PDF files (character sheets)
       if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+        console.log('Processing PDF character sheet:', file.name);
         const characterSheet = await parsePDFCharacterSheet(file);
         if (characterSheet) {
           parsed.characterSheets.push(characterSheet);
+          console.log('Successfully created character sheet entry:', characterSheet.name);
+        } else {
+          console.log('Failed to create character sheet entry');
         }
         // Update counts
         Object.keys(parsed).forEach(key => {
           contentTypes[key].count = parsed[key].length;
         });
+        console.log('PDF processing complete, returning:', parsed);
         return parsed;
       }
 
