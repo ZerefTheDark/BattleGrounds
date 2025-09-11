@@ -118,6 +118,13 @@ const UploadExpansion = ({ onClose }) => {
         data = xmlToJson(xmlDoc);
       }
 
+      // Handle PDF text extraction format (like dnd_Everything.full.json)
+      if (data.version === 'verbatim-pdf-export-bundle' || data.sources) {
+        console.log('Detected PDF text extraction format - cannot parse structured data from this format');
+        alert('This file appears to be a PDF text extraction bundle, not structured D&D data. To use this content:\n\n1. You need a structured D&D JSON file with spell/monster/item objects\n2. This file contains raw text from PDFs which cannot be automatically parsed\n3. Try downloading a structured D&D compendium file instead');
+        throw new Error('PDF text extraction format cannot be parsed');
+      }
+
       // Find the content structure
       let content = data;
       if (data.compendium) content = data.compendium;
