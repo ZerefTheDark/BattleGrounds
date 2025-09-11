@@ -43,6 +43,10 @@ import SubmapManager from './SubmapManager';
 import StoragePanel from './StoragePanel';
 import UploadExpansion from './UploadExpansion';
 import PartyManager from './PartyManager';
+import PermanentChatWindow from './PermanentChatWindow';
+import EnhancedInitiativeTracker from './EnhancedInitiativeTracker';
+import ConsolidatedRightPanel from './ConsolidatedRightPanel';
+import TokenSelectionModal from './TokenSelectionModal';
 import { useBattleMapStore } from '../store/battleMapStore';
 
 const BattleMap = () => {
