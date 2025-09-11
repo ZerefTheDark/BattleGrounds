@@ -6,6 +6,8 @@ import { Label } from './ui/label';
 import { Badge } from './ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Separator } from './ui/separator';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { useBattleMapStore } from '../store/battleMapStore';
 import { 
   X, 
   Upload, 
@@ -24,7 +26,14 @@ import {
   BookOpen,
   Package,
   FileText,
-  User
+  User,
+  Download,
+  RotateCcw,
+  Check,
+  Circle,
+  CheckCircle,
+  XCircle,
+  AlertCircle
 } from 'lucide-react';
 
 const CharacterSheetBeyond = ({ token, onClose }) => {
