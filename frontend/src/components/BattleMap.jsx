@@ -5,10 +5,6 @@ import { Slider } from './ui/slider';
 import { Switch } from './ui/switch';
 import { Badge } from './ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
-import PermanentChatWindow from './PermanentChatWindow';
-import EnhancedInitiativeTracker from './EnhancedInitiativeTracker';
-import ConsolidatedRightPanel from './ConsolidatedRightPanel';
-import TokenSelectionModal from './TokenSelectionModal';
 import { 
   Move, 
   Ruler, 
