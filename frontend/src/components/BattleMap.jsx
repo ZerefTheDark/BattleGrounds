@@ -28,6 +28,7 @@ import {
   Circle,
   Paintbrush,
   UserCheck,
+  User,
   Layers,
   Shield,
   UserPlus
