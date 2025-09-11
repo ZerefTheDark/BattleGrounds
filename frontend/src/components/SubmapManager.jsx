@@ -189,18 +189,30 @@ const SubmapManager = ({ onClose }) => {
             <div className="bg-blue-900/20 border border-blue-700/50 rounded p-3 text-sm">
               <p className="text-blue-300 mb-2">
                 <Square className="w-4 h-4 inline mr-1" />
-                Click on the map to place your submap region
+                {submapSelection ? 
+                  `Area selected: ${Math.round(Math.abs(submapSelection.end.x - submapSelection.start.x))} × ${Math.round(Math.abs(submapSelection.end.y - submapSelection.start.y))} units` :
+                  'Click and drag on the map to select submap area'
+                }
               </p>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setIsPlacingSubmap(false);
-                  setShowCreateForm(false);
-                }}
-              >
-                Cancel Placement
-              </Button>
+              <div className="flex gap-2">
+                {submapSelection && (
+                  <Button
+                    size="sm"
+                    onClick={confirmSubmapSelection}
+                    className="bg-green-600 hover:bg-green-700"
+                    disabled={!newSubmap.name.trim()}
+                  >
+                    Confirm Area
+                  </Button>
+                )}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={cancelSubmapSelection}
+                >
+                  Cancel
+                </Button>
+              </div>
             </div>
           )}
         </div>
