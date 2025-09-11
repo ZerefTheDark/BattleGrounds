@@ -1,0 +1,407 @@
+/* Battle Map Dark Theme Styles */
+.App {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Enhanced D&D Beyond Style UI */
+.dnd-card {
+  background: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px rgba(34, 197, 94, 0.1);
+  position: relative;
+}
+
+.dnd-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  background: linear-gradient(45deg, #22c55e, #fbbf24, #22c55e);
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  z-index: -1;
+}
+
+/* Character Sheet Enhancements */
+.character-stat-block {
+  background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.character-stat-block::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #22c55e, transparent);
+}
+
+.character-stat-number {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fbbf24;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.3);
+}
+
+.character-stat-label {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Ability Score Styling */
+.ability-score {
+  background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: 6px;
+  padding: 8px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.ability-score:hover {
+  border-color: rgba(34, 197, 94, 0.5);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.2);
+}
+
+.ability-modifier {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.ability-name {
+  font-size: 0.75rem;
+  color: #22c55e;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.ability-base-score {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Skill List Styling */
+.skill-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.skill-row:hover {
+  background-color: rgba(34, 197, 94, 0.1);
+}
+
+.skill-proficient {
+  background-color: rgba(34, 197, 94, 0.15);
+  border-left: 3px solid #22c55e;
+}
+
+/* Combat Actions Styling */
+.combat-action {
+  background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.attack-button {
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);
+}
+
+.attack-button:hover {
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+  box-shadow: 0 4px 8px rgba(220, 38, 38, 0.4);
+}
+
+.damage-button {
+  background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 4px rgba(234, 88, 12, 0.3);
+}
+
+/* Spell Slot Indicators */
+.spell-slot-level {
+  background: linear-gradient(135deg, #581c87 0%, #7c3aed 100%);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  border-radius: 4px;
+  padding: 6px;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.spell-slot-counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.spell-slot-pip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #374151;
+  border: 1px solid #6b7280;
+}
+
+.spell-slot-pip.used {
+  background: #dc2626;
+  border-color: #ef4444;
+  box-shadow: 0 0 4px rgba(220, 38, 38, 0.5);
+}
+
+.spell-slot-pip.available {
+  background: #7c3aed;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 4px rgba(124, 58, 237, 0.5);
+}
+
+/* HP Bar Enhancement */
+.hp-bar {
+  background: linear-gradient(90deg, #1f2937 0%, #374151 100%);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.hp-bar-fill {
+  background: linear-gradient(90deg, #dc2626 0%, #ef4444 50%, #fca5a5 100%);
+  height: 100%;
+  transition: width 0.3s ease;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+/* Custom scrollbars for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  border-radius: 4px;
+  border: 1px solid #1f2937;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+}
+
+/* Canvas cursor styles */
+.canvas-container {
+  cursor: crosshair;
+}
+
+.canvas-container.panning {
+  cursor: grab;
+}
+
+.canvas-container.panning:active {
+  cursor: grabbing;
+}
+
+/* Smooth transitions for UI elements */
+.ui-transition {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Custom focus ring for better accessibility */
+.focus-ring:focus {
+  outline: 2px solid #22c55e;
+  outline-offset: 2px;
+}
+
+/* Gaming-style glow effects */
+.glow-green {
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+}
+
+.glow-gold {
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+}
+
+.glow-red {
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+}
+
+/* Token selection highlight */
+.token-selected {
+  filter: drop-shadow(0 0 8px #fbbf24);
+}
+
+/* Grid pattern overlay */
+.grid-pattern {
+  background-image: 
+    linear-gradient(rgba(34, 197, 94, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 197, 94, 0.2) 1px, transparent 1px);
+  background-size: 25px 25px;
+}
+
+/* Dice roll animations */
+@keyframes diceRoll {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(90deg) scale(1.1); }
+  50% { transform: rotate(180deg) scale(1); }
+  75% { transform: rotate(270deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.dice-rolling {
+  animation: diceRoll 0.6s ease-in-out;
+}
+
+/* Initiative tracker pulse */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.current-turn {
+  animation: pulse 2s infinite;
+}
+
+/* Enhanced Dragon Stones Title */
+.dragon-stones-title {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* Decorative borders */
+.fantasy-border {
+  border: 2px solid transparent;
+  background: linear-gradient(135deg, #1f2937, #374151) padding-box,
+              linear-gradient(45deg, #22c55e, #fbbf24, #22c55e) border-box;
+  border-radius: 8px;
+}
+
+.fantasy-border-thin {
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, #374151, #4b5563) padding-box,
+              linear-gradient(45deg, #22c55e, #fbbf24) border-box;
+  border-radius: 4px;
+}
+
+/* Fog of war overlay */
+.fog-overlay {
+  background: radial-gradient(circle, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+  pointer-events: none;
+}
+
+/* Ruler measurement line */
+.ruler-line {
+  stroke-dasharray: 10, 5;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px currentColor);
+}
+
+/* Panel slide animations */
+.slide-in-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.slide-in-up {
+  animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes slideInUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Chat message animations */
+.chat-message {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Token creation preview */
+.token-preview {
+  border: 2px dashed #22c55e;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+.token-preview:hover {
+  opacity: 1;
+  border-color: #16a34a;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.3);
+}
+
+/* Storage panel styling */
+.storage-item {
+  background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  transition: all 0.2s ease;
+}
+
+.storage-item:hover {
+  border-color: rgba(34, 197, 94, 0.4);
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.1);
+}
+
+/* Responsive design helpers */
+@media (max-width: 768px) {
+  .mobile-hide {
+    display: none;
+  }
+  
+  .mobile-stack {
+    flex-direction: column;
+  }
+}
+
+/* High DPI canvas support */
+canvas {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+}
