@@ -198,14 +198,64 @@ const CharacterSheetBeyond = ({ token, onClose }) => {
 
   const [activeTab, setActiveTab] = useState('actions');
 
-  // Helper functions
+  // Data synchronization effect
+  useEffect(() => {
+    if (token) {
+      // Sync character data with token changes
+      setCharacterData(prev => ({
+        ...prev,
+        name: token.name || prev.name,
+        hp: token.hp || prev.hp,
+        ac: token.ac || prev.ac,
+        abilities: token.abilities || prev.abilities,
+        level: token.level || prev.level,
+        conditions: token.conditions || prev.conditions
+      }));
+    }
+  }, [token]);
+
+  // Update token and party member when character data changes
+  const syncCharacterData = (newData) => {
+    setCharacterData(newData);
+    
+    // Update token
+    if (token) {
+      updateToken(token.id, {
+        name: newData.name,
+        hp: newData.hp,
+        ac: newData.ac,
+        abilities: newData.abilities,
+        level: newData.level,
+        conditions: newData.conditions,
+        characterClass: newData.classes[0]?.name,
+        initiativeBonus: getModifier(newData.abilities.DEX) + (newData.savingThrows.DEX.proficient ? newData.proficiencyBonus : 0)
+      });
+    }
+    
+    // Update party member if exists
+    if (token?.partyMemberId) {
+      const partyMember = partyMembers.find(p => p.id === token.partyMemberId);
+      if (partyMember) {
+        updatePartyMember(partyMember.id, {
+          name: newData.name,
+          level: newData.level,
+          characterClass: newData.classes[0]?.name,
+          hp: newData.hp,
+          ac: newData.ac,
+          initiativeBonus: getModifier(newData.abilities.DEX) + (newData.savingThrows.DEX.proficient ? newData.proficiencyBonus : 0)
+        });
+      }
+    }
+  };
+
+  // Enhanced D&D 5e calculation functions
   const getModifier = (score) => Math.floor((score - 10) / 2);
   const getModifierString = (score) => {
     const mod = getModifier(score);
     return mod >= 0 ? `+${mod}` : `${mod}`;
   };
 
-  const getProficiencyBonus = () => characterData.proficiencyBonus;
+  const getProficiencyBonus = () => Math.ceil(characterData.level / 4) + 1;
 
   const getSkillBonus = (skillName) => {
     const skill = characterData.skills[skillName];
@@ -234,13 +284,50 @@ const CharacterSheetBeyond = ({ token, onClose }) => {
     return bonus;
   };
 
-  // Dice rolling function
-  const rollDice = (sides, modifier = 0, label = '') => {
-    const roll = Math.floor(Math.random() * sides) + 1;
-    const total = roll + modifier;
-    console.log(`${label}: d${sides} roll: ${roll} + ${modifier} = ${total}`);
-    // TODO: Send to chat
-    return total;
+  const getSpellSaveDC = () => {
+    const spellcastingMod = getModifier(characterData.abilities[characterData.spellcasting.ability]);
+    return 8 + getProficiencyBonus() + spellcastingMod;
+  };
+
+  const getSpellAttackBonus = () => {
+    const spellcastingMod = getModifier(characterData.abilities[characterData.spellcasting.ability]);
+    return getProficiencyBonus() + spellcastingMod;
+  };
+
+  // Enhanced dice rolling with chat integration
+  const rollDice = (sides, modifier = 0, label = '', advantage = false, disadvantage = false) => {
+    let rolls = [Math.floor(Math.random() * sides) + 1];
+    
+    if (advantage || disadvantage) {
+      rolls.push(Math.floor(Math.random() * sides) + 1);
+      const selectedRoll = advantage ? Math.max(...rolls) : Math.min(...rolls);
+      const total = selectedRoll + modifier;
+      
+      addChatMessage({
+        type: 'roll',
+        who: characterData.name,
+        formula: `1d${sides}${modifier >= 0 ? '+' : ''}${modifier}`,
+        results: rolls,
+        total: total,
+        note: `${label} (${advantage ? 'Advantage' : 'Disadvantage'})`
+      });
+      
+      return total;
+    } else {
+      const roll = rolls[0];
+      const total = roll + modifier;
+      
+      addChatMessage({
+        type: 'roll',
+        who: characterData.name,
+        formula: `1d${sides}${modifier >= 0 ? '+' : ''}${modifier}`,
+        results: [roll],
+        total: total,
+        note: label
+      });
+      
+      return total;
+    }
   };
 
   const rollSkill = (skillName) => {
@@ -256,6 +343,82 @@ const CharacterSheetBeyond = ({ token, onClose }) => {
   const rollAbilityCheck = (ability) => {
     const modifier = getModifier(characterData.abilities[ability]);
     rollDice(20, modifier, `${ability} Check`);
+  };
+
+  // Utility functions
+  const shortRest = () => {
+    const newData = {
+      ...characterData,
+      hitDice: { ...characterData.hitDice, used: Math.max(0, characterData.hitDice.used - 1) }
+    };
+    syncCharacterData(newData);
+    
+    addChatMessage({
+      type: 'system',
+      text: `${characterData.name} takes a short rest and recovers some abilities.`
+    });
+  };
+
+  const longRest = () => {
+    const newData = {
+      ...characterData,
+      hp: { ...characterData.hp, current: characterData.hp.max },
+      hitDice: { ...characterData.hitDice, used: 0 },
+      spellcasting: {
+        ...characterData.spellcasting,
+        slotsUsed: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 }
+      },
+      deathSaves: { successes: 0, failures: 0 },
+      conditions: []
+    };
+    syncCharacterData(newData);
+    
+    addChatMessage({
+      type: 'system',
+      text: `${characterData.name} takes a long rest and recovers all hit points and spell slots.`
+    });
+  };
+
+  // Import/Export functionality
+  const exportCharacter = () => {
+    const exportData = {
+      ...characterData,
+      exportDate: new Date().toISOString(),
+      version: '1.0'
+    };
+    
+    const dataStr = JSON.stringify(exportData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${characterData.name.replace(/\s+/g, '_')}_character.json`;
+    link.click();
+    
+    URL.revokeObjectURL(url);
+  };
+
+  const importCharacter = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const importedData = JSON.parse(e.target.result);
+        syncCharacterData(importedData);
+        
+        addChatMessage({
+          type: 'system',
+          text: `Character data imported for ${importedData.name}.`
+        });
+      } catch (error) {
+        console.error('Failed to import character:', error);
+        alert('Failed to import character data. Please check the file format.');
+      }
+    };
+    reader.readAsText(file);
   };
 
   return (
