@@ -182,7 +182,12 @@ const PermanentChatWindow = ({
   return (
     <Card 
       className="fantasy-card text-white shadow-lg shadow-green-500/10 flex flex-col relative"
-      style={{ height: isMinimized ? 'auto' : height, pointerEvents: 'auto' }}
+      style={{ 
+        height: isMinimized ? 'auto' : height, 
+        pointerEvents: 'auto',
+        // Ensure child elements can receive pointer events
+        isolation: 'isolate'
+      }}
     >
       {/* Resize Handle */}
       {!isMinimized && (
@@ -268,7 +273,7 @@ const PermanentChatWindow = ({
                 <div ref={chatEndRef} />
               </div>
 
-              {/* Quick Dice Rolls */}
+              {/* Quick Dice Rolls - ensure buttons are clickable */}
               <div className="border-t border-gray-700 p-2 bg-gray-900/50">
                 <div className="flex gap-1 flex-wrap mb-2">
                   <span className="text-xs text-gray-400 flex items-center gap-1 mr-2">
@@ -281,7 +286,8 @@ const PermanentChatWindow = ({
                       size="sm"
                       variant="outline"
                       onClick={() => handleQuickRoll(roll.expression)}
-                      className="h-6 px-2 text-xs border-purple-600/50 text-purple-300 hover:bg-purple-900/30"
+                      className="h-6 px-2 text-xs border-purple-600/50 text-purple-300 hover:bg-purple-900/30 relative z-10"
+                      style={{ pointerEvents: 'auto' }}
                     >
                       {roll.label}
                     </Button>
@@ -291,7 +297,7 @@ const PermanentChatWindow = ({
             </div>
           </CardContent>
 
-          {/* Input Area */}
+          {/* Input Area - ensure interactive elements are clickable */}
           <div className="border-t border-gray-700 p-3 bg-gray-900/30 flex-shrink-0">
             <div className="flex gap-2">
               <Input
@@ -299,7 +305,8 @@ const PermanentChatWindow = ({
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Type message or dice roll (e.g., 2d6+3)..."
-                className="flex-1 bg-gray-800 border-gray-600 focus:border-green-500"
+                className="flex-1 bg-gray-800 border-gray-600 focus:border-green-500 relative z-10"
+                style={{ pointerEvents: 'auto' }}
               />
               <Button
                 onClick={() => {
@@ -311,7 +318,8 @@ const PermanentChatWindow = ({
                   isRecording 
                     ? 'border-red-500 text-red-400 bg-red-900/30' 
                     : 'border-gray-600 text-gray-400'
-                }`}
+                } relative z-10`}
+                style={{ pointerEvents: 'auto' }}
                 title="Voice input (coming soon)"
                 disabled
               >
@@ -320,7 +328,8 @@ const PermanentChatWindow = ({
               <Button
                 onClick={handleSendMessage}
                 size="sm"
-                className="bg-green-600 hover:bg-green-700"
+                className="bg-green-600 hover:bg-green-700 relative z-10"
+                style={{ pointerEvents: 'auto' }}
               >
                 <Send className="w-4 h-4" />
               </Button>
