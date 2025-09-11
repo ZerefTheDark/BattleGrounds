@@ -181,8 +181,8 @@ const PermanentChatWindow = ({
 
   return (
     <Card 
-      className="fantasy-card text-white shadow-lg shadow-green-500/10 flex flex-col"
-      style={{ height: isMinimized ? 'auto' : height }}
+      className="fantasy-card text-white shadow-lg shadow-green-500/10 flex flex-col relative"
+      style={{ height: isMinimized ? 'auto' : height, pointerEvents: 'auto' }}
     >
       {/* Resize Handle */}
       {!isMinimized && (
