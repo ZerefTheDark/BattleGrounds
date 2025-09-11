@@ -112,6 +112,7 @@ const UploadExpansion = ({ onClose }) => {
             traits: race.trait || [],
             source: file.name
           }));
+          console.log(`Parsed ${parsed.races.length} races`);
         }
 
         // Parse spells
