@@ -153,6 +153,7 @@ const UploadExpansion = ({ onClose }) => {
             properties: item.property || [],
             source: file.name
           }));
+          console.log(`Parsed ${parsed.items.length} items`);
         }
 
         // Parse features/traits
