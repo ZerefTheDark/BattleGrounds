@@ -70,6 +70,13 @@ const BattleMap = () => {
   const [showConsolidatedPanel, setShowConsolidatedPanel] = useState(false);
   const [selectedTokensForInitiative, setSelectedTokensForInitiative] = useState([]);
   
+  // New UI state for redesigned interface
+  const [chatHeight, setChatHeight] = useState(300);
+  const [isChatMinimized, setIsChatMinimized] = useState(false);
+  const [showTokenSelectionModal, setShowTokenSelectionModal] = useState(false);
+  const [showConsolidatedPanel, setShowConsolidatedPanel] = useState(false);
+  const [selectedTokensForInitiative, setSelectedTokensForInitiative] = useState([]);
+  
   const {
     camera,
     gridSize,
