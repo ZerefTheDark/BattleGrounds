@@ -38,18 +38,21 @@ const useBattleMapStore = create(
         })
       })),
       clearFogReveals: () => set({ fogReveals: [] }),
-      coverAllWithFog: () => set({ fogReveals: [] }),
-      clearAllFog: () => set((state) => {
-        // Create a large reveal that covers the entire visible area
-        return {
+      coverAllWithFog: () => {
+        console.log('Covering all with fog - clearing all reveals');
+        set({ fogReveals: [] });
+      },
+      clearAllFog: () => {
+        console.log('Clearing all fog - creating large reveal');
+        set({
           fogReveals: [{
             x: 0,
             y: 0,
             radius: 5000, // Large radius to cover entire map
             id: Date.now().toString()
           }]
-        };
-      }),
+        });
+      },
 
       // Ruler
       ruler: { active: false, start: null, end: null },
