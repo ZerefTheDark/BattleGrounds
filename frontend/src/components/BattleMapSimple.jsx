@@ -211,7 +211,12 @@ const BattleMapSimple = () => {
               <CanvasLayers
                 ref={canvasRef}
                 selectedTool={selectedTool}
-                onToolChange={setSelectedTool}
+                onTokenSelect={handleTokenSelect}
+                activeTool={activeTool}
+                toolPreview={toolPreview}
+                setActiveTool={setActiveTool}
+                setToolPreview={setToolPreview}
+                isPlayerView={isPlayerView}
               />
             </div>
 
