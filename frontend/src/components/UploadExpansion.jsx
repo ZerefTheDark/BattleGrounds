@@ -181,6 +181,47 @@ const UploadExpansion = ({ onClose }) => {
     }
   };
 
+  const parsePDFCharacterSheet = async (file) => {
+    try {
+      // For now, we'll extract basic info from the filename and file properties
+      // In a full implementation, you'd use a PDF.js library to extract text
+      const fileName = file.name.replace('.pdf', '');
+      const characterName = fileName.replace(/[_-]/g, ' ').replace(/\d+/g, '').trim();
+      
+      // Create a character sheet entry with extracted filename info
+      const characterSheet = {
+        id: Date.now() + Math.random(),
+        name: characterName || 'Unknown Character',
+        fileName: file.name,
+        fileSize: file.size,
+        uploadDate: new Date().toISOString(),
+        type: 'pdf_character_sheet',
+        // Store the file as a blob URL for later access
+        fileData: URL.createObjectURL(file),
+        // Default character fields that could be filled in later
+        level: 1,
+        race: 'Unknown',
+        class: 'Unknown',
+        background: 'Unknown',
+        stats: {
+          STR: 10, DEX: 10, CON: 10, INT: 10, WIS: 10, CHA: 10
+        },
+        hitPoints: { max: 8, current: 8 },
+        armorClass: 10,
+        speed: 30,
+        proficiencyBonus: 2,
+        source: file.name,
+        // Flag to indicate this needs manual data entry
+        needsDataEntry: true
+      };
+
+      return characterSheet;
+    } catch (error) {
+      console.error('Error parsing PDF character sheet:', error);
+      return null;
+    }
+  };
+
   const xmlToJson = (xml) => {
     let obj = {};
     if (xml.nodeType === 1) {
