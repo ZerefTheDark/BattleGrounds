@@ -122,6 +122,17 @@ const BattleMap = () => {
 
   const selectedToken = tokens.find(token => token.id === selectedTokenId);
 
+  // Handle adding tokens to initiative
+  const handleAddTokensToInitiative = () => {
+    setShowTokenSelectionModal(true);
+  };
+
+  const handleTokenSelectedForInitiative = (initiativeEntry) => {
+    const { addCombatant } = useBattleMapStore.getState();
+    addCombatant(initiativeEntry);
+    setSelectedTokensForInitiative(prev => [...prev, initiativeEntry.tokenId]);
+  };
+
   // Auto-open character sheet when token is selected
   useEffect(() => {
     if (selectedToken && !showCharacterSheet) {
