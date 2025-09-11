@@ -395,25 +395,33 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
     
     switch (selectedTool) {
       case 'move':
-        const dx = screenX - lastPointer.current.x;
-        const dy = screenY - lastPointer.current.y;
-        
-        if (selectedTokenId) {
-          // Move selected token
-          const selectedToken = tokens.find(t => t.id === selectedTokenId);
-          if (selectedToken) {
-            updateToken(selectedTokenId, {
-              x: selectedToken.x + dx / camera.scale,
-              y: selectedToken.y + dy / camera.scale
+        if (submapSelectionMode && submapSelection) {
+          // Update submap selection area
+          setSubmapSelection({
+            ...submapSelection,
+            end: worldPos
+          });
+        } else {
+          const dx = screenX - lastPointer.current.x;
+          const dy = screenY - lastPointer.current.y;
+          
+          if (selectedTokenId) {
+            // Move selected token
+            const selectedToken = tokens.find(t => t.id === selectedTokenId);
+            if (selectedToken) {
+              updateToken(selectedTokenId, {
+                x: selectedToken.x + dx / camera.scale,
+                y: selectedToken.y + dy / camera.scale
+              });
+            }
+          } else {
+            // Pan camera
+            setCamera({
+              ...camera,
+              x: camera.x - dx / camera.scale,
+              y: camera.y - dy / camera.scale
             });
           }
-        } else {
-          // Pan camera
-          setCamera({
-            ...camera,
-            x: camera.x - dx / camera.scale,
-            y: camera.y - dy / camera.scale
-          });
         }
         break;
         
