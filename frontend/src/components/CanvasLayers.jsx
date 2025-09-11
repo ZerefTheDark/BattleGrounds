@@ -558,6 +558,8 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
     ruler, 
     fogEnabled, 
     fogReveals,
+    activeTool,
+    submapSelection,
     debouncedRedraw
   ]);
 
