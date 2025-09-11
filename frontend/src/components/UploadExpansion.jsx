@@ -311,7 +311,7 @@ const UploadExpansion = ({ onClose }) => {
                   processFile();
                 }}
                 disabled={uploadStatus === 'processing' || !selectedFile}
-                className="fantasy-button-emerald pointer-events-auto"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white pointer-events-auto"
                 style={{ pointerEvents: 'auto' }}
               >
                 {uploadStatus === 'processing' ? 'Processing...' : 'Process File'}
