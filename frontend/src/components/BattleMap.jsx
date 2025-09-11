@@ -32,6 +32,7 @@ import {
   Circle,
   Paintbrush,
   UserCheck,
+  Layers,
   Shield,
   UserPlus
 } from 'lucide-react';
