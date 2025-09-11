@@ -3,6 +3,7 @@ import { Button } from './ui/button';
 import { Card } from './ui/card';
 import { Slider } from './ui/slider';
 import { Switch } from './ui/switch';
+import { Badge } from './ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 import { 
   Move, 
@@ -16,14 +17,35 @@ import {
   Users,
   MessageSquare,
   Dice6,
-  Map
+  Map,
+  Settings,
+  FileText,
+  Database,
+  ChevronUp,
+  ChevronDown,
+  PackagePlus,
+  Triangle,
+  Circle,
+  Paintbrush,
+  UserCheck,
+  User,
+  Layers,
+  Shield,
+  UserPlus
 } from 'lucide-react';
 import CanvasLayers from './CanvasLayers';
+import PermanentChatWindow from './PermanentChatWindow';
+import ChatDiceInitiative from './ChatDiceInitiative';
+import PartyManager from './PartyManager';
 import { useBattleMapStore } from '../store/battleMapStore';
 
 const BattleMapSimple = () => {
   const canvasRef = useRef(null);
   const [selectedTool, setSelectedTool] = useState('move');
+  const [showGameConsole, setShowGameConsole] = useState(false);
+  const [showPartyManager, setShowPartyManager] = useState(false);
+  const [chatHeight, setChatHeight] = useState(300);
+  const [isChatMinimized, setIsChatMinimized] = useState(false);
 
   const {
     camera,
@@ -139,40 +161,116 @@ const BattleMapSimple = () => {
           </div>
         </div>
 
-        {/* Main Canvas Area */}
-        <div className="flex-1 relative">
-          <CanvasLayers
-            ref={canvasRef}
-            selectedTool={selectedTool}
-            onToolChange={setSelectedTool}
-          />
+        {/* Main Content Area */}
+        <div className="flex-1 flex relative">
+          {/* Left Sidebar - Gaming Tools */}
+          <div className="w-16 bg-gray-800 border-r border-gray-700 flex flex-col items-center py-4 gap-3">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={showGameConsole ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setShowGameConsole(!showGameConsole)}
+                  className="w-12 h-12"
+                >
+                  <MessageSquare className="w-5 h-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">Game Console</TooltipContent>
+            </Tooltip>
 
-          {/* Grid Size Slider */}
-          {gridEnabled && (
-            <Card className="absolute top-4 left-4 p-3 bg-gray-800/95 border-gray-700">
-              <div className="flex items-center gap-3">
-                <Grid3X3 className="w-4 h-4" />
-                <span className="text-sm">Grid: {gridSize}px</span>
-                <Slider
-                  value={[gridSize]}
-                  onValueChange={(value) => setGridSize(value[0])}
-                  min={10}
-                  max={200}
-                  step={5}
-                  className="w-24"
-                />
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={showPartyManager ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setShowPartyManager(!showPartyManager)}
+                  className="w-12 h-12"
+                >
+                  <Users className="w-5 h-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">Party Manager</TooltipContent>
+            </Tooltip>
+          </div>
+
+          {/* Center Canvas Area */}
+          <div className="flex-1 relative">
+            <CanvasLayers
+              ref={canvasRef}
+              selectedTool={selectedTool}
+              onToolChange={setSelectedTool}
+            />
+
+            {/* Grid Size Slider */}
+            {gridEnabled && (
+              <Card className="absolute top-4 left-4 p-3 bg-gray-800/95 border-gray-700">
+                <div className="flex items-center gap-3">
+                  <Grid3X3 className="w-4 h-4" />
+                  <span className="text-sm">Grid: {gridSize}px</span>
+                  <Slider
+                    value={[gridSize]}
+                    onValueChange={(value) => setGridSize(value[0])}
+                    min={10}
+                    max={200}
+                    step={5}
+                    className="w-24"
+                  />
+                </div>
+              </Card>
+            )}
+
+            {/* Status */}
+            <Card className="absolute bottom-4 right-4 p-2 bg-gray-800/95 border-gray-700">
+              <div className="text-sm">
+                <div>Tokens: {tokens.length}</div>
+                <div>Zoom: {Math.round(camera.scale * 100)}%</div>
               </div>
             </Card>
-          )}
 
-          {/* Status */}
-          <Card className="absolute bottom-4 right-4 p-2 bg-gray-800/95 border-gray-700">
-            <div className="text-sm">
-              <div>Tokens: {tokens.length}</div>
-              <div>Zoom: {Math.round(camera.scale * 100)}%</div>
-            </div>
-          </Card>
+            {/* Chat Window at Bottom */}
+            {!isChatMinimized && (
+              <div 
+                className="absolute bottom-0 left-16 right-0 bg-gray-800 border-t border-gray-700"
+                style={{ height: `${chatHeight}px` }}
+              >
+                <PermanentChatWindow
+                  defaultHeight={chatHeight}
+                  onHeightChange={setChatHeight}
+                  isMinimized={isChatMinimized}
+                  onToggleMinimize={() => setIsChatMinimized(!isChatMinimized)}
+                />
+              </div>
+            )}
+
+            {/* Minimized Chat Tab */}
+            {isChatMinimized && (
+              <Button
+                className="absolute bottom-0 left-16 bg-gray-800 border border-gray-700 rounded-t-md rounded-b-none"
+                size="sm"
+                onClick={() => setIsChatMinimized(false)}
+              >
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Chat
+                <ChevronUp className="w-4 h-4 ml-2" />
+              </Button>
+            )}
+          </div>
         </div>
+
+        {/* Left Side Panel - Game Console */}
+        {showGameConsole && (
+          <div className="absolute left-16 top-20 bottom-0 w-80 z-50">
+            <ChatDiceInitiative onClose={() => setShowGameConsole(false)} />
+          </div>
+        )}
+
+        {/* Left Side Panel - Party Manager */}
+        {showPartyManager && (
+          <div className="absolute left-16 top-20 bottom-0 w-80 z-50">
+            <PartyManager onClose={() => setShowPartyManager(false)} />
+          </div>
+        )}
       </div>
     </TooltipProvider>
   );
