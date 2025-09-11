@@ -128,6 +128,59 @@ const BattleMap = () => {
     setSelectedTokensForInitiative(prev => [...prev, initiativeEntry.tokenId]);
   };
 
+  // Character sheet handlers
+  const openCompactCharacterSheet = (character) => {
+    const compactWindow = {
+      id: `compact-char-${character?.id || 'new'}`,
+      title: `${character?.name || 'Character'} - Quick View`,
+      icon: User,
+      content: (
+        <CompactCharacterSheet 
+          character={character}
+          onOpenFullSheet={() => openFullCharacterSheet(character)}
+          onClose={() => setDraggableWindows(prev => prev.filter(w => w.id !== `compact-char-${character?.id || 'new'}`))}
+          onUpdateCharacter={(updated) => {
+            // Update character in store
+            updateToken(character.id, updated);
+          }}
+        />
+      ),
+      position: { x: 200, y: 150 },
+      size: { width: 350, height: 600 },
+      zIndex: 1001
+    };
+    setDraggableWindows(prev => {
+      const exists = prev.find(w => w.id === compactWindow.id);
+      if (exists) return prev;
+      return [...prev, compactWindow];
+    });
+  };
+
+  const openFullCharacterSheet = (character) => {
+    const fullWindow = {
+      id: `full-char-${character?.id || 'new'}`,
+      title: `${character?.name || 'Character'} - Full Sheet`,
+      icon: User,
+      content: (
+        <FullCharacterSheet 
+          character={character}
+          onClose={() => setDraggableWindows(prev => prev.filter(w => w.id !== `full-char-${character?.id || 'new'}`))}
+          onUpdateCharacter={(updated) => {
+            // Update character in store
+            updateToken(character.id, updated);
+          }}
+        />
+      ),
+      position: { x: 100, y: 50 },
+      size: { width: 900, height: 700 },
+      zIndex: 1002
+    };
+    setDraggableWindows(prev => {
+      const filtered = prev.filter(w => !w.id.includes('char-')); // Close other character sheets
+      return [...filtered, fullWindow];
+    });
+  };
+
   // Auto-open character sheet when token is selected
   useEffect(() => {
     if (selectedToken && !showCharacterSheet) {
