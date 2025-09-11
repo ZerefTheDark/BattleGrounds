@@ -461,7 +461,131 @@ const BattleMap = () => {
             )}
           </div>
 
+          {/* Left Sidebar - Gaming Tools */}
+          <div className="absolute left-0 top-16 bottom-0 w-80 bg-gray-900/95 backdrop-blur-sm border-r-2 border-green-500/50 z-20 overflow-y-auto fantasy-scrollbar">
+            {/* Gaming Tools Header */}
+            <div className="p-4 border-b border-green-500/30">
+              <h3 className="text-lg font-bold text-green-400">Gaming Console</h3>
+              <div className="grid grid-cols-4 gap-2 mt-3">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant={selectedTool === 'move' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setSelectedTool('move')}
+                      className={selectedTool === 'move' ? 'bg-green-600 hover:bg-green-700' : ''}
+                    >
+                      <Move className="w-4 h-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent><p>Select/Move</p></TooltipContent>
+                </Tooltip>
 
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant={selectedTool === 'ruler' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setSelectedTool('ruler')}
+                      className={selectedTool === 'ruler' ? 'bg-blue-600 hover:bg-blue-700' : ''}
+                    >
+                      <Ruler className="w-4 h-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent><p>Measure Distance</p></TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant={selectedTool === 'cone' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setSelectedTool('cone')}
+                      className={selectedTool === 'cone' ? 'bg-orange-600 hover:bg-orange-700' : ''}
+                    >
+                      <Triangle className="w-4 h-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent><p>Cone Tool</p></TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant={selectedTool === 'circle' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setSelectedTool('circle')}
+                      className={selectedTool === 'circle' ? 'bg-purple-600 hover:bg-purple-700' : ''}
+                    >
+                      <Circle className="w-4 h-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent><p>Circle Tool</p></TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant={selectedTool === 'fog' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setSelectedTool('fog')}
+                      className={selectedTool === 'fog' ? 'bg-gray-600 hover:bg-gray-700' : ''}
+                    >
+                      <Paintbrush className="w-4 h-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent><p>Fog Brush</p></TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowTokenPanel(!showTokenPanel)}
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent><p>Token Window</p></TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowPartyManager(!showPartyManager)}
+                    >
+                      <Users className="w-4 h-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent><p>Party Manager</p></TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowChatPanel(!showChatPanel)}
+                    >
+                      <MessageSquare className="w-4 h-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent><p>Chat & Dice</p></TooltipContent>
+                </Tooltip>
+              </div>
+            </div>
+
+            {/* Initiative Tracker in Left Panel */}
+            <div className="p-4">
+              <EnhancedInitiativeTracker 
+                onAddTokensFromField={handleAddTokensToInitiative}
+                tokens={tokens}
+              />
+            </div>
+          </div>
 
           {/* Right Side Panels - Fixed positioning with max width constraints */}
           <div 
