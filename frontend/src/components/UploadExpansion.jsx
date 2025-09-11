@@ -330,7 +330,7 @@ const UploadExpansion = ({ onClose }) => {
         </Button>
       </CardHeader>
 
-      <CardContent className="p-6 space-y-6">
+      <CardContent className="p-6 space-y-6 relative z-10" style={{ pointerEvents: 'auto' }}>
         {/* File Upload Section */}
         <div className="space-y-4">
           <div>
