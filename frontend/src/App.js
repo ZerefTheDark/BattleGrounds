@@ -7,11 +7,11 @@ import './styles/enhanced-graphics.css';
 function App() {
   return (
     <div className="App">
-      <BrowserRouter basename="/BattleGrounds">
+      <HashRouter>
         <Routes>
           <Route path="/" element={<BattleMap />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   );
 }
