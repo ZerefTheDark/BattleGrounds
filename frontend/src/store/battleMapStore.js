@@ -107,6 +107,25 @@ const useBattleMapStore = create(
           combatants: state.initiative.combatants.filter(c => c.id !== id)
         }
       })),
+      updateCombatant: (id, updates) => set((state) => ({
+        initiative: {
+          ...state.initiative,
+          combatants: state.initiative.combatants.map(combatant => {
+            if (combatant.id === id) {
+              const updated = { ...combatant, ...updates };
+              // Sync health changes with tokens on the map
+              if (updated.tokenId && updated.hp) {
+                state.updateToken(updated.tokenId, { 
+                  hp: updated.hp,
+                  isDefeated: updated.hp.current <= 0 
+                });
+              }
+              return updated;
+            }
+            return combatant;
+          })
+        }
+      })),
       nextTurn: () => set((state) => {
         const { combatants, turn, round } = state.initiative;
         const nextTurn = turn + 1;
