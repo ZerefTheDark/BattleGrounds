@@ -210,8 +210,8 @@ const UploadExpansion = ({ onClose }) => {
       
       let fullText = '';
       
-      // Extract text from all pages
-      for (let i = 1; i <= Math.min(pdf.numPages, 5); i++) { // Limit to first 5 pages
+      // Extract text from first few pages to identify PDF type
+      for (let i = 1; i <= Math.min(pdf.numPages, 3); i++) {
         const page = await pdf.getPage(i);
         const textContent = await page.getTextContent();
         const pageText = textContent.items.map(item => item.str).join(' ');
@@ -221,8 +221,24 @@ const UploadExpansion = ({ onClose }) => {
       console.log('Extracted text length:', fullText.length);
       console.log('First 500 characters:', fullText.substring(0, 500));
       
-      // Parse character information from the extracted text
+      // Detect PDF type
+      const pdfType = detectPDFType(fullText, file.name);
+      console.log('Detected PDF type:', pdfType);
+      
+      if (pdfType === 'rules_guide') {
+        throw new Error(`This appears to be a D&D rules/administrative guide PDF, not a character sheet.\n\nThis type of PDF contains:\n• Campaign rules and guidelines\n• Administrative procedures\n• General game information\n\nTo use this content:\n1. Upload individual character sheet PDFs instead\n2. Or upload structured JSON files with spells/monsters/items\n\nFor character creation, you can use the existing Character Sheet tools in the battle map.`);
+      }
+      
+      if (pdfType === 'adventure_module') {
+        throw new Error(`This appears to be a D&D adventure module PDF.\n\nAdventure modules contain:\n• Story content and scenarios\n• NPCs and plot elements\n• Maps and encounter areas\n\nTo use this content:\n1. Use the battle map tools to create custom scenarios\n2. Upload character sheet PDFs for individual characters\n3. Upload structured JSON files with monsters/spells if available`);
+      }
+      
+      // Continue with character sheet parsing
       const characterData = parseCharacterFromText(fullText);
+      
+      if (!characterData.name && pdfType === 'unknown') {
+        throw new Error(`Could not identify this PDF as a character sheet.\n\nSupported PDF types:\n• Individual character sheets (with character names and stats)\n• D&D 5e character sheets from various sources\n\nIf this is a character sheet, it may be in an unsupported format. You can:\n1. Try a different character sheet format\n2. Use manual character creation in the battle map\n3. Upload a JSON character template instead`);
+      }
       
       const characterSheet = {
         id: Date.now() + Math.random(),
@@ -244,41 +260,50 @@ const UploadExpansion = ({ onClose }) => {
         speed: characterData.speed || 30,
         proficiencyBonus: characterData.proficiencyBonus || 2,
         source: file.name,
-        extractedText: fullText, // Store full text for debugging
+        extractedText: fullText.substring(0, 1000), // Store sample text for debugging
         needsDataEntry: !characterData.name // Only needs manual entry if we couldn't extract name
       };
 
       console.log('Parsed character data:', characterData);
       return characterSheet;
     } catch (error) {
-      console.error('Error parsing PDF character sheet:', error);
-      
-      // Fallback to filename-based parsing
-      const fileName = file.name.replace('.pdf', '');
-      const characterName = fileName.replace(/[_-]/g, ' ').replace(/\d+/g, '').trim();
-      
-      return {
-        id: Date.now() + Math.random(),
-        name: characterName || 'Unknown Character',
-        fileName: file.name,
-        fileSize: file.size,
-        uploadDate: new Date().toISOString(),
-        type: 'pdf_character_sheet',
-        fileData: URL.createObjectURL(file),
-        level: 1,
-        race: 'Unknown',
-        class: 'Unknown',
-        background: 'Unknown',
-        stats: { STR: 10, DEX: 10, CON: 10, INT: 10, WIS: 10, CHA: 10 },
-        hitPoints: { max: 8, current: 8 },
-        armorClass: 10,
-        speed: 30,
-        proficiencyBonus: 2,
-        source: file.name,
-        needsDataEntry: true,
-        error: error.message
-      };
+      console.error('Error parsing PDF:', error);
+      throw error; // Re-throw to show user the specific error message
     }
+  };
+
+  const detectPDFType = (text, fileName) => {
+    const lowerText = text.toLowerCase();
+    const lowerFileName = fileName.toLowerCase();
+    
+    // Check for rules/administrative guides
+    if (lowerText.includes('player\'s guide') || 
+        lowerText.includes('dungeon master') ||
+        lowerText.includes('adventurers league') ||
+        lowerText.includes('organized play') ||
+        lowerText.includes('code of conduct') ||
+        lowerText.includes('faction guide') ||
+        lowerFileName.includes('guide') ||
+        lowerFileName.includes('rules')) {
+      return 'rules_guide';
+    }
+    
+    // Check for adventure modules
+    if (lowerText.includes('adventure') && 
+        (lowerText.includes('chapter') || lowerText.includes('session') || lowerText.includes('encounter'))) {
+      return 'adventure_module';
+    }
+    
+    // Check for character sheets
+    if (lowerText.includes('character name') ||
+        lowerText.includes('class & level') ||
+        lowerText.includes('strength') && lowerText.includes('dexterity') ||
+        lowerText.includes('armor class') ||
+        lowerText.includes('hit points')) {
+      return 'character_sheet';
+    }
+    
+    return 'unknown';
   };
 
   const parseCharacterFromText = (text) => {
