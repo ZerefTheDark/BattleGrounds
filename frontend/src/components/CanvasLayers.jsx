@@ -383,7 +383,7 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
         addToken(newToken);
         break;
     }
-  }, [selectedTool, screenToWorld, findTokenAt, onTokenSelect, setRuler, fogEnabled, fogBrushSize, fogPaintMode, addFogReveal, removeFogReveal, tokens.length, gridSize, addToken]);
+  }, [selectedTool, screenToWorld, findTokenAt, onTokenSelect, setRuler, fogEnabled, fogBrushSize, fogPaintMode, addFogReveal, removeFogReveal, tokens.length, gridSize, addToken, submapSelectionMode, setSubmapSelection, setActiveTool]);
 
   const handlePointerMove = useCallback((e) => {
     if (!isDragging.current) return;
