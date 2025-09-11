@@ -1,0 +1,267 @@
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { X, Maximize2, Minimize2 } from 'lucide-react';
+
+const DraggableWindow = ({ 
+  title, 
+  icon: Icon, 
+  children, 
+  onClose, 
+  defaultWidth = 400, 
+  defaultHeight = 600,
+  minWidth = 300,
+  minHeight = 200,
+  defaultPosition = { x: 100, y: 100 },
+  zIndex = 1000,
+  isFullscreen = false,
+  onFullscreenToggle,
+  canFullscreen = false
+}) => {
+  const [position, setPosition] = useState(defaultPosition);
+  const [size, setSize] = useState({ width: defaultWidth, height: defaultHeight });
+  const [isDragging, setIsDragging] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [lastPosition, setLastPosition] = useState(defaultPosition);
+  const [lastSize, setLastSize] = useState({ width: defaultWidth, height: defaultHeight });
+  
+  const windowRef = useRef(null);
+  const headerRef = useRef(null);
+
+  // Handle dragging
+  const handleMouseDown = useCallback((e) => {
+    if (e.target.closest('.resize-handle') || e.target.closest('button') || isFullscreen) return;
+    
+    setIsDragging(true);
+    const rect = windowRef.current.getBoundingClientRect();
+    setDragOffset({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    });
+    e.preventDefault();
+  }, [isFullscreen]);
+
+  const handleMouseMove = useCallback((e) => {
+    if (isDragging && !isFullscreen) {
+      const newX = e.clientX - dragOffset.x;
+      const newY = e.clientY - dragOffset.y;
+      
+      // Keep window within viewport bounds
+      const maxX = window.innerWidth - size.width;
+      const maxY = window.innerHeight - size.height;
+      
+      setPosition({
+        x: Math.max(0, Math.min(maxX, newX)),
+        y: Math.max(0, Math.min(maxY, newY))
+      });
+    }
+  }, [isDragging, dragOffset, size, isFullscreen]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+    setIsResizing(false);
+  }, []);
+
+  // Handle resizing
+  const handleResizeMouseDown = useCallback((e, direction) => {
+    e.stopPropagation();
+    setIsResizing(direction);
+    e.preventDefault();
+  }, []);
+
+  const handleResizeMouseMove = useCallback((e) => {
+    if (!isResizing || isFullscreen) return;
+
+    const rect = windowRef.current.getBoundingClientRect();
+    let newWidth = size.width;
+    let newHeight = size.height;
+    let newX = position.x;
+    let newY = position.y;
+
+    switch (isResizing) {
+      case 'se': // Southeast
+        newWidth = Math.max(minWidth, e.clientX - rect.left);
+        newHeight = Math.max(minHeight, e.clientY - rect.top);
+        break;
+      case 'sw': // Southwest
+        newWidth = Math.max(minWidth, rect.right - e.clientX);
+        newHeight = Math.max(minHeight, e.clientY - rect.top);
+        newX = position.x - (newWidth - size.width);
+        break;
+      case 'ne': // Northeast
+        newWidth = Math.max(minWidth, e.clientX - rect.left);
+        newHeight = Math.max(minHeight, rect.bottom - e.clientY);
+        newY = position.y - (newHeight - size.height);
+        break;
+      case 'nw': // Northwest
+        newWidth = Math.max(minWidth, rect.right - e.clientX);
+        newHeight = Math.max(minHeight, rect.bottom - e.clientY);
+        newX = position.x - (newWidth - size.width);
+        newY = position.y - (newHeight - size.height);
+        break;
+      case 'n': // North
+        newHeight = Math.max(minHeight, rect.bottom - e.clientY);
+        newY = position.y - (newHeight - size.height);
+        break;
+      case 's': // South
+        newHeight = Math.max(minHeight, e.clientY - rect.top);
+        break;
+      case 'e': // East
+        newWidth = Math.max(minWidth, e.clientX - rect.left);
+        break;
+      case 'w': // West
+        newWidth = Math.max(minWidth, rect.right - e.clientX);
+        newX = position.x - (newWidth - size.width);
+        break;
+    }
+
+    setSize({ width: newWidth, height: newHeight });
+    setPosition({ x: newX, y: newY });
+  }, [isResizing, size, position, minWidth, minHeight, isFullscreen]);
+
+  // Global mouse event listeners
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
+    if (isResizing) {
+      document.addEventListener('mousemove', handleResizeMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mousemove', handleResizeMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, isResizing, handleMouseMove, handleResizeMouseMove, handleMouseUp]);
+
+  // Handle fullscreen toggle
+  const handleFullscreenToggle = useCallback(() => {
+    if (isFullscreen) {
+      // Restore to last position and size
+      setPosition(lastPosition);
+      setSize(lastSize);
+    } else {
+      // Save current position and size
+      setLastPosition(position);
+      setLastSize(size);
+    }
+    onFullscreenToggle && onFullscreenToggle();
+  }, [isFullscreen, position, size, lastPosition, lastSize, onFullscreenToggle]);
+
+  // Window style based on fullscreen state
+  const windowStyle = isFullscreen 
+    ? {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: zIndex + 1000,
+        margin: 0
+      }
+    : {
+        position: 'fixed',
+        left: position.x,
+        top: position.y,
+        width: size.width,
+        height: size.height,
+        zIndex: zIndex,
+        cursor: isDragging ? 'grabbing' : 'default'
+      };
+
+  return (
+    <div
+      ref={windowRef}
+      className="draggable-window fantasy-card text-white shadow-2xl border-2 border-green-500/30"
+      style={windowStyle}
+    >
+      {/* Window Header */}
+      <CardHeader
+        ref={headerRef}
+        className="flex flex-row items-center justify-between bg-gradient-to-r from-gray-900 to-gray-800 border-b border-green-500/30 cursor-grab active:cursor-grabbing"
+        onMouseDown={handleMouseDown}
+      >
+        <div className="flex items-center gap-3">
+          {Icon && <Icon className="w-5 h-5 text-green-400" />}
+          <CardTitle className="text-lg dragon-stones-title select-none">{title}</CardTitle>
+        </div>
+        <div className="flex items-center gap-1">
+          {canFullscreen && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleFullscreenToggle}
+              className="text-blue-400 hover:text-blue-300 hover:bg-blue-900/30 border border-blue-600/50 rounded w-7 h-7 p-0"
+              title={isFullscreen ? "Restore Window" : "Fullscreen"}
+            >
+              {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+            </Button>
+          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            className="text-red-400 hover:text-red-300 hover:bg-red-900/30 border border-red-600/50 rounded w-7 h-7 p-0"
+            title="Close Window"
+          >
+            <X className="w-4 h-4" />
+          </Button>
+        </div>
+      </CardHeader>
+
+      {/* Window Content */}
+      <CardContent className="p-0 flex-1 overflow-hidden">
+        <div className="h-full w-full overflow-auto fantasy-scrollbar">
+          {children}
+        </div>
+      </CardContent>
+
+      {/* Resize Handles */}
+      {!isFullscreen && (
+        <>
+          {/* Corner handles */}
+          <div
+            className="absolute top-0 left-0 w-3 h-3 cursor-nw-resize resize-handle"
+            onMouseDown={(e) => handleResizeMouseDown(e, 'nw')}
+          />
+          <div
+            className="absolute top-0 right-0 w-3 h-3 cursor-ne-resize resize-handle"
+            onMouseDown={(e) => handleResizeMouseDown(e, 'ne')}
+          />
+          <div
+            className="absolute bottom-0 left-0 w-3 h-3 cursor-sw-resize resize-handle"
+            onMouseDown={(e) => handleResizeMouseDown(e, 'sw')}
+          />
+          <div
+            className="absolute bottom-0 right-0 w-3 h-3 cursor-se-resize resize-handle bg-green-500/20 hover:bg-green-500/40"
+            onMouseDown={(e) => handleResizeMouseDown(e, 'se')}
+          />
+
+          {/* Edge handles */}
+          <div
+            className="absolute top-0 left-3 right-3 h-1 cursor-n-resize resize-handle"
+            onMouseDown={(e) => handleResizeMouseDown(e, 'n')}
+          />
+          <div
+            className="absolute bottom-0 left-3 right-3 h-1 cursor-s-resize resize-handle"
+            onMouseDown={(e) => handleResizeMouseDown(e, 's')}
+          />
+          <div
+            className="absolute left-0 top-3 bottom-3 w-1 cursor-w-resize resize-handle"
+            onMouseDown={(e) => handleResizeMouseDown(e, 'w')}
+          />
+          <div
+            className="absolute right-0 top-3 bottom-3 w-1 cursor-e-resize resize-handle"
+            onMouseDown={(e) => handleResizeMouseDown(e, 'e')}
+          />
+        </>
+      )}
+    </div>
+  );
+};
+
+export default DraggableWindow;
