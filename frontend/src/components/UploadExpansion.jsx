@@ -430,6 +430,48 @@ const UploadExpansion = ({ onClose }) => {
                 );
               })}
             </div>
+            
+            {/* Character Sheets Preview */}
+            {parsedContent.characterSheets && parsedContent.characterSheets.length > 0 && (
+              <div className="space-y-3">
+                <h4 className="text-sm font-bold text-emerald-400">Character Sheets Found</h4>
+                <div className="space-y-2">
+                  {parsedContent.characterSheets.map((sheet, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-3 bg-gray-800 rounded-lg border border-emerald-500/30"
+                    >
+                      <div className="flex items-center gap-3">
+                        <FileText className="w-5 h-5 text-emerald-400" />
+                        <div>
+                          <div className="text-sm font-medium">{sheet.name}</div>
+                          <div className="text-xs text-gray-400">
+                            {sheet.fileName} • {(sheet.fileSize / 1024).toFixed(1)} KB
+                          </div>
+                          {sheet.needsDataEntry && (
+                            <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400 mt-1">
+                              Needs Data Entry
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                      <Button
+                        size="sm"
+                        onClick={() => {
+                          // Here you would open the character sheet viewer
+                          // For now, we'll just log it
+                          console.log('Open character sheet:', sheet);
+                          alert(`Character sheet viewer would open for: ${sheet.name}\n\nThis will allow you to:\n- View the original PDF\n- Enter character stats manually\n- Save the character data\n- Import into your battle map`);
+                        }}
+                        className="bg-emerald-600 hover:bg-emerald-700"
+                      >
+                        View/Edit
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
