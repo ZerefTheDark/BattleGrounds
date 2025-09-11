@@ -19,6 +19,11 @@ echo "📁 Copying files to root directory..."
 cp -r build/* ../
 cp build/index.html ../index.html
 
+# Create .nojekyll file for GitHub Pages
+echo "📄 Creating .nojekyll file..."
+touch ../.nojekyll
+
 echo "✅ Build complete! Your app is ready for GitHub Pages"
 echo "📝 Make sure to commit and push the generated files to GitHub"
 echo "🌐 Your site will be available at: https://yourusername.github.io/repository-name"
+echo "🔧 Using HashRouter for better GitHub Pages compatibility"
