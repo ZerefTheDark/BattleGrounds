@@ -128,9 +128,7 @@ const BattleMapNew = () => {
   };
 
   const handleTokenSelectedForInitiative = (initiativeEntry) => {
-    // Add to initiative through the store
-    const { addToInitiative } = useBattleMapStore.getState();
-    addToInitiative(initiativeEntry);
+    addCombatant(initiativeEntry);
     setSelectedTokensForInitiative(prev => [...prev, initiativeEntry.tokenId]);
   };
 
