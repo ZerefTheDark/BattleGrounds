@@ -716,6 +716,23 @@ const BattleMap = () => {
             onClose={() => setShowTokenSelectionModal(false)}
           />
         )}
+
+        {/* Draggable Windows */}
+        {draggableWindows.map((window) => (
+          <DraggableWindow
+            key={window.id}
+            title={window.title}
+            icon={window.icon}
+            onClose={() => setDraggableWindows(prev => prev.filter(w => w.id !== window.id))}
+            defaultWidth={window.size.width}
+            defaultHeight={window.size.height}
+            defaultPosition={window.position}
+            zIndex={window.zIndex}
+            canFullscreen={window.id === 'chat-window'}
+          >
+            {window.content}
+          </DraggableWindow>
+        ))}
       </div>
     </TooltipProvider>
   );
