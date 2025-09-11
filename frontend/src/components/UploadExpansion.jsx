@@ -425,13 +425,29 @@ const UploadExpansion = ({ onClose }) => {
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setSelectedFile(file);
-      setUploadStatus('idle');
-      setParsedContent(null);
-      // Reset counts
-      Object.keys(contentTypes).forEach(key => {
-        contentTypes[key].count = 0;
-      });
+      console.log('File selected:', file.name, 'Type:', file.type, 'Size:', file.size);
+      
+      // Validate file type
+      const validExtensions = ['.json', '.xml', '.5e', '.pdf'];
+      const validMimeTypes = ['application/json', 'text/json', 'application/xml', 'text/xml', 'application/pdf'];
+      
+      const fileName = file.name.toLowerCase();
+      const isValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
+      const isValidMimeType = validMimeTypes.includes(file.type);
+      
+      if (isValidExtension || isValidMimeType) {
+        setSelectedFile(file);
+        setUploadStatus('idle');
+        setParsedContent(null);
+        // Reset counts
+        Object.keys(contentTypes).forEach(key => {
+          contentTypes[key].count = 0;
+        });
+        console.log('✅ File validated and selected');
+      } else {
+        alert(`Invalid file type: ${file.type}\nPlease select a valid D&D file (.json, .xml, .5e, .pdf)`);
+        event.target.value = ''; // Clear the input
+      }
     }
   };
 
