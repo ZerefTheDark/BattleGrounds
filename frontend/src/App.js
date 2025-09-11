@@ -8,11 +8,13 @@ import './styles/enhanced-graphics.css';
 function App() {
   return (
     <div className="App">
-      <HashRouter>
-        <Routes>
-          <Route path="/" element={<BattleMap />} />
-        </Routes>
-      </HashRouter>
+      <WindowManagerProvider>
+        <HashRouter>
+          <Routes>
+            <Route path="/" element={<BattleMap />} />
+          </Routes>
+        </HashRouter>
+      </WindowManagerProvider>
     </div>
   );
 }
