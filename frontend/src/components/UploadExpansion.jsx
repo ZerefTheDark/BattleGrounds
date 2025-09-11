@@ -26,6 +26,7 @@ const UploadExpansion = ({ onClose }) => {
   const contentTypes = {
     maps: { icon: Map, label: 'Maps', color: 'bg-blue-600', count: 0 },
     characters: { icon: Users, label: 'Character Images', color: 'bg-green-600', count: 0 },
+    characterSheets: { icon: FileText, label: 'Character Sheets', color: 'bg-emerald-600', count: 0 },
     races: { icon: Users, label: 'Races', color: 'bg-purple-600', count: 0 },
     traits: { icon: Shield, label: 'Traits', color: 'bg-orange-600', count: 0 },
     features: { icon: BookOpen, label: 'Features', color: 'bg-cyan-600', count: 0 },
