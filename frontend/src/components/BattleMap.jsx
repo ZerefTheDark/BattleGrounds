@@ -130,8 +130,8 @@ const BattleMap = () => {
     setSelectedTokensForInitiative(prev => [...prev, initiativeEntry.tokenId]);
   };
 
-  // Character sheet handlers
-  const openCompactCharacterSheet = (character) => {
+  // Character sheet handlers (memoized to prevent infinite re-renders)
+  const openCompactCharacterSheet = useCallback((character) => {
     const compactWindow = {
       id: `compact-char-${character?.id || 'new'}`,
       title: `${character?.name || 'Character'} - Quick View`,
@@ -156,9 +156,9 @@ const BattleMap = () => {
       if (exists) return prev;
       return [...prev, compactWindow];
     });
-  };
+  }, [updateToken]);
 
-  const openFullCharacterSheet = (character) => {
+  const openFullCharacterSheet = useCallback((character) => {
     const fullWindow = {
       id: `full-char-${character?.id || 'new'}`,
       title: `${character?.name || 'Character'} - Full Sheet`,
@@ -181,7 +181,7 @@ const BattleMap = () => {
       const filtered = prev.filter(w => !w.id.includes('char-')); // Close other character sheets
       return [...filtered, fullWindow];
     });
-  };
+  }, [updateToken]);
 
   // Auto-open character sheet when token is selected
   useEffect(() => {
