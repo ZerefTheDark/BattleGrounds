@@ -709,6 +709,16 @@ const BattleMap = () => {
             </Tooltip>
           </div>
         </div>
+
+        {/* Token Selection Modal */}
+        {showTokenSelectionModal && (
+          <TokenSelectionModal
+            tokens={tokens}
+            selectedTokenIds={selectedTokensForInitiative}
+            onSelectToken={handleTokenSelectedForInitiative}
+            onClose={() => setShowTokenSelectionModal(false)}
+          />
+        )}
       </div>
     </TooltipProvider>
   );
