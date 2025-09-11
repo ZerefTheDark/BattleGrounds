@@ -336,7 +336,7 @@ const UploadExpansion = ({ onClose }) => {
           <div>
             <h3 className="text-sm font-bold text-green-400 mb-2">Select D&D Content File</h3>
             <p className="text-xs text-gray-400 mb-3">
-              Supports D&D 5e JSON/XML files, homebrew content, and official modules
+              Supports D&D 5e JSON/XML files, PDF character sheets, homebrew content, and official modules
             </p>
             <div className="relative">
               <input
