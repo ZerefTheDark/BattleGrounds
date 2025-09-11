@@ -91,8 +91,15 @@ const TokenCreationModal = ({ isOpen, onClose, onCreateToken }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <Card className="w-[500px] bg-gray-900 border-2 border-green-500 shadow-2xl">
+    <div 
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
+      <Card className="w-[500px] bg-gray-900 border-2 border-green-500 shadow-2xl max-h-[90vh] overflow-y-auto">
         <CardHeader className="bg-gradient-to-r from-gray-800 to-gray-700 border-b border-green-500/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg text-green-400 font-bold">Create New Token</CardTitle>
