@@ -11,7 +11,7 @@ function App() {
       <WindowManagerProvider>
         <HashRouter>
           <Routes>
-            <Route path="/" element={<BattleMap />} />
+            <Route path="/" element={<BattleMapNew />} />
           </Routes>
         </HashRouter>
       </WindowManagerProvider>
