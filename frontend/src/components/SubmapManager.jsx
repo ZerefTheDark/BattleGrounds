@@ -8,7 +8,17 @@ import { X, Plus, Edit, Trash2, Map, Save, Upload, Eye, Square } from 'lucide-re
 import { useBattleMapStore } from '../store/battleMapStore';
 
 const SubmapManager = ({ onClose }) => {
-  const { submaps, addSubmap, updateSubmap, removeSubmap, camera } = useBattleMapStore();
+  const { 
+    submaps, 
+    addSubmap, 
+    updateSubmap, 
+    removeSubmap, 
+    camera,
+    submapSelectionMode,
+    submapSelection,
+    setSubmapSelectionMode,
+    setSubmapSelection
+  } = useBattleMapStore();
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [isPlacingSubmap, setIsPlacingSubmap] = useState(false);
   const [newSubmap, setNewSubmap] = useState({
