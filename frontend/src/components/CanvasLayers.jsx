@@ -480,7 +480,12 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
     if (selectedTool === 'cone' || selectedTool === 'circle') {
       setActiveTool(null);
     }
-  }, [selectedTool, setRuler, setActiveTool]);
+    
+    // Keep submap selection active until confirmed or cancelled
+    if (submapSelectionMode && !submapSelection) {
+      // Selection was just started, don't clear it
+    }
+  }, [selectedTool, setRuler, setActiveTool, submapSelectionMode, submapSelection]);
 
   const handleWheel = useCallback((e) => {
     e.preventDefault();
