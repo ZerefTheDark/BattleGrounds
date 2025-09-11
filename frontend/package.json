@@ -55,7 +55,7 @@
     "zod": "^3.24.4",
     "zustand": "^5.0.2"
   },
-  "homepage": ".",
+  "homepage": "/BattleGrounds",
   "scripts": {
     "start": "craco start",
     "build": "craco build",
