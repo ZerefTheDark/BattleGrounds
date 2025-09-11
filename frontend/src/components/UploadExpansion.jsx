@@ -308,7 +308,7 @@ const UploadExpansion = ({ onClose }) => {
   };
 
   return (
-    <Card className="fantasy-card w-[600px] text-white h-full shadow-lg shadow-green-500/10 fantasy-scrollbar">
+    <Card className="fantasy-card w-[600px] text-white h-full shadow-lg shadow-green-500/10 fantasy-scrollbar relative z-50" style={{ pointerEvents: 'auto' }}>
       <CardHeader className="flex flex-row items-center justify-between bg-gradient-to-r from-gray-900 to-gray-800 border-b border-green-500/30">
         <div className="flex items-center gap-3">
           <Upload className="w-6 h-6 text-green-400" />
