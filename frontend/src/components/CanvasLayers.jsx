@@ -551,7 +551,14 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
 
   // Single useEffect for all other canvas updates  
   useEffect(() => {
-    debouncedRedraw();
+    // Use requestAnimationFrame to prevent render conflicts
+    const frameId = requestAnimationFrame(() => {
+      debouncedRedraw();
+    });
+    
+    return () => {
+      cancelAnimationFrame(frameId);
+    };
   }, [
     backgroundImage, 
     gridEnabled, 
