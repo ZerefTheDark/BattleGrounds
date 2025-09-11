@@ -68,6 +68,9 @@ const BattleMap = () => {
   const [showConsolidatedPanel, setShowConsolidatedPanel] = useState(false);
   const [selectedTokensForInitiative, setSelectedTokensForInitiative] = useState([]);
   
+  // Draggable windows state
+  const [draggableWindows, setDraggableWindows] = useState([]);
+  
   const {
     camera,
     gridSize,
