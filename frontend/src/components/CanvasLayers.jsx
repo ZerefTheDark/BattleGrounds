@@ -220,7 +220,7 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
     applyTransform(ctx);
     
     // Draw enhanced fog of war
-    if (fogEnabled && fogReveals.length > 0) {
+    if (fogEnabled) {
       const rect = canvas.getBoundingClientRect();
       CanvasEffects.drawEnhancedFog(
         ctx, 
