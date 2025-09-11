@@ -461,15 +461,7 @@ const BattleMap = () => {
             )}
           </div>
 
-          {/* Permanent Chat Window */}
-          <div className="relative z-30" style={{ height: isChatMinimized ? '60px' : `${chatHeight}px` }}>
-            <PermanentChatWindow
-              defaultHeight={chatHeight}
-              onHeightChange={setChatHeight}
-              isMinimized={isChatMinimized}
-              onToggleMinimize={() => setIsChatMinimized(!isChatMinimized)}
-            />
-          </div>
+
 
           {/* Right Side Panels - Fixed positioning with max width constraints */}
           <div 
