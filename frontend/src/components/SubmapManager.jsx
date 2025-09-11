@@ -56,7 +56,46 @@ const SubmapManager = ({ onClose }) => {
 
   const startPlacingSubmap = () => {
     setIsPlacingSubmap(true);
+    setSubmapSelectionMode(true);
     setShowCreateForm(true);
+  };
+
+  const confirmSubmapSelection = () => {
+    if (submapSelection && newSubmap.name.trim()) {
+      const { start, end } = submapSelection;
+      const x = Math.min(start.x, end.x);
+      const y = Math.min(start.y, end.y);
+      const w = Math.abs(end.x - start.x);
+      const h = Math.abs(end.y - start.y);
+      
+      const submap = {
+        ...newSubmap,
+        bounds: { x, y, w, h },
+        scene: {
+          camera: { x: 0, y: 0, scale: 1 },
+          gridSize: 50,
+          gridEnabled: true,
+          backgroundImage: null,
+          fogEnabled: false,
+          fogReveals: [],
+          tokens: []
+        }
+      };
+      
+      addSubmap(submap);
+      setNewSubmap({ name: '', bounds: { x: 0, y: 0, w: 200, h: 200 } });
+      setShowCreateForm(false);
+      setIsPlacingSubmap(false);
+      setSubmapSelectionMode(false);
+      setSubmapSelection(null);
+    }
+  };
+
+  const cancelSubmapSelection = () => {
+    setIsPlacingSubmap(false);
+    setShowCreateForm(false);
+    setSubmapSelectionMode(false);
+    setSubmapSelection(null);
   };
 
   const handleFileUpload = (submapId, event) => {
