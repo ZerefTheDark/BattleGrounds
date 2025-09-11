@@ -549,6 +549,21 @@ frontend:
         - agent: "testing"
         - comment: "✅ PASSED - Save functionality confirmed working with localStorage. Found 1 saved scenario in localStorage after save operation. Zustand persist middleware also configured for battle-map-storage."
 
+  - task: "Critical Runtime Error Fix - onTokenSelect Function"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/BattleMapSimple.jsx, /app/frontend/src/components/CanvasLayers.jsx"
+    stuck_count: 0
+    priority: "critical"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+        - agent: "testing"
+        - comment: "CRITICAL BUG FIX VERIFICATION - Testing fix for 'onTokenSelect is not a function' runtime error that was causing white screen issues"
+        - working: true
+        - agent: "testing"
+        - comment: "🎯 CRITICAL SUCCESS - onTokenSelect runtime error COMPLETELY RESOLVED! ✅ Zero JavaScript console errors detected ✅ White screen issue eliminated - full interface loads properly ✅ All 8/8 UI elements visible and functional ✅ Token tool selection works without errors ✅ Canvas token creation successful ✅ Game Console and Party Manager open without crashes ✅ Canvas interactions (pan/zoom) working smoothly ✅ All 27 buttons present and clickable ✅ onTokenSelect prop properly passed to CanvasLayers (line 214) and handleTokenSelect function correctly defined (lines 71-73). Minor: One non-critical passive event listener warning. OVERALL: CRITICAL BUG FIX SUCCESSFUL - Application fully operational, ready for production use."
+
   - task: "Submap Manager Local Storage Controls"
     implemented: true
     working: true
