@@ -50,7 +50,10 @@ const TokenPanel = ({ onClose }) => {
       
       <CardContent className="space-y-4">
         <Button
-          onClick={() => setShowTokenModal(true)}
+          onClick={() => {
+            console.log('Create Token button clicked, setting showTokenModal to true');
+            setShowTokenModal(true);
+          }}
           className="fantasy-button-emerald w-full"
         >
           <Plus className="w-4 h-4 mr-2" />
