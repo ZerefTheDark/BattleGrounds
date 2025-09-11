@@ -326,6 +326,13 @@ const UploadExpansion = ({ onClose }) => {
     } catch (error) {
       console.error('Processing error:', error);
       setUploadStatus('error');
+      
+      // Show more helpful error message
+      if (selectedFile.name.toLowerCase().endsWith('.pdf')) {
+        alert('PDF character sheet processed, but manual data entry is required. Please use the View/Edit button to enter character details.');
+      } else {
+        alert(`Error processing file: ${error.message}\n\nThis might be due to an unsupported file format or structure. Please check that your file is a valid D&D 5e JSON/XML file.`);
+      }
     }
   };
 
