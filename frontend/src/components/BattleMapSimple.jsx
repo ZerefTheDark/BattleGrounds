@@ -196,11 +196,14 @@ const BattleMapSimple = () => {
 
           {/* Center Canvas Area */}
           <div className="flex-1 relative">
-            <CanvasLayers
-              ref={canvasRef}
-              selectedTool={selectedTool}
-              onToolChange={setSelectedTool}
-            />
+            {/* Canvas Container - constrains the canvas to this area */}
+            <div className="absolute inset-0 overflow-hidden">
+              <CanvasLayers
+                ref={canvasRef}
+                selectedTool={selectedTool}
+                onToolChange={setSelectedTool}
+              />
+            </div>
 
             {/* Grid Size Slider */}
             {gridEnabled && (
