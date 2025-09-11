@@ -37,6 +37,8 @@ const UploadExpansion = ({ onClose }) => {
 
   const parseD5eFile = async (file) => {
     try {
+      console.log('Starting to parse file:', file.name, 'type:', file.type);
+      
       const parsed = {
         maps: [],
         characters: [],
@@ -51,153 +53,84 @@ const UploadExpansion = ({ onClose }) => {
 
       // Handle PDF files (character sheets)
       if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
-        console.log('Processing PDF character sheet:', file.name);
+        console.log('Processing PDF character sheet');
         const characterSheet = await parsePDFCharacterSheet(file);
         if (characterSheet) {
           parsed.characterSheets.push(characterSheet);
-          console.log('Successfully created character sheet entry:', characterSheet.name);
-        } else {
-          console.log('Failed to create character sheet entry');
         }
-        // Update counts
         Object.keys(parsed).forEach(key => {
           contentTypes[key].count = parsed[key].length;
         });
-        console.log('PDF processing complete, returning:', parsed);
         return parsed;
       }
 
       // Handle text-based files (JSON/XML)
       const text = await file.text();
-      let data;
+      console.log('File text length:', text.length);
       
-      // Try parsing as JSON first
+      let data;
       try {
         data = JSON.parse(text);
+        console.log('Successfully parsed JSON, keys:', Object.keys(data));
       } catch (jsonError) {
-        // If JSON fails, try XML parsing
+        console.log('JSON parsing failed, trying XML');
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(text, 'text/xml');
         data = xmlToJson(xmlDoc);
       }
 
-      // Parse different content types - handle various JSON structures
+      // Find the content structure
       let content = data;
-      
-      // Check for common D&D JSON structures
-      if (data.compendium) {
-        content = data.compendium;
-      } else if (data.root) {
-        content = data.root;
-      } else if (data._meta || data.spell || data.monster || data.item || data.race) {
-        // This looks like a direct D&D JSON file
-        content = data;
-      } else {
-        // Try to find content in nested structures
-        const possibleContentKeys = Object.keys(data);
-        for (const key of possibleContentKeys) {
-          if (typeof data[key] === 'object' && data[key] !== null) {
-            if (data[key].spell || data[key].monster || data[key].item || data[key].race) {
-              content = data[key];
-              break;
-            }
+      if (data.compendium) content = data.compendium;
+      else if (data.root) content = data.root;
+      else if (data.spell || data.monster || data.item || data.race) content = data;
+
+      console.log('Content structure found:', Object.keys(content));
+
+      // Parse spells
+      if (content.spell) {
+        const spells = Array.isArray(content.spell) ? content.spell : [content.spell];
+        spells.forEach(spell => {
+          const spellData = {
+            id: Date.now() + Math.random(),
+            name: spell.name || 'Unknown Spell',
+            level: parseInt(spell.level) || 0,
+            school: spell.school || 'Unknown',
+            description: spell.description || spell.text || 'No description',
+            source: file.name
+          };
+          if (spellData.level === 0) {
+            parsed.cantrips.push(spellData);
+          } else {
+            parsed.spells.push(spellData);
           }
-        }
+        });
+        console.log(`Parsed ${parsed.cantrips.length} cantrips and ${parsed.spells.length} spells`);
       }
-      
-      console.log('Parsing content structure:', Object.keys(content));
-        
-        // Parse races
-        if (content.race) {
-          const races = Array.isArray(content.race) ? content.race : [content.race];
-          parsed.races = races.map(race => ({
-            id: Date.now() + Math.random(),
-            name: race.name || race.title,
-            description: race.description || race.text,
-            traits: race.trait || [],
-            source: file.name
-          }));
-          console.log(`Parsed ${parsed.races.length} races`);
-        }
 
-        // Parse spells
-        if (content.spell) {
-          const spells = Array.isArray(content.spell) ? content.spell : [content.spell];
-          spells.forEach(spell => {
-            const spellData = {
-              id: Date.now() + Math.random(),
-              name: spell.name || spell.title,
-              level: parseInt(spell.level) || 0,
-              school: spell.school,
-              description: spell.description || spell.text,
-              range: spell.range,
-              duration: spell.duration,
-              castingTime: spell.time || spell.castingTime,
-              components: spell.components,
-              source: file.name
-            };
+      // Parse monsters
+      if (content.monster) {
+        const monsters = Array.isArray(content.monster) ? content.monster : [content.monster];
+        parsed.characters = monsters.map(monster => ({
+          id: Date.now() + Math.random(),
+          name: monster.name || 'Unknown Monster',
+          type: monster.type || 'Unknown',
+          size: monster.size || 'Medium',
+          source: file.name
+        }));
+        console.log(`Parsed ${parsed.characters.length} monsters`);
+      }
 
-            if (spellData.level === 0) {
-              parsed.cantrips.push(spellData);
-            } else {
-              parsed.spells.push(spellData);
-            }
-          });
-          console.log(`Parsed ${parsed.cantrips.length} cantrips and ${parsed.spells.length} spells`);
-        }
-
-        // Parse items
-        if (content.item) {
-          const items = Array.isArray(content.item) ? content.item : [content.item];
-          parsed.items = items.map(item => ({
-            id: Date.now() + Math.random(),
-            name: item.name || item.title,
-            type: item.type,
-            rarity: item.rarity,
-            description: item.description || item.text,
-            properties: item.property || [],
-            source: file.name
-          }));
-          console.log(`Parsed ${parsed.items.length} items`);
-        }
-
-        // Parse features/traits
-        if (content.feat || content.feature) {
-          const features = Array.isArray(content.feat || content.feature) 
-            ? (content.feat || content.feature) 
-            : [content.feat || content.feature];
-          parsed.features = features.map(feat => ({
-            id: Date.now() + Math.random(),
-            name: feat.name || feat.title,
-            description: feat.description || feat.text,
-            prerequisite: feat.prerequisite,
-            source: file.name
-          }));
-        }
-
-        // Parse monsters/characters
-        if (content.monster) {
-          const monsters = Array.isArray(content.monster) ? content.monster : [content.monster];
-          parsed.characters = monsters.map(monster => ({
-            id: Date.now() + Math.random(),
-            name: monster.name || monster.title,
-            type: monster.type,
-            size: monster.size,
-            alignment: monster.alignment,
-            ac: monster.ac,
-            hp: monster.hp,
-            stats: {
-              STR: monster.str || 10,
-              DEX: monster.dex || 10,
-              CON: monster.con || 10,
-              INT: monster.int || 10,
-              WIS: monster.wis || 10,
-              CHA: monster.cha || 10
-            },
-            source: file.name
-          }));
-          console.log(`Parsed ${parsed.characters.length} monsters/characters`);
-        }
+      // Parse items
+      if (content.item) {
+        const items = Array.isArray(content.item) ? content.item : [content.item];
+        parsed.items = items.map(item => ({
+          id: Date.now() + Math.random(),
+          name: item.name || 'Unknown Item',
+          type: item.type || 'Unknown',
+          source: file.name
+        }));
+        console.log(`Parsed ${parsed.items.length} items`);
       }
 
       // Update counts
@@ -205,6 +138,7 @@ const UploadExpansion = ({ onClose }) => {
         contentTypes[key].count = parsed[key].length;
       });
 
+      console.log('Final parsed result:', parsed);
       return parsed;
     } catch (error) {
       console.error('Error parsing D&D file:', error);
