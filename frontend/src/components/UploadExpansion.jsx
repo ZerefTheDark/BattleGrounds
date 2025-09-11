@@ -304,9 +304,15 @@ const UploadExpansion = ({ onClose }) => {
                 </div>
               </div>
               <Button
-                onClick={processFile}
-                disabled={uploadStatus === 'processing'}
-                className="fantasy-button-emerald"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Process File button clicked, selectedFile:', selectedFile);
+                  processFile();
+                }}
+                disabled={uploadStatus === 'processing' || !selectedFile}
+                className="fantasy-button-emerald pointer-events-auto"
+                style={{ pointerEvents: 'auto' }}
               >
                 {uploadStatus === 'processing' ? 'Processing...' : 'Process File'}
               </Button>
