@@ -536,6 +536,9 @@ const UploadExpansion = ({ onClose }) => {
                 className="w-full p-3 bg-gray-800 border-2 border-purple-500/50 rounded-lg text-white cursor-pointer hover:bg-gray-700 hover:border-purple-400 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-700 file:cursor-pointer"
                 style={{ pointerEvents: 'auto' }}
               />
+              <div className="mt-2 text-xs text-gray-500">
+                Accepts: PDF character sheets, JSON/XML D&D files (.json, .xml, .5e, .pdf)
+              </div>
             </div>
           </div>
 
