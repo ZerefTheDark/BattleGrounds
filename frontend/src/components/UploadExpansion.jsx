@@ -365,11 +365,20 @@ const UploadExpansion = ({ onClose }) => {
                   e.preventDefault();
                   e.stopPropagation();
                   console.log('Process File button clicked, selectedFile:', selectedFile);
-                  processFile();
+                  if (selectedFile) {
+                    console.log('Starting file processing...');
+                    processFile();
+                  } else {
+                    console.log('No file selected for processing');
+                  }
                 }}
                 disabled={uploadStatus === 'processing' || !selectedFile}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white pointer-events-auto"
-                style={{ pointerEvents: 'auto' }}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer"
+                style={{ 
+                  pointerEvents: 'auto',
+                  zIndex: 1000,
+                  position: 'relative'
+                }}
               >
                 {uploadStatus === 'processing' ? 'Processing...' : 'Process File'}
               </Button>
