@@ -260,15 +260,16 @@ const SubmapManager = ({ onClose }) => {
               </div>
               
               <div className="flex gap-2">
-                <Button onClick={handleCreateSubmap} className="flex-1 bg-green-600 hover:bg-green-700">
-                  Create
+                <Button 
+                  onClick={confirmSubmapSelection} 
+                  className="flex-1 bg-green-600 hover:bg-green-700"
+                  disabled={!submapSelection || !newSubmap.name.trim()}
+                >
+                  Create Submap
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => {
-                    setShowCreateForm(false);
-                    setIsPlacingSubmap(false);
-                  }}
+                  onClick={cancelSubmapSelection}
                   className="flex-1"
                 >
                   Cancel
