@@ -461,7 +461,7 @@ export class CanvasEffects {
   }
 
   static drawEnhancedFog(ctx, fogReveals, camera, canvasWidth, canvasHeight) {
-    if (fogReveals.length === 0) return;
+    // Always draw fog overlay, even if no reveals (means everything is covered)
     
     ctx.save();
     
