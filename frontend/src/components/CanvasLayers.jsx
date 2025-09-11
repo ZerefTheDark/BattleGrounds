@@ -232,7 +232,9 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
     }
     
     // Draw enhanced ruler
-    CanvasEffects.drawEnhancedRuler(ctx, ruler, gridSize, camera.scale);
+    if (ruler && ruler.active) {
+      CanvasEffects.drawEnhancedRuler(ctx, ruler, gridSize, camera.scale);
+    }
     
     // Draw active cone tool
     if (activeTool && activeTool.type === 'cone') {
