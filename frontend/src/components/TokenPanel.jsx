@@ -186,8 +186,12 @@ const TokenPanel = ({ onClose }) => {
       
       <TokenCreationModal
         isOpen={showTokenModal}
-        onClose={() => setShowTokenModal(false)}
+        onClose={() => {
+          console.log('Closing TokenCreationModal');
+          setShowTokenModal(false);
+        }}
         onCreateToken={(tokenData) => {
+          console.log('Creating token:', tokenData);
           handleCreateToken(tokenData);
           setShowTokenModal(false);
         }}
