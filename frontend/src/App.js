@@ -7,7 +7,7 @@ import './styles/enhanced-graphics.css';
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      <BrowserRouter basename="/BattleGrounds">
         <Routes>
           <Route path="/" element={<BattleMap />} />
         </Routes>
