@@ -461,18 +461,56 @@ const CharacterSheetBeyond = ({ token, onClose }) => {
 
           {/* Header Controls */}
           <div className="flex items-center gap-2">
-            <Button size="sm" className="bg-green-700 hover:bg-green-600">
+            {/* Import/Export */}
+            <input
+              type="file"
+              accept=".json"
+              onChange={importCharacter}
+              className="hidden"
+              id="import-character"
+            />
+            <Button
+              size="sm"
+              onClick={() => document.getElementById('import-character').click()}
+              className="bg-purple-700 hover:bg-purple-600"
+              title="Import Character"
+            >
+              <Upload className="w-4 h-4" />
+            </Button>
+            <Button
+              size="sm"
+              onClick={exportCharacter}
+              className="bg-indigo-700 hover:bg-indigo-600"
+              title="Export Character"
+            >
+              <Download className="w-4 h-4" />
+            </Button>
+            
+            <Separator orientation="vertical" className="h-6 bg-red-600" />
+            
+            <Button 
+              size="sm" 
+              onClick={shortRest}
+              className="bg-green-700 hover:bg-green-600"
+              title="Short Rest"
+            >
               <Heart className="w-4 h-4 mr-1" />
               Short Rest
             </Button>
-            <Button size="sm" className="bg-blue-700 hover:bg-blue-600">
+            <Button 
+              size="sm" 
+              onClick={longRest}
+              className="bg-blue-700 hover:bg-blue-600"
+              title="Long Rest"
+            >
               <Save className="w-4 h-4 mr-1" />
               Long Rest
             </Button>
             <Button
               size="sm"
-              onClick={() => setCharacterData({ ...characterData, inspiration: !characterData.inspiration })}
+              onClick={() => syncCharacterData({ ...characterData, inspiration: !characterData.inspiration })}
               className={characterData.inspiration ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-gray-600 hover:bg-gray-700'}
+              title="Toggle Inspiration"
             >
               <Star className={`w-4 h-4 ${characterData.inspiration ? 'fill-current' : ''}`} />
             </Button>
