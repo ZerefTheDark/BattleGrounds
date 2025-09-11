@@ -4,6 +4,7 @@ import BattleMapSimple from './components/BattleMapSimple';
 import { WindowManagerProvider } from './components/WindowManager';
 import './App.css';
 import './styles/enhanced-graphics.css';
+import './styles/layering-fixes.css';
 
 function App() {
   return (

@@ -122,6 +122,32 @@ const BattleMapSimple = () => {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
+                    variant={selectedTool === 'cone' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setSelectedTool('cone')}
+                  >
+                    <Triangle className="w-4 h-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Cone Tool</TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant={selectedTool === 'circle' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setSelectedTool('circle')}
+                  >
+                    <Circle className="w-4 h-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Circle Tool</TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
                     variant={selectedTool === 'token' ? 'default' : 'ghost'}
                     size="sm"
                     onClick={() => setSelectedTool('token')}
@@ -224,9 +250,9 @@ const BattleMapSimple = () => {
               />
             </div>
 
-            {/* Grid Size Slider */}
+            {/* Grid Size Slider - elevated to avoid layering issues */}
             {gridEnabled && (
-              <Card className="absolute top-4 left-4 p-3 bg-gray-800/95 border-gray-700">
+              <Card className="absolute top-4 left-4 p-3 bg-gray-800/95 border-gray-700 z-10">
                 <div className="flex items-center gap-3">
                   <Grid3X3 className="w-4 h-4" />
                   <span className="text-sm">Grid: {gridSize}px</span>
@@ -242,19 +268,19 @@ const BattleMapSimple = () => {
               </Card>
             )}
 
-            {/* Status */}
-            <Card className="absolute bottom-4 right-4 p-2 bg-gray-800/95 border-gray-700">
+            {/* Status - elevated to avoid layering issues */}
+            <Card className="absolute bottom-4 right-4 p-2 bg-gray-800/95 border-gray-700 z-10">
               <div className="text-sm">
                 <div>Tokens: {tokens.length}</div>
                 <div>Zoom: {Math.round(camera.scale * 100)}%</div>
               </div>
             </Card>
 
-            {/* Chat Window at Bottom */}
+            {/* Chat Window at Bottom - positioned to not interfere with UI buttons */}
             {!isChatMinimized && (
               <div 
-                className="absolute bottom-0 left-16 right-0 bg-gray-800 border-t border-gray-700"
-                style={{ height: `${chatHeight}px` }}
+                className="absolute bottom-0 left-16 right-0 bg-gray-800 border-t border-gray-700 pointer-events-auto"
+                style={{ height: `${chatHeight}px`, zIndex: 30 }}
               >
                 <PermanentChatWindow
                   defaultHeight={chatHeight}
@@ -265,10 +291,10 @@ const BattleMapSimple = () => {
               </div>
             )}
 
-            {/* Minimized Chat Tab */}
+            {/* Minimized Chat Tab - elevated to ensure visibility */}
             {isChatMinimized && (
               <Button
-                className="absolute bottom-0 left-16 bg-gray-800 border border-gray-700 rounded-t-md rounded-b-none"
+                className="absolute bottom-0 left-16 bg-gray-800 border border-gray-700 rounded-t-md rounded-b-none z-35"
                 size="sm"
                 onClick={() => setIsChatMinimized(false)}
               >
@@ -282,14 +308,14 @@ const BattleMapSimple = () => {
 
         {/* Left Side Panel - Game Console */}
         {showGameConsole && (
-          <div className="absolute left-16 top-20 bottom-0 w-80 z-50">
+          <div className="absolute left-16 top-20 bottom-0 w-80 z-40 pointer-events-auto">
             <ChatDiceInitiative onClose={() => setShowGameConsole(false)} />
           </div>
         )}
 
         {/* Left Side Panel - Party Manager */}
         {showPartyManager && (
-          <div className="absolute left-16 top-20 bottom-0 w-80 z-50">
+          <div className="absolute left-16 top-20 bottom-0 w-80 z-40 pointer-events-auto">
             <PartyManager onClose={() => setShowPartyManager(false)} />
           </div>
         )}

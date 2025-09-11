@@ -1,0 +1,60 @@
+/* Layering and Pointer Events Fixes for D&D Battle Map
+ * Addresses visual glitches and UI button responsiveness issues
+ */
+
+/* Fix Game Console z-index to prevent interference with UI buttons */
+.absolute.left-16.top-20.bottom-0.w-80 {
+  z-index: 40 !important;
+  pointer-events: auto !important;
+}
+
+/* Ensure chat window has proper layering and doesn't expand outside bounds */
+.absolute.bottom-0.left-16.right-0.bg-gray-800.border-t.border-gray-700 {
+  z-index: 30 !important;
+  pointer-events: auto !important;
+  contain: layout style !important;
+}
+
+/* Fantasy cards should allow child interactions and not block events */
+.fantasy-card {
+  pointer-events: auto !important;
+  position: relative !important;
+  isolation: isolate !important;
+}
+
+/* Ensure all interactive elements can receive clicks */
+button, input, textarea, select {
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 100 !important;
+}
+
+/* Specifically target dice buttons to ensure they're always clickable */
+button[class*="border-purple-600/50"] {
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 200 !important;
+}
+
+/* Fix Grid and Status cards z-index to stay above canvas but below panels */
+.absolute.top-4.left-4,
+.absolute.bottom-4.right-4 {
+  z-index: 10 !important;
+  pointer-events: auto !important;
+}
+
+/* Ensure minimized chat tab is properly layered */
+.absolute.bottom-0.left-16.rounded-t-md {
+  z-index: 35 !important;
+}
+
+/* Canvas area should be clickable when no overlays interfere */
+.cursor-crosshair {
+  pointer-events: auto !important;
+}
+
+/* Ensure container divs don't accidentally block child elements */
+.flex.gap-1.flex-wrap,
+.border-t.border-gray-700 {
+  pointer-events: auto !important;
+}
