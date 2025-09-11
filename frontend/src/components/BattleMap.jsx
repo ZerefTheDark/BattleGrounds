@@ -671,6 +671,30 @@ const BattleMap = () => {
                 <p>Storage Manager</p>
               </TooltipContent>
             </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={showConsolidatedPanel ? 'default' : 'ghost'}
+                  className="p-3 rounded-none border-b border-gray-700"
+                  onClick={() => {
+                    setShowConsolidatedPanel(!showConsolidatedPanel);
+                    if (showTokenPanel) setShowTokenPanel(false);
+                    if (showCharacterSheet) setShowCharacterSheet(false);
+                    if (showChatPanel) setShowChatPanel(false);
+                    if (showSubmapManager) setShowSubmapManager(false);
+                    if (showStoragePanel) setShowStoragePanel(false);
+                    if (showUploadExpansion) setShowUploadExpansion(false);
+                    if (showPartyManager) setShowPartyManager(false);
+                  }}
+                >
+                  <Layers className="w-5 h-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="left">
+                <p>Map Management</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
       </div>
