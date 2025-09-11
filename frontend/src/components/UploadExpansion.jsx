@@ -528,16 +528,49 @@ const UploadExpansion = ({ onClose }) => {
             <p className="text-xs text-gray-400 mb-3">
               Supports D&D 5e JSON/XML files, PDF character sheets, homebrew content, and official modules
             </p>
-            <div className="relative">
+            <div className="space-y-3">
               <input
+                id="file-input"
                 type="file"
                 accept=".json,.xml,.5e,.pdf,application/pdf,application/json,text/xml"
                 onChange={handleFileSelect}
                 className="w-full p-3 bg-gray-800 border-2 border-purple-500/50 rounded-lg text-white cursor-pointer hover:bg-gray-700 hover:border-purple-400 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-700 file:cursor-pointer"
                 style={{ pointerEvents: 'auto' }}
               />
-              <div className="mt-2 text-xs text-gray-500">
-                Accepts: PDF character sheets, JSON/XML D&D files (.json, .xml, .5e, .pdf)
+              
+              <div className="text-center">
+                <div className="text-xs text-gray-500 mb-2">
+                  Or try these file type options:
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <button
+                    onClick={() => {
+                      const input = document.createElement('input');
+                      input.type = 'file';
+                      input.accept = '.pdf,application/pdf';
+                      input.onchange = handleFileSelect;
+                      input.click();
+                    }}
+                    className="p-2 bg-red-600 hover:bg-red-700 rounded text-white"
+                  >
+                    📄 PDF Only
+                  </button>
+                  <button
+                    onClick={() => {
+                      const input = document.createElement('input');
+                      input.type = 'file';
+                      input.accept = '.json,.xml';
+                      input.onchange = handleFileSelect;
+                      input.click();
+                    }}
+                    className="p-2 bg-blue-600 hover:bg-blue-700 rounded text-white"
+                  >
+                    📝 JSON/XML Only
+                  </button>
+                </div>
+                <div className="mt-2 text-xs text-gray-500">
+                  Supports: PDF character sheets, JSON/XML D&D files
+                </div>
               </div>
             </div>
           </div>
