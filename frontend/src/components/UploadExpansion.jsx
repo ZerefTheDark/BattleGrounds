@@ -37,6 +37,32 @@ const UploadExpansion = ({ onClose }) => {
 
   const parseD5eFile = async (file) => {
     try {
+      const parsed = {
+        maps: [],
+        characters: [],
+        characterSheets: [],
+        races: [],
+        traits: [],
+        features: [],
+        items: [],
+        cantrips: [],
+        spells: []
+      };
+
+      // Handle PDF files (character sheets)
+      if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+        const characterSheet = await parsePDFCharacterSheet(file);
+        if (characterSheet) {
+          parsed.characterSheets.push(characterSheet);
+        }
+        // Update counts
+        Object.keys(parsed).forEach(key => {
+          contentTypes[key].count = parsed[key].length;
+        });
+        return parsed;
+      }
+
+      // Handle text-based files (JSON/XML)
       const text = await file.text();
       let data;
       
@@ -49,17 +75,6 @@ const UploadExpansion = ({ onClose }) => {
         const xmlDoc = parser.parseFromString(text, 'text/xml');
         data = xmlToJson(xmlDoc);
       }
-
-      const parsed = {
-        maps: [],
-        characters: [],
-        races: [],
-        traits: [],
-        features: [],
-        items: [],
-        cantrips: [],
-        spells: []
-      };
 
       // Parse different content types
       if (data.compendium || data.root) {
