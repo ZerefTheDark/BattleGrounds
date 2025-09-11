@@ -313,13 +313,21 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
     
     switch (selectedTool) {
       case 'move':
-        // Check if clicking on a token first
-        const clickedToken = findTokenAt(worldPos.x, worldPos.y);
-        if (clickedToken) {
-          onTokenSelect(clickedToken.id);
+        if (submapSelectionMode) {
+          // Start submap area selection
+          setSubmapSelection({
+            start: worldPos,
+            end: worldPos
+          });
         } else {
-          // Unselect token if clicking on empty space
-          onTokenSelect(null);
+          // Check if clicking on a token first
+          const clickedToken = findTokenAt(worldPos.x, worldPos.y);
+          if (clickedToken) {
+            onTokenSelect(clickedToken.id);
+          } else {
+            // Unselect token if clicking on empty space
+            onTokenSelect(null);
+          }
         }
         break;
         
