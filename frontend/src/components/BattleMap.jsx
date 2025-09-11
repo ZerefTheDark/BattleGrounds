@@ -197,7 +197,7 @@ const BattleMap = () => {
                       fogPaintMode ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'
                     }`}
                   >
-                    {fogPaintMode ? 'Reveal' : 'Hide'}
+                    {fogPaintMode ? 'Paint' : 'Erase'}
                   </Button>
                   
                   <div className="flex items-center gap-1">
