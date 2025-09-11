@@ -423,9 +423,9 @@ const BattleMap = () => {
         </div>
 
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col relative overflow-hidden" style={{ height: 'calc(100vh - 120px)', minHeight: 'calc(100vh - 120px)' }}>
-          {/* Canvas Container - Takes remaining space */}
-          <div className="flex-1 relative canvas-container" style={{ height: `calc(100% - ${isChatMinimized ? 60 : chatHeight}px)` }}>
+        <div className="flex-1 relative overflow-hidden" style={{ height: 'calc(100vh - 120px)', minHeight: 'calc(100vh - 120px)' }}>
+          {/* Canvas Container - Full coverage */}
+          <div className="canvas-container">
             <CanvasLayers
               ref={canvasRef}
               selectedTool={selectedTool}
