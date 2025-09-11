@@ -189,7 +189,7 @@ const BattleMap = () => {
       // Open compact character sheet for selected token
       openCompactCharacterSheet(selectedToken);
     }
-  }, [selectedToken, showCharacterSheet]);
+  }, [selectedToken, showCharacterSheet, openCompactCharacterSheet]);
 
   return (
     <TooltipProvider>
