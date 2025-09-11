@@ -48,7 +48,7 @@ const TokenPanel = ({ onClose }) => {
         </Button>
       </CardHeader>
       
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 pointer-events-auto">
         <Button
           onClick={() => {
             console.log('Create Token button clicked, setting showTokenModal to true');
