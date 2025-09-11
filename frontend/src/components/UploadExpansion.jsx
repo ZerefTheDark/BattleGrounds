@@ -191,6 +191,7 @@ const UploadExpansion = ({ onClose }) => {
             },
             source: file.name
           }));
+          console.log(`Parsed ${parsed.characters.length} monsters/characters`);
         }
       }
 
