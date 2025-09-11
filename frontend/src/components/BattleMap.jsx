@@ -520,20 +520,23 @@ const BattleMap = () => {
             )}
 
             {/* Upload Expansion Panel */}
-            {console.log('Rendering panels, showUploadExpansion:', showUploadExpansion)}
             {showUploadExpansion && (
-              <div className="w-[600px] max-w-[500px] h-full border-l-2 border-purple-500/30 bg-gray-900 pointer-events-auto">
-                <UploadExpansion onClose={() => {
-                  console.log('Closing Upload Expansion');
-                  setShowUploadExpansion(false);
-                }} />
+              <div className="w-[600px] max-w-[600px] h-full border-l-2 border-green-500/30 bg-gray-900 pointer-events-auto">
+                <UploadExpansion onClose={() => setShowUploadExpansion(false)} />
               </div>
             )}
 
-            {/* Party Manager Panel */}
+            {/* Party Manager */}
             {showPartyManager && (
-              <div className="w-80 max-w-[300px] h-full border-l-2 border-blue-500/30 bg-gray-900 pointer-events-auto">
+              <div className="w-80 max-w-[300px] h-full border-l-2 border-green-500/30 bg-gray-900 pointer-events-auto">
                 <PartyManager onClose={() => setShowPartyManager(false)} />
+              </div>
+            )}
+
+            {/* Consolidated Right Panel */}
+            {showConsolidatedPanel && (
+              <div className="w-[450px] max-w-[450px] h-full border-l-2 border-green-500/30 bg-gray-900 pointer-events-auto">
+                <ConsolidatedRightPanel onClose={() => setShowConsolidatedPanel(false)} />
               </div>
             )}
           </div>
