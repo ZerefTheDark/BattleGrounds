@@ -158,8 +158,10 @@ const useBattleMapStore = create(
 
       // File operations
       loadBackgroundImage: (dataUrl) => {
+        console.log('Loading background image:', dataUrl.substring(0, 50) + '...');
         const img = new Image();
         img.onload = () => {
+          console.log('Image loaded successfully:', img.width, 'x', img.height);
           set({ 
             backgroundImage: { 
               dataUrl, 
@@ -168,6 +170,9 @@ const useBattleMapStore = create(
               scale: 1.2 // 20% larger by default
             } 
           });
+        };
+        img.onerror = (e) => {
+          console.error('Failed to load background image:', e);
         };
         img.src = dataUrl;
       },
