@@ -138,6 +138,7 @@ const UploadExpansion = ({ onClose }) => {
               parsed.spells.push(spellData);
             }
           });
+          console.log(`Parsed ${parsed.cantrips.length} cantrips and ${parsed.spells.length} spells`);
         }
 
         // Parse items
