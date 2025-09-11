@@ -933,10 +933,210 @@ const CharacterSheetBeyond = ({ token, onClose }) => {
               </div>
             </TabsContent>
 
-            <TabsContent value="inventory" className="flex-1 p-4">
-              <div className="text-center text-gray-400 py-8">
-                <Package className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p>Inventory tab - Coming soon</p>
+            {/* Inventory Tab - Fully Implemented */}
+            <TabsContent value="inventory" className="flex-1 p-4 overflow-y-auto">
+              <div className="space-y-6">
+                {/* Currency */}
+                <div className="bg-yellow-900/30 rounded-lg p-4 border border-yellow-600">
+                  <h3 className="text-lg font-bold text-yellow-400 mb-3">CURRENCY</h3>
+                  <div className="grid grid-cols-5 gap-3">
+                    {Object.entries(characterData.currency).map(([type, amount]) => (
+                      <div key={type} className="text-center">
+                        <Label className="text-xs text-yellow-300 uppercase">{type}</Label>
+                        <Input
+                          type="number"
+                          min="0"
+                          value={amount}
+                          onChange={(e) => {
+                            const newData = {
+                              ...characterData,
+                              currency: { ...characterData.currency, [type]: parseInt(e.target.value) || 0 }
+                            };
+                            syncCharacterData(newData);
+                          }}
+                          className="w-full h-8 text-center bg-yellow-800 border-yellow-600 text-white"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Equipment */}
+                <div className="bg-orange-900/30 rounded-lg p-4 border border-orange-600">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-lg font-bold text-orange-400">EQUIPMENT</h3>
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        const newEquipment = [...characterData.equipment, {
+                          name: 'New Item',
+                          type: 'misc',
+                          equipped: false,
+                          properties: ''
+                        }];
+                        syncCharacterData({ ...characterData, equipment: newEquipment });
+                      }}
+                      className="bg-orange-700 hover:bg-orange-600"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="space-y-2">
+                    {characterData.equipment.map((item, index) => (
+                      <Card key={index} className="bg-orange-800/20 border-orange-700">
+                        <CardContent className="p-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3 flex-1">
+                              <Button
+                                size="sm"
+                                onClick={() => {
+                                  const newEquipment = [...characterData.equipment];
+                                  newEquipment[index] = { ...item, equipped: !item.equipped };
+                                  syncCharacterData({ ...characterData, equipment: newEquipment });
+                                }}
+                                className={`w-6 h-6 p-0 ${item.equipped ? 'bg-green-600' : 'bg-gray-600'}`}
+                              >
+                                {item.equipped ? <CheckCircle className="w-3 h-3" /> : <Circle className="w-3 h-3" />}
+                              </Button>
+                              <div className="flex-1">
+                                <Input
+                                  value={item.name}
+                                  onChange={(e) => {
+                                    const newEquipment = [...characterData.equipment];
+                                    newEquipment[index] = { ...item, name: e.target.value };
+                                    syncCharacterData({ ...characterData, equipment: newEquipment });
+                                  }}
+                                  className="bg-transparent border-0 text-orange-300 font-bold p-0 h-auto"
+                                />
+                                <div className="text-xs text-gray-400">{item.properties}</div>
+                                {item.ac && <div className="text-xs text-green-400">AC: +{item.ac}</div>}
+                                {item.damage && <div className="text-xs text-red-400">Damage: {item.damage} {item.damageType}</div>}
+                              </div>
+                            </div>
+                            <div className="flex gap-2">
+                              {item.type === 'weapon' && (
+                                <Button
+                                  size="sm"
+                                  onClick={() => {
+                                    const attackBonus = getModifier(characterData.abilities.STR) + getProficiencyBonus();
+                                    rollDice(20, attackBonus, `${item.name} Attack`);
+                                  }}
+                                  className="bg-red-700 hover:bg-red-600"
+                                >
+                                  <Sword className="w-4 h-4" />
+                                </Button>
+                              )}
+                              <Button
+                                size="sm"
+                                onClick={() => {
+                                  const newEquipment = characterData.equipment.filter((_, i) => i !== index);
+                                  syncCharacterData({ ...characterData, equipment: newEquipment });
+                                }}
+                                className="bg-red-700 hover:bg-red-600"
+                              >
+                                <Minus className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Inventory */}
+                <div className="bg-gray-900/30 rounded-lg p-4 border border-gray-600">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-lg font-bold text-gray-400">INVENTORY</h3>
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        const newInventory = [...characterData.inventory, {
+                          name: 'New Item',
+                          quantity: 1,
+                          weight: 0,
+                          description: ''
+                        }];
+                        syncCharacterData({ ...characterData, inventory: newInventory });
+                      }}
+                      className="bg-gray-700 hover:bg-gray-600"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="space-y-2">
+                    {characterData.inventory.map((item, index) => (
+                      <Card key={index} className="bg-gray-800/20 border-gray-700">
+                        <CardContent className="p-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3 flex-1">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                  <Input
+                                    value={item.name}
+                                    onChange={(e) => {
+                                      const newInventory = [...characterData.inventory];
+                                      newInventory[index] = { ...item, name: e.target.value };
+                                      syncCharacterData({ ...characterData, inventory: newInventory });
+                                    }}
+                                    className="bg-transparent border-0 text-gray-300 font-bold p-0 h-auto flex-1"
+                                  />
+                                  <div className="flex items-center gap-1">
+                                    <span className="text-xs text-gray-500">Qty:</span>
+                                    <Input
+                                      type="number"
+                                      min="0"
+                                      value={item.quantity}
+                                      onChange={(e) => {
+                                        const newInventory = [...characterData.inventory];
+                                        newInventory[index] = { ...item, quantity: parseInt(e.target.value) || 0 };
+                                        syncCharacterData({ ...characterData, inventory: newInventory });
+                                      }}
+                                      className="w-16 h-6 text-center bg-gray-800 border-gray-600 text-white text-xs"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="text-xs text-gray-400 mt-1">{item.description}</div>
+                                <div className="text-xs text-gray-500">Weight: {item.weight} lbs each</div>
+                              </div>
+                            </div>
+                            <Button
+                              size="sm"
+                              onClick={() => {
+                                const newInventory = characterData.inventory.filter((_, i) => i !== index);
+                                syncCharacterData({ ...characterData, inventory: newInventory });
+                              }}
+                              className="bg-red-700 hover:bg-red-600"
+                            >
+                              <Minus className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Carrying Capacity */}
+                <div className="bg-blue-900/30 rounded-lg p-4 border border-blue-600">
+                  <h3 className="text-lg font-bold text-blue-400 mb-3">CARRYING CAPACITY</h3>
+                  <div className="grid grid-cols-3 gap-4 text-center">
+                    <div>
+                      <Label className="text-xs text-blue-300">CURRENT WEIGHT</Label>
+                      <div className="text-xl font-bold text-white">
+                        {characterData.inventory.reduce((total, item) => total + (item.weight * item.quantity), 0)} lbs
+                      </div>
+                    </div>
+                    <div>
+                      <Label className="text-xs text-blue-300">CARRYING CAPACITY</Label>
+                      <div className="text-xl font-bold text-white">{characterData.abilities.STR * 15} lbs</div>
+                    </div>
+                    <div>
+                      <Label className="text-xs text-blue-300">ENCUMBERED AT</Label>
+                      <div className="text-xl font-bold text-white">{characterData.abilities.STR * 5} lbs</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </TabsContent>
 
