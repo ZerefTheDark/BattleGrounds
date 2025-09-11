@@ -491,6 +491,8 @@ export class CanvasEffects {
       (worldBottom - worldTop) + 200
     );
     
+    // If no reveals, the entire area stays fogged (which is what we want)
+    
     // Cut out revealed areas with soft edges
     ctx.globalCompositeOperation = 'destination-out';
     
