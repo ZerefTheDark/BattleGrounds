@@ -479,6 +479,7 @@ const UploadExpansion = ({ onClose }) => {
         <div className="space-y-3 text-xs text-gray-400">
           <h4 className="font-bold text-green-400">Supported Formats:</h4>
           <ul className="list-disc list-inside space-y-1 ml-2">
+            <li>PDF Character Sheets (fillable PDFs, scanned sheets)</li>
             <li>D&D 5e JSON files (homebrew tools, modules)</li>
             <li>XML compendium files</li>
             <li>Official D&D content exports</li>
