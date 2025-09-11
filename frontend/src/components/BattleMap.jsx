@@ -658,142 +658,14 @@ const BattleMap = () => {
             )}
           </div>
 
-          {/* Side Panel Controls */}
-          <div className="absolute top-0 right-0 bg-gray-800 border-l border-gray-700 flex flex-col z-30">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant={showPartyManager ? 'default' : 'ghost'}
-                  className="p-3 rounded-none border-b border-gray-700"
-                  onClick={() => {
-                    setShowPartyManager(!showPartyManager);
-                    if (showTokenPanel) setShowTokenPanel(false);
-                    if (showCharacterSheet) setShowCharacterSheet(false);
-                    if (showChatPanel) setShowChatPanel(false);
-                    if (showSubmapManager) setShowSubmapManager(false);
-                    if (showStoragePanel) setShowStoragePanel(false);
-                  }}
-                >
-                  <UserPlus className="w-5 h-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="left">
-                <p>Party Manager</p>
-              </TooltipContent>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant={showTokenPanel ? 'default' : 'ghost'}
-                  className="p-3 rounded-none border-b border-gray-700"
-                  onClick={() => {
-                    setShowTokenPanel(!showTokenPanel);
-                    if (showCharacterSheet) setShowCharacterSheet(false);
-                    if (showChatPanel) setShowChatPanel(false);
-                    if (showSubmapManager) setShowSubmapManager(false);
-                    if (showPartyManager) setShowPartyManager(false);
-                  }}
-                >
-                  <Users className="w-5 h-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="left">
-                <p>Token Manager</p>
-              </TooltipContent>
-            </Tooltip>
-            
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant={showCharacterSheet ? 'default' : 'ghost'}
-                  className="p-3 rounded-none border-b border-gray-700"
-                  onClick={() => {
-                    if (selectedToken) {
-                      setShowCharacterSheet(!showCharacterSheet);
-                      if (showTokenPanel) setShowTokenPanel(false);
-                      if (showChatPanel) setShowChatPanel(false);
-                      if (showSubmapManager) setShowSubmapManager(false);
-                      if (showStoragePanel) setShowStoragePanel(false);
-                    }
-                  }}
-                  disabled={!selectedToken}
-                >
-                  <FileText className="w-5 h-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="left">
-                <p>{selectedToken ? 'Character Sheet' : 'Select a token first'}</p>
-              </TooltipContent>
-            </Tooltip>
-            
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant={showChatPanel ? 'default' : 'ghost'}
-                  className="p-3 rounded-none border-b border-gray-700"
-                  onClick={() => {
-                    setShowChatPanel(!showChatPanel);
-                    if (showTokenPanel) setShowTokenPanel(false);
-                    if (showCharacterSheet) setShowCharacterSheet(false);
-                    if (showSubmapManager) setShowSubmapManager(false);
-                    if (showStoragePanel) setShowStoragePanel(false);
-                  }}
-                >
-                  <MessageSquare className="w-5 h-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="left">
-                <p>Chat, Dice & Initiative</p>
-              </TooltipContent>
-            </Tooltip>
-            
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant={showSubmapManager ? 'default' : 'ghost'}
-                  className="p-3 rounded-none border-b border-gray-700"
-                  onClick={() => {
-                    setShowSubmapManager(!showSubmapManager);
-                    if (showTokenPanel) setShowTokenPanel(false);
-                    if (showCharacterSheet) setShowCharacterSheet(false);
-                    if (showChatPanel) setShowChatPanel(false);
-                    if (showStoragePanel) setShowStoragePanel(false);
-                  }}
-                >
-                  <Map className="w-5 h-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="left">
-                <p>Submap Manager</p>
-              </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant={showStoragePanel ? 'default' : 'ghost'}
-                  className="p-3 rounded-none border-b border-gray-700"
-                  onClick={() => {
-                    setShowStoragePanel(!showStoragePanel);
-                    if (showTokenPanel) setShowTokenPanel(false);
-                    if (showCharacterSheet) setShowCharacterSheet(false);
-                    if (showChatPanel) setShowChatPanel(false);
-                    if (showSubmapManager) setShowSubmapManager(false);
-                  }}
-                >
-                  <Database className="w-5 h-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="left">
-                <p>Storage Manager</p>
-              </TooltipContent>
-            </Tooltip>
-
+        {/* Side Panel Controls - Moved to right edge */}
+        <div className="fixed right-0 top-1/2 transform -translate-y-1/2 z-30 space-y-2">
+          <div className="bg-gray-900/90 backdrop-blur-sm border-l-2 border-green-500/50 rounded-l-lg shadow-lg shadow-green-500/10">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant={showConsolidatedPanel ? 'default' : 'ghost'}
-                  className="p-3 rounded-none border-b border-gray-700"
+                  className="p-3 rounded-none"
                   onClick={() => {
                     setShowConsolidatedPanel(!showConsolidatedPanel);
                     if (showTokenPanel) setShowTokenPanel(false);
@@ -813,6 +685,7 @@ const BattleMap = () => {
               </TooltipContent>
             </Tooltip>
           </div>
+        </div>
         </div>
 
         {/* Token Selection Modal */}
