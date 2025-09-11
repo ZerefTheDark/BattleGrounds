@@ -243,6 +243,47 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
     if (activeTool && activeTool.type === 'circle') {
       CanvasEffects.drawCircle(ctx, activeTool, camera.scale, gridSize);
     }
+    
+    // Draw submap selection area
+    if (submapSelection) {
+      const { start, end } = submapSelection;
+      const x = Math.min(start.x, end.x);
+      const y = Math.min(start.y, end.y);
+      const width = Math.abs(end.x - start.x);
+      const height = Math.abs(end.y - start.y);
+      
+      // Draw selection rectangle
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = Math.max(2, 3 / camera.scale);
+      ctx.setLineDash([10 / camera.scale, 5 / camera.scale]);
+      ctx.fillStyle = 'rgba(16, 185, 129, 0.1)';
+      
+      ctx.fillRect(x, y, width, height);
+      ctx.strokeRect(x, y, width, height);
+      
+      // Reset line dash
+      ctx.setLineDash([]);
+      
+      // Draw dimensions label
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      ctx.fillRect(
+        x + width / 2 - 40 / camera.scale,
+        y - 25 / camera.scale,
+        80 / camera.scale,
+        20 / camera.scale
+      );
+      
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 1 / camera.scale;
+      ctx.font = `bold ${Math.max(12, 14 / camera.scale)}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      
+      const text = `${Math.round(width)} × ${Math.round(height)}`;
+      ctx.strokeText(text, x + width / 2, y - 15 / camera.scale);
+      ctx.fillText(text, x + width / 2, y - 15 / camera.scale);
+    }
   }, [fogEnabled, fogReveals, ruler, gridSize, camera, activeTool, tokens, setupCanvas, applyTransform, DPR]);
 
   // Find token at position
