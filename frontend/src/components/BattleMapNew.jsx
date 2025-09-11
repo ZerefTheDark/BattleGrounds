@@ -69,9 +69,8 @@ const BattleMapNew = () => {
     clearAllFog,
     coverAllWithFog,
     loadBackgroundImage,
-    addToInitiative,
-    onTokenSelect,
-    onTokenUpdate
+    selectToken,
+    updateToken
   } = useBattleMapStore();
 
   // Handle file upload for background images
