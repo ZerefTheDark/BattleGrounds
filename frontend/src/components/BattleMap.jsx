@@ -183,8 +183,9 @@ const BattleMap = () => {
 
   // Auto-open character sheet when token is selected
   useEffect(() => {
-    if (selectedToken && !showCharacterSheet) {
-      setShowCharacterSheet(true);
+    if (selectedToken && showCharacterSheet) {
+      // Open compact character sheet for selected token
+      openCompactCharacterSheet(selectedToken);
     }
   }, [selectedToken, showCharacterSheet]);
 
