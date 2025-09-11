@@ -37,12 +37,14 @@ import {
 } from 'lucide-react';
 
 const CharacterSheetBeyond = ({ token, onClose }) => {
+  const { updateToken, addChatMessage, partyMembers, updatePartyMember } = useBattleMapStore();
+  
   const [characterData, setCharacterData] = useState({
     // Header Info
     name: token?.name || '',
-    level: 1,
-    classes: [{ name: 'Fighter', level: 1 }],
-    race: 'Human',
+    level: token?.level || 1,
+    classes: token?.characterClass ? [{ name: token.characterClass, level: token.level || 1 }] : [{ name: 'Fighter', level: 1 }],
+    race: token?.race || 'Human',
     subrace: '',
     background: 'Folk Hero',
     alignment: 'Lawful Good',
@@ -51,17 +53,30 @@ const CharacterSheetBeyond = ({ token, onClose }) => {
 
     // Core Stats
     abilities: token?.abilities || { STR: 15, DEX: 14, CON: 13, INT: 12, WIS: 10, CHA: 8 },
-    proficiencyBonus: 2,
+    proficiencyBonus: Math.ceil((token?.level || 1) / 4) + 1, // D&D 5e proficiency bonus calculation
     
     // HP & Combat
     hp: token?.hp || { current: 10, max: 10, temp: 0 },
-    hitDice: { total: 1, used: 0, type: '1d10' },
+    hitDice: { total: token?.level || 1, used: 0, type: 'd10' },
     ac: token?.ac || 16,
-    initiative: 2,
+    initiative: token?.initiativeBonus || 0,
     speed: 30,
     
     // Death Saves
     deathSaves: { successes: 0, failures: 0 },
+    
+    // Conditions
+    conditions: token?.conditions || [],
+    
+    // Skills & Saves
+    savingThrows: {
+      STR: { proficient: true, bonus: 0 },
+      DEX: { proficient: false, bonus: 0 },
+      CON: { proficient: false, bonus: 0 },
+      INT: { proficient: false, bonus: 0 },
+      WIS: { proficient: false, bonus: 0 },
+      CHA: { proficient: false, bonus: 0 }
+    },
     
     // Skills & Saves
     savingThrows: {
