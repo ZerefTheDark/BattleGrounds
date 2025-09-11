@@ -59,6 +59,7 @@ const BattleMapNew = () => {
     tokens,
     selectedTokenId,
     initiative,
+    addCombatant,
     partyMembers,
     setCamera,
     setGridSize,
