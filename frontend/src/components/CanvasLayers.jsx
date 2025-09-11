@@ -232,7 +232,7 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
     }
     
     // Draw enhanced ruler
-    if (ruler && ruler.active) {
+    if (ruler && ruler.active && ruler.start && ruler.end) {
       CanvasEffects.drawEnhancedRuler(ctx, ruler, gridSize, camera.scale);
     }
     
