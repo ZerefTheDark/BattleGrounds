@@ -22,7 +22,7 @@ const useBattleMapStore = create(
       fogEnabled: false,
       fogReveals: [],
       fogBrushSize: 50,
-      fogPaintMode: true, // true = reveal, false = hide
+      fogPaintMode: true, // true = paint/reveal, false = erase/hide
       setFogEnabled: (enabled) => set({ fogEnabled: enabled }),
       setFogBrushSize: (size) => set({ fogBrushSize: size }),
       setFogPaintMode: (mode) => set({ fogPaintMode: mode }),
