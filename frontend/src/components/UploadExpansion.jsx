@@ -486,7 +486,7 @@ const UploadExpansion = ({ onClose }) => {
             <li>Homebrew collections from popular tools</li>
           </ul>
           <p className="italic">
-            Content will be automatically categorized and added to your local storage for use in character sheets, spellbooks, and equipment lists.
+            Content will be automatically categorized and added to your local storage. PDF character sheets will be processed and allow manual data entry for complete character import.
           </p>
         </div>
       </CardContent>
