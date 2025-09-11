@@ -54,7 +54,7 @@ const TokenPanel = ({ onClose }) => {
             console.log('Create Token button clicked, setting showTokenModal to true');
             setShowTokenModal(true);
           }}
-          className="fantasy-button-emerald w-full"
+          className="fantasy-button-emerald w-full relative z-10 pointer-events-auto"
         >
           <Plus className="w-4 h-4 mr-2" />
           Create Token
