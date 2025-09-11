@@ -572,7 +572,22 @@ const BattleMap = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setShowChatPanel(!showChatPanel)}
+                      onClick={() => {
+                        const chatWindow = {
+                          id: 'chat-window',
+                          title: 'Chat & Dice',
+                          icon: MessageSquare,
+                          content: <PermanentChatWindow />,
+                          position: { x: 100, y: 200 },
+                          size: { width: 400, height: 500 },
+                          zIndex: 1000
+                        };
+                        setDraggableWindows(prev => {
+                          const exists = prev.find(w => w.id === 'chat-window');
+                          if (exists) return prev;
+                          return [...prev, chatWindow];
+                        });
+                      }}
                     >
                       <MessageSquare className="w-4 h-4" />
                     </Button>
