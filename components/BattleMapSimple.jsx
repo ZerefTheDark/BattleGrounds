@@ -34,9 +34,9 @@ import {
   UserPlus
 } from 'lucide-react';
 import CanvasLayers from './CanvasLayers';
-import PermanentChatWindow from './PermanentChatWindow';
 import ChatDiceInitiative from './ChatDiceInitiative';
 import PartyManager from './PartyManager';
+import CharacterSheet from './CharacterSheet';
 import { useBattleMapStore } from '../store/battleMapStore';
 
 const BattleMapSimple = () => {
@@ -44,8 +44,7 @@ const BattleMapSimple = () => {
   const [selectedTool, setSelectedTool] = useState('move');
   const [showGameConsole, setShowGameConsole] = useState(false);
   const [showPartyManager, setShowPartyManager] = useState(false);
-  const [chatHeight, setChatHeight] = useState(300);
-  const [isChatMinimized, setIsChatMinimized] = useState(false);
+  const [showCharacterSheet, setShowCharacterSheet] = useState(false);
   const [activeTool, setActiveTool] = useState(null);
   const [toolPreview, setToolPreview] = useState(null);
   const [isPlayerView, setIsPlayerView] = useState(false);
@@ -275,34 +274,6 @@ const BattleMapSimple = () => {
                 <div>Zoom: {Math.round(camera.scale * 100)}%</div>
               </div>
             </Card>
-
-            {/* Chat Window at Bottom - positioned to not interfere with UI buttons */}
-            {!isChatMinimized && (
-              <div 
-                className="absolute bottom-0 left-16 right-0 bg-gray-800 border-t border-gray-700 pointer-events-auto"
-                style={{ height: `${chatHeight}px`, zIndex: 30 }}
-              >
-                <PermanentChatWindow
-                  defaultHeight={chatHeight}
-                  onHeightChange={setChatHeight}
-                  isMinimized={isChatMinimized}
-                  onToggleMinimize={() => setIsChatMinimized(!isChatMinimized)}
-                />
-              </div>
-            )}
-
-            {/* Minimized Chat Tab - elevated to ensure visibility */}
-            {isChatMinimized && (
-              <Button
-                className="absolute bottom-0 left-16 bg-gray-800 border border-gray-700 rounded-t-md rounded-b-none z-35"
-                size="sm"
-                onClick={() => setIsChatMinimized(false)}
-              >
-                <MessageSquare className="w-4 h-4 mr-2" />
-                Chat
-                <ChevronUp className="w-4 h-4 ml-2" />
-              </Button>
-            )}
           </div>
         </div>
 
@@ -317,6 +288,19 @@ const BattleMapSimple = () => {
         {showPartyManager && (
           <div className="absolute left-16 top-20 bottom-0 w-80 z-40 pointer-events-auto">
             <PartyManager onClose={() => setShowPartyManager(false)} />
+          </div>
+        )}
+
+        {/* Right Side Panel - Character Sheet */}
+        {showCharacterSheet && selectedToken && (
+          <div className="absolute right-0 top-20 bottom-0 w-96 z-40 bg-gray-900 border-l border-gray-700 pointer-events-auto">
+            <CharacterSheet
+              token={selectedToken}
+              onClose={() => {
+                setShowCharacterSheet(false);
+                selectToken(null); // Unselect the token
+              }}
+            />
           </div>
         )}
       </div>
