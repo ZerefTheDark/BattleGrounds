@@ -94,6 +94,7 @@ const BattleMap = () => {
     clearAllFog,
     coverAllWithFog,
     selectToken,
+    updateToken,
     loadBackgroundImage,
     saveScenario,
     loadScenario,
