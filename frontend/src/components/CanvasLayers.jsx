@@ -34,12 +34,15 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
     ruler,
     tokens,
     selectedTokenId,
+    submapSelectionMode,
+    submapSelection,
     setCamera,
     setRuler,
     addFogReveal,
     removeFogReveal,
     addToken,
-    updateToken
+    updateToken,
+    setSubmapSelection
   } = useBattleMapStore();
 
   const isDragging = useRef(false);
