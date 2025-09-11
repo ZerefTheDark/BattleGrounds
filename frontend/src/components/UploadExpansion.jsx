@@ -194,43 +194,199 @@ const UploadExpansion = ({ onClose }) => {
 
   const parsePDFCharacterSheet = async (file) => {
     try {
-      // For now, we'll extract basic info from the filename and file properties
-      // In a full implementation, you'd use a PDF.js library to extract text
+      console.log('Starting PDF text extraction for:', file.name);
+      
+      // Dynamic import of PDF.js
+      const pdfjsLib = await import('pdfjs-dist');
+      
+      // Set up PDF.js worker
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.4.149/pdf.worker.min.js`;
+      
+      // Read the PDF file
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      
+      console.log(`PDF has ${pdf.numPages} pages`);
+      
+      let fullText = '';
+      
+      // Extract text from all pages
+      for (let i = 1; i <= Math.min(pdf.numPages, 5); i++) { // Limit to first 5 pages
+        const page = await pdf.getPage(i);
+        const textContent = await page.getTextContent();
+        const pageText = textContent.items.map(item => item.str).join(' ');
+        fullText += pageText + '\n';
+      }
+      
+      console.log('Extracted text length:', fullText.length);
+      console.log('First 500 characters:', fullText.substring(0, 500));
+      
+      // Parse character information from the extracted text
+      const characterData = parseCharacterFromText(fullText);
+      
+      const characterSheet = {
+        id: Date.now() + Math.random(),
+        name: characterData.name || file.name.replace('.pdf', '').replace(/[_-]/g, ' ').replace(/\d+/g, '').trim(),
+        fileName: file.name,
+        fileSize: file.size,
+        uploadDate: new Date().toISOString(),
+        type: 'pdf_character_sheet',
+        fileData: URL.createObjectURL(file),
+        level: characterData.level || 1,
+        race: characterData.race || 'Unknown',
+        class: characterData.class || 'Unknown',
+        background: characterData.background || 'Unknown',
+        stats: characterData.stats || {
+          STR: 10, DEX: 10, CON: 10, INT: 10, WIS: 10, CHA: 10
+        },
+        hitPoints: characterData.hitPoints || { max: 8, current: 8 },
+        armorClass: characterData.armorClass || 10,
+        speed: characterData.speed || 30,
+        proficiencyBonus: characterData.proficiencyBonus || 2,
+        source: file.name,
+        extractedText: fullText, // Store full text for debugging
+        needsDataEntry: !characterData.name // Only needs manual entry if we couldn't extract name
+      };
+
+      console.log('Parsed character data:', characterData);
+      return characterSheet;
+    } catch (error) {
+      console.error('Error parsing PDF character sheet:', error);
+      
+      // Fallback to filename-based parsing
       const fileName = file.name.replace('.pdf', '');
       const characterName = fileName.replace(/[_-]/g, ' ').replace(/\d+/g, '').trim();
       
-      // Create a character sheet entry with extracted filename info
-      const characterSheet = {
+      return {
         id: Date.now() + Math.random(),
         name: characterName || 'Unknown Character',
         fileName: file.name,
         fileSize: file.size,
         uploadDate: new Date().toISOString(),
         type: 'pdf_character_sheet',
-        // Store the file as a blob URL for later access
         fileData: URL.createObjectURL(file),
-        // Default character fields that could be filled in later
         level: 1,
         race: 'Unknown',
         class: 'Unknown',
         background: 'Unknown',
-        stats: {
-          STR: 10, DEX: 10, CON: 10, INT: 10, WIS: 10, CHA: 10
-        },
+        stats: { STR: 10, DEX: 10, CON: 10, INT: 10, WIS: 10, CHA: 10 },
         hitPoints: { max: 8, current: 8 },
         armorClass: 10,
         speed: 30,
         proficiencyBonus: 2,
         source: file.name,
-        // Flag to indicate this needs manual data entry
-        needsDataEntry: true
+        needsDataEntry: true,
+        error: error.message
       };
-
-      return characterSheet;
-    } catch (error) {
-      console.error('Error parsing PDF character sheet:', error);
-      return null;
     }
+  };
+
+  const parseCharacterFromText = (text) => {
+    const characterData = {};
+    
+    try {
+      // Extract character name (look for common patterns)
+      const namePatterns = [
+        /Character Name[:\s]+([A-Za-z\s]+)/i,
+        /Name[:\s]+([A-Za-z\s]+)/i,
+        /^([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/m // First capitalized words
+      ];
+      
+      for (const pattern of namePatterns) {
+        const match = text.match(pattern);
+        if (match && match[1] && match[1].trim().length > 2) {
+          characterData.name = match[1].trim();
+          break;
+        }
+      }
+      
+      // Extract level
+      const levelMatch = text.match(/Level[:\s]+(\d+)/i);
+      if (levelMatch) {
+        characterData.level = parseInt(levelMatch[1]);
+      }
+      
+      // Extract class
+      const classPatterns = [
+        /Class[:\s]+([A-Za-z]+)/i,
+        /(?:Fighter|Wizard|Rogue|Cleric|Ranger|Paladin|Barbarian|Bard|Druid|Monk|Sorcerer|Warlock)/i
+      ];
+      
+      for (const pattern of classPatterns) {
+        const match = text.match(pattern);
+        if (match) {
+          characterData.class = match[1] || match[0];
+          break;
+        }
+      }
+      
+      // Extract race
+      const racePatterns = [
+        /Race[:\s]+([A-Za-z\s]+)/i,
+        /(?:Human|Elf|Dwarf|Halfling|Dragonborn|Gnome|Half-Elf|Half-Orc|Tiefling)/i
+      ];
+      
+      for (const pattern of racePatterns) {
+        const match = text.match(pattern);
+        if (match) {
+          characterData.race = match[1] || match[0];
+          break;
+        }
+      }
+      
+      // Extract ability scores
+      const stats = {};
+      const abilityPatterns = {
+        STR: /(?:Strength|STR)[:\s]*(\d+)/i,
+        DEX: /(?:Dexterity|DEX)[:\s]*(\d+)/i,
+        CON: /(?:Constitution|CON)[:\s]*(\d+)/i,
+        INT: /(?:Intelligence|INT)[:\s]*(\d+)/i,
+        WIS: /(?:Wisdom|WIS)[:\s]*(\d+)/i,
+        CHA: /(?:Charisma|CHA)[:\s]*(\d+)/i
+      };
+      
+      let foundStats = false;
+      for (const [ability, pattern] of Object.entries(abilityPatterns)) {
+        const match = text.match(pattern);
+        if (match && match[1]) {
+          const score = parseInt(match[1]);
+          if (score >= 3 && score <= 20) { // Valid ability score range
+            stats[ability] = score;
+            foundStats = true;
+          }
+        }
+      }
+      
+      if (foundStats) {
+        characterData.stats = { STR: 10, DEX: 10, CON: 10, INT: 10, WIS: 10, CHA: 10, ...stats };
+      }
+      
+      // Extract AC
+      const acMatch = text.match(/(?:Armor Class|AC)[:\s]*(\d+)/i);
+      if (acMatch) {
+        characterData.armorClass = parseInt(acMatch[1]);
+      }
+      
+      // Extract HP
+      const hpMatch = text.match(/(?:Hit Points|HP)[:\s]*(\d+)/i);
+      if (hpMatch) {
+        const hp = parseInt(hpMatch[1]);
+        characterData.hitPoints = { max: hp, current: hp };
+      }
+      
+      // Extract Speed
+      const speedMatch = text.match(/Speed[:\s]*(\d+)/i);
+      if (speedMatch) {
+        characterData.speed = parseInt(speedMatch[1]);
+      }
+      
+      console.log('Extracted character data:', characterData);
+      
+    } catch (error) {
+      console.error('Error parsing character text:', error);
+    }
+    
+    return characterData;
   };
 
   const xmlToJson = (xml) => {
