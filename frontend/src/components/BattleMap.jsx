@@ -44,6 +44,7 @@ import PermanentChatWindow from './PermanentChatWindow';
 import EnhancedInitiativeTracker from './EnhancedInitiativeTracker';
 import ConsolidatedRightPanel from './ConsolidatedRightPanel';
 import TokenSelectionModal from './TokenSelectionModal';
+import DraggableWindow from './DraggableWindow';
 import { useBattleMapStore } from '../store/battleMapStore';
 
 const BattleMap = () => {
