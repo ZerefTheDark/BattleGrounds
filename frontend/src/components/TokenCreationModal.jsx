@@ -244,14 +244,14 @@ const TokenCreationModal = ({ isOpen, onClose, onCreateToken }) => {
           <div className="flex gap-3 pt-4">
             <Button
               onClick={handleCreate}
-              className="flex-1 bg-green-700 hover:bg-green-600 text-white font-medium"
+              className="flex-1 bg-green-700 hover:bg-green-600 text-white font-medium relative z-10 pointer-events-auto"
             >
               Create Token
             </Button>
             <Button
               onClick={onClose}
               variant="outline"
-              className="flex-1 border-gray-600 text-gray-300 hover:bg-gray-800"
+              className="flex-1 border-gray-600 text-gray-300 hover:bg-gray-800 relative z-10 pointer-events-auto"
             >
               Cancel
             </Button>
