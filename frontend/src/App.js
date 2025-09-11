@@ -1,6 +1,6 @@
 import React from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
-import BattleMap from './components/BattleMap';
+import BattleMapSimple from './components/BattleMapSimple';
 import { WindowManagerProvider } from './components/WindowManager';
 import './App.css';
 import './styles/enhanced-graphics.css';
@@ -11,7 +11,7 @@ function App() {
       <WindowManagerProvider>
         <HashRouter>
           <Routes>
-            <Route path="/" element={<BattleMap />} />
+            <Route path="/" element={<BattleMapSimple />} />
           </Routes>
         </HashRouter>
       </WindowManagerProvider>
