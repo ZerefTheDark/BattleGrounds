@@ -64,6 +64,45 @@ const UploadExpansion = ({ onClose }) => {
         return parsed;
       }
 
+      // Handle character sheet template JSON
+      if (file.name.toLowerCase().includes('character_sheet_template')) {
+        console.log('Processing character sheet template JSON');
+        const text = await file.text();
+        const characterData = JSON.parse(text);
+        
+        const characterSheet = {
+          id: Date.now() + Math.random(),
+          name: characterData.character?.name || 'Template Character',
+          type: 'json_character_template',
+          level: characterData.character?.level || 1,
+          race: characterData.character?.species || 'Unknown',
+          class: characterData.character?.class || 'Unknown',
+          background: characterData.character?.background || 'Unknown',
+          stats: {
+            STR: characterData.stats?.strength || 10,
+            DEX: characterData.stats?.dexterity || 10,
+            CON: characterData.stats?.constitution || 10,
+            INT: characterData.stats?.intelligence || 10,
+            WIS: characterData.stats?.wisdom || 10,
+            CHA: characterData.stats?.charisma || 10
+          },
+          hitPoints: {
+            max: characterData.combat?.hit_points?.max || 8,
+            current: characterData.combat?.hit_points?.current || 8
+          },
+          armorClass: characterData.combat?.armor_class || 10,
+          speed: characterData.combat?.speed || 30,
+          source: file.name,
+          rawData: characterData
+        };
+        
+        parsed.characterSheets.push(characterSheet);
+        Object.keys(parsed).forEach(key => {
+          contentTypes[key].count = parsed[key].length;
+        });
+        return parsed;
+      }
+
       // Handle text-based files (JSON/XML)
       const text = await file.text();
       console.log('File text length:', text.length);
