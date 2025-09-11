@@ -145,6 +145,14 @@ const useBattleMapStore = create(
           }
         };
       }),
+      clearInitiative: () => set((state) => ({
+        initiative: {
+          ...state.initiative,
+          combatants: [],
+          turn: 0,
+          round: 1
+        }
+      })),
 
       // Submaps
       submaps: [],
