@@ -123,7 +123,7 @@ const CharacterSheetBeyond = ({ token, onClose }) => {
       }
     ],
 
-    // Spells
+    // Spells - Enhanced for proper D&D 5e spellcasting
     spellcasting: {
       ability: 'INT',
       spellSaveDC: 8,
@@ -133,17 +133,46 @@ const CharacterSheetBeyond = ({ token, onClose }) => {
       slotsUsed: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 }
     },
 
-    cantrips: [],
-    spells: {},
+    cantrips: [
+      { name: 'Fire Bolt', school: 'Evocation', castingTime: '1 action', range: '120 feet', components: 'V, S', duration: 'Instantaneous' },
+      { name: 'Mage Hand', school: 'Conjuration', castingTime: '1 action', range: '30 feet', components: 'V, S', duration: '1 minute' }
+    ],
+    
+    spells: {
+      1: [
+        { name: 'Shield', school: 'Abjuration', castingTime: '1 reaction', range: 'Self', components: 'V, S', duration: '1 round', prepared: true },
+        { name: 'Magic Missile', school: 'Evocation', castingTime: '1 action', range: '120 feet', components: 'V, S', duration: 'Instantaneous', prepared: true }
+      ],
+      2: [],
+      3: []
+    },
 
-    // Equipment
-    equipment: [],
-    inventory: [],
-    currency: { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 },
+    // Equipment - Enhanced inventory system
+    equipment: [
+      { name: 'Studded Leather Armor', type: 'armor', equipped: true, ac: 12, properties: 'Light armor' },
+      { name: 'Shield', type: 'armor', equipped: true, ac: 2, properties: 'Shield' },
+      { name: 'Longsword', type: 'weapon', equipped: true, damage: '1d8', damageType: 'slashing', properties: 'Versatile (1d10)' }
+    ],
+    
+    inventory: [
+      { name: 'Healing Potion', quantity: 2, weight: 0.5, description: 'Restores 2d4+2 hit points' },
+      { name: 'Rope (50 feet)', quantity: 1, weight: 10, description: 'Hemp rope' },
+      { name: 'Thieves\' Tools', quantity: 1, weight: 1, description: 'Proficiency with these tools lets you add your proficiency bonus to any ability checks you make to disarm traps or open locks.' }
+    ],
+    
+    currency: { cp: 0, sp: 0, ep: 0, gp: 150, pp: 0 },
 
-    // Features & Traits
-    classFeatures: [],
-    racialTraits: [],
+    // Features & Traits - More comprehensive
+    classFeatures: [
+      { name: 'Fighting Style', description: 'You adopt a particular style of fighting as your specialty. Choose Archery, Defense, Dueling, Great Weapon Fighting, Protection, or Two-Weapon Fighting.' },
+      { name: 'Second Wind', description: 'You have a limited well of stamina that you can draw on to protect yourself from harm. On your turn, you can use a bonus action to regain hit points equal to 1d10 + your fighter level.' }
+    ],
+    
+    racialTraits: [
+      { name: 'Extra Language', description: 'You can speak, read, and write one extra language of your choice.' },
+      { name: 'Extra Skill', description: 'You gain proficiency in one skill of your choice.' }
+    ],
+    
     feats: [],
     
     // Description
