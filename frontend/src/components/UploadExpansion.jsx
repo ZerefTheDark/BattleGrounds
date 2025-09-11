@@ -74,7 +74,7 @@ const UploadExpansion = ({ onClose }) => {
       // Try parsing as JSON first
       try {
         data = JSON.parse(text);
-      } catch {
+      } catch (jsonError) {
         // If JSON fails, try XML parsing
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(text, 'text/xml');
