@@ -126,6 +126,10 @@ const useBattleMapStore = create(
 
       // Submaps
       submaps: [],
+      submapSelectionMode: false,
+      submapSelection: null,
+      setSubmapSelectionMode: (mode) => set({ submapSelectionMode: mode }),
+      setSubmapSelection: (selection) => set({ submapSelection: selection }),
       addSubmap: (submap) => set((state) => ({
         submaps: [...state.submaps, { ...submap, id: Date.now().toString() }]
       })),
