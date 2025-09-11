@@ -728,11 +728,208 @@ const CharacterSheetBeyond = ({ token, onClose }) => {
               </div>
             </TabsContent>
 
-            {/* Other tabs would be implemented similarly */}
-            <TabsContent value="spells" className="flex-1 p-4">
-              <div className="text-center text-gray-400 py-8">
-                <Wand2 className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p>Spells tab - Coming soon</p>
+            {/* Spells Tab - Fully Implemented */}
+            <TabsContent value="spells" className="flex-1 p-4 overflow-y-auto">
+              <div className="space-y-6">
+                {/* Spellcasting Info */}
+                <div className="bg-purple-900/30 rounded-lg p-4 border border-purple-600">
+                  <h3 className="text-lg font-bold text-purple-400 mb-3">SPELLCASTING</h3>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="text-center">
+                      <Label className="text-xs text-purple-300">SPELL SAVE DC</Label>
+                      <div className="text-xl font-bold text-white">{getSpellSaveDC()}</div>
+                    </div>
+                    <div className="text-center">
+                      <Label className="text-xs text-purple-300">SPELL ATTACK BONUS</Label>
+                      <div className="text-xl font-bold text-white">+{getSpellAttackBonus()}</div>
+                    </div>
+                    <div className="text-center">
+                      <Label className="text-xs text-purple-300">SPELLCASTING ABILITY</Label>
+                      <Select 
+                        value={characterData.spellcasting.ability} 
+                        onValueChange={(value) => syncCharacterData({
+                          ...characterData,
+                          spellcasting: { ...characterData.spellcasting, ability: value }
+                        })}
+                      >
+                        <SelectTrigger className="w-20 bg-purple-800 border-purple-600">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.keys(characterData.abilities).map(ability => (
+                            <SelectItem key={ability} value={ability}>{ability}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Spell Slots */}
+                <div className="bg-indigo-900/30 rounded-lg p-4 border border-indigo-600">
+                  <h3 className="text-lg font-bold text-indigo-400 mb-3">SPELL SLOTS</h3>
+                  <div className="grid grid-cols-9 gap-2">
+                    {Object.entries(characterData.spellcasting.slots).map(([level, total]) => (
+                      <div key={level} className="text-center">
+                        <Label className="text-xs text-indigo-300">{level}</Label>
+                        <div className="space-y-1">
+                          <Input
+                            type="number"
+                            min="0"
+                            max="20"
+                            value={total}
+                            onChange={(e) => {
+                              const newData = {
+                                ...characterData,
+                                spellcasting: {
+                                  ...characterData.spellcasting,
+                                  slots: { ...characterData.spellcasting.slots, [level]: parseInt(e.target.value) || 0 }
+                                }
+                              };
+                              syncCharacterData(newData);
+                            }}
+                            className="w-12 h-8 text-center bg-indigo-800 border-indigo-600 text-white"
+                          />
+                          <div className="flex flex-col space-y-1">
+                            {Array.from({ length: total }, (_, i) => (
+                              <Button
+                                key={i}
+                                size="sm"
+                                onClick={() => {
+                                  const newUsed = characterData.spellcasting.slotsUsed[level];
+                                  const isUsed = i < newUsed;
+                                  const newData = {
+                                    ...characterData,
+                                    spellcasting: {
+                                      ...characterData.spellcasting,
+                                      slotsUsed: {
+                                        ...characterData.spellcasting.slotsUsed,
+                                        [level]: isUsed ? newUsed - 1 : newUsed + 1
+                                      }
+                                    }
+                                  };
+                                  syncCharacterData(newData);
+                                }}
+                                className={`w-3 h-3 p-0 ${
+                                  i < characterData.spellcasting.slotsUsed[level] 
+                                    ? 'bg-red-600 hover:bg-red-700' 
+                                    : 'bg-indigo-600 hover:bg-indigo-700'
+                                }`}
+                              >
+                                {i < characterData.spellcasting.slotsUsed[level] ? <XCircle className="w-2 h-2" /> : <Circle className="w-2 h-2" />}
+                              </Button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Cantrips */}
+                <div className="bg-yellow-900/30 rounded-lg p-4 border border-yellow-600">
+                  <h3 className="text-lg font-bold text-yellow-400 mb-3">CANTRIPS</h3>
+                  <div className="space-y-2">
+                    {characterData.cantrips.map((cantrip, index) => (
+                      <Card key={index} className="bg-yellow-800/20 border-yellow-700">
+                        <CardContent className="p-3">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <div className="font-bold text-yellow-300">{cantrip.name}</div>
+                              <div className="text-xs text-gray-400">
+                                {cantrip.school} • {cantrip.castingTime} • {cantrip.range}
+                              </div>
+                            </div>
+                            <Button
+                              size="sm"
+                              onClick={() => rollDice(20, getSpellAttackBonus(), `${cantrip.name} Spell Attack`)}
+                              className="bg-yellow-700 hover:bg-yellow-600"
+                            >
+                              <Dice6 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Spell Levels */}
+                {Object.entries(characterData.spells).map(([level, spellList]) => (
+                  <div key={level} className="bg-purple-900/20 rounded-lg p-4 border border-purple-700">
+                    <h3 className="text-lg font-bold text-purple-400 mb-3">LEVEL {level} SPELLS</h3>
+                    <div className="space-y-2">
+                      {spellList.map((spell, index) => (
+                        <Card key={index} className="bg-purple-800/20 border-purple-700">
+                          <CardContent className="p-3">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <Button
+                                  size="sm"
+                                  onClick={() => {
+                                    const newSpells = [...spellList];
+                                    newSpells[index] = { ...spell, prepared: !spell.prepared };
+                                    const newData = {
+                                      ...characterData,
+                                      spells: { ...characterData.spells, [level]: newSpells }
+                                    };
+                                    syncCharacterData(newData);
+                                  }}
+                                  className={`w-6 h-6 p-0 ${spell.prepared ? 'bg-green-600' : 'bg-gray-600'}`}
+                                >
+                                  {spell.prepared ? <CheckCircle className="w-3 h-3" /> : <Circle className="w-3 h-3" />}
+                                </Button>
+                                <div>
+                                  <div className="font-bold text-purple-300">{spell.name}</div>
+                                  <div className="text-xs text-gray-400">
+                                    {spell.school} • {spell.castingTime} • {spell.range}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex gap-2">
+                                <Button
+                                  size="sm"
+                                  onClick={() => {
+                                    // Cast spell - use spell slot
+                                    if (characterData.spellcasting.slotsUsed[level] < characterData.spellcasting.slots[level]) {
+                                      const newData = {
+                                        ...characterData,
+                                        spellcasting: {
+                                          ...characterData.spellcasting,
+                                          slotsUsed: {
+                                            ...characterData.spellcasting.slotsUsed,
+                                            [level]: characterData.spellcasting.slotsUsed[level] + 1
+                                          }
+                                        }
+                                      };
+                                      syncCharacterData(newData);
+                                      
+                                      addChatMessage({
+                                        type: 'system',
+                                        text: `${characterData.name} casts ${spell.name} (Level ${level} spell slot used)`
+                                      });
+                                    }
+                                  }}
+                                  disabled={characterData.spellcasting.slotsUsed[level] >= characterData.spellcasting.slots[level]}
+                                  className="bg-purple-700 hover:bg-purple-600"
+                                >
+                                  <Wand2 className="w-4 h-4" />
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  onClick={() => rollDice(20, getSpellAttackBonus(), `${spell.name} Spell Attack`)}
+                                  className="bg-red-700 hover:bg-red-600"
+                                >
+                                  <Dice6 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
             </TabsContent>
 
