@@ -27,7 +27,7 @@ const useBattleMapStore = create(
       setFogBrushSize: (size) => set({ fogBrushSize: size }),
       setFogPaintMode: (mode) => set({ fogPaintMode: mode }),
       addFogReveal: (reveal) => set((state) => ({
-        fogReveals: [...state.fogReveals, reveal]
+        fogReveals: [...state.fogReveals, { ...reveal, id: Date.now().toString() }]
       })),
       removeFogReveal: (reveal) => set((state) => ({
         fogReveals: state.fogReveals.filter(r => {
