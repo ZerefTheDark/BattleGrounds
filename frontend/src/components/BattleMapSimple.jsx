@@ -46,6 +46,9 @@ const BattleMapSimple = () => {
   const [showPartyManager, setShowPartyManager] = useState(false);
   const [chatHeight, setChatHeight] = useState(300);
   const [isChatMinimized, setIsChatMinimized] = useState(false);
+  const [activeTool, setActiveTool] = useState(null);
+  const [toolPreview, setToolPreview] = useState(null);
+  const [isPlayerView, setIsPlayerView] = useState(false);
 
   const {
     camera,
