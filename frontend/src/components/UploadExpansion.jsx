@@ -76,9 +76,31 @@ const UploadExpansion = ({ onClose }) => {
         data = xmlToJson(xmlDoc);
       }
 
-      // Parse different content types
-      if (data.compendium || data.root) {
-        const content = data.compendium || data.root;
+      // Parse different content types - handle various JSON structures
+      let content = data;
+      
+      // Check for common D&D JSON structures
+      if (data.compendium) {
+        content = data.compendium;
+      } else if (data.root) {
+        content = data.root;
+      } else if (data._meta || data.spell || data.monster || data.item || data.race) {
+        // This looks like a direct D&D JSON file
+        content = data;
+      } else {
+        // Try to find content in nested structures
+        const possibleContentKeys = Object.keys(data);
+        for (const key of possibleContentKeys) {
+          if (typeof data[key] === 'object' && data[key] !== null) {
+            if (data[key].spell || data[key].monster || data[key].item || data[key].race) {
+              content = data[key];
+              break;
+            }
+          }
+        }
+      }
+      
+      console.log('Parsing content structure:', Object.keys(content));
         
         // Parse races
         if (content.race) {
