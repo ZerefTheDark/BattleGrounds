@@ -343,6 +343,7 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
         
       case 'fog':
         if (fogEnabled) {
+          console.log('Fog painting at:', worldPos, 'mode:', fogPaintMode);
           const fogAction = {
             x: worldPos.x,
             y: worldPos.y,
