@@ -131,34 +131,7 @@ const BattleMap = () => {
   };
 
   // Character sheet handlers (memoized to prevent infinite re-renders)
-  const openCompactCharacterSheet = useCallback((character) => {
-    const compactWindow = {
-      id: `compact-char-${character?.id || 'new'}`,
-      title: `${character?.name || 'Character'} - Quick View`,
-      icon: User,
-      content: (
-        <CompactCharacterSheet 
-          character={character}
-          onOpenFullSheet={() => openFullCharacterSheet(character)}
-          onClose={() => setDraggableWindows(prev => prev.filter(w => w.id !== `compact-char-${character?.id || 'new'}`))}
-          onUpdateCharacter={(updated) => {
-            // Update character in store
-            updateToken(character.id, updated);
-          }}
-        />
-      ),
-      position: { x: 200, y: 150 },
-      size: { width: 350, height: 600 },
-      zIndex: 1001
-    };
-    setDraggableWindows(prev => {
-      const exists = prev.find(w => w.id === compactWindow.id);
-      if (exists) return prev;
-      return [...prev, compactWindow];
-    });
-  }, [updateToken]);
-
-  const openFullCharacterSheet = useCallback((character) => {
+  const handleOpenFullCharacterSheet = useCallback((character) => {
     const fullWindow = {
       id: `full-char-${character?.id || 'new'}`,
       title: `${character?.name || 'Character'} - Full Sheet`,
@@ -182,6 +155,35 @@ const BattleMap = () => {
       return [...filtered, fullWindow];
     });
   }, [updateToken]);
+
+  const openCompactCharacterSheet = useCallback((character) => {
+    const compactWindow = {
+      id: `compact-char-${character?.id || 'new'}`,
+      title: `${character?.name || 'Character'} - Quick View`,
+      icon: User,
+      content: (
+        <CompactCharacterSheet 
+          character={character}
+          onOpenFullSheet={() => handleOpenFullCharacterSheet(character)}
+          onClose={() => setDraggableWindows(prev => prev.filter(w => w.id !== `compact-char-${character?.id || 'new'}`))}
+          onUpdateCharacter={(updated) => {
+            // Update character in store
+            updateToken(character.id, updated);
+          }}
+        />
+      ),
+      position: { x: 200, y: 150 },
+      size: { width: 350, height: 600 },
+      zIndex: 1001
+    };
+    setDraggableWindows(prev => {
+      const exists = prev.find(w => w.id === compactWindow.id);
+      if (exists) return prev;
+      return [...prev, compactWindow];
+    });
+  }, [updateToken, handleOpenFullCharacterSheet]);
+
+  const openFullCharacterSheet = handleOpenFullCharacterSheet;
 
   // Auto-open character sheet when token is selected
   useEffect(() => {
