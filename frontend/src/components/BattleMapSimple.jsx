@@ -56,14 +56,21 @@ const BattleMapSimple = () => {
     gridEnabled,
     fogEnabled,
     tokens,
+    selectedTokenId,
     setCamera,
     setGridSize,
     setGridEnabled,
     setFogEnabled,
+    selectToken,
     loadBackgroundImage,
     saveScenario,
     newScenario
   } = useBattleMapStore();
+
+  // Handle token selection
+  const handleTokenSelect = useCallback((tokenId) => {
+    selectToken(tokenId);
+  }, [selectToken]);
 
   const handleFileUpload = useCallback((event) => {
     const file = event.target.files[0];
