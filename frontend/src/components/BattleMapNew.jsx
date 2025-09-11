@@ -310,7 +310,7 @@ const BattleMapNew = () => {
               selectedTool={selectedTool}
               activeTool={activeTool}
               setActiveTool={setActiveTool}
-              onTokenSelect={onTokenSelect}
+              onTokenSelect={selectToken}
               isPlayerView={isPlayerView}
             />
           </div>
