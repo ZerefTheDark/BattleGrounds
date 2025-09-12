@@ -34,9 +34,9 @@ import {
   UserPlus
 } from 'lucide-react';
 import CanvasLayers from './CanvasLayers';
-import PermanentChatWindow from './PermanentChatWindow';
 import ChatDiceInitiative from './ChatDiceInitiative';
 import PartyManager from './PartyManager';
+import CharacterSheet from './CharacterSheet';
 import { useBattleMapStore } from '../store/battleMapStore';
 
 const BattleMapSimple = () => {
@@ -44,8 +44,7 @@ const BattleMapSimple = () => {
   const [selectedTool, setSelectedTool] = useState('move');
   const [showGameConsole, setShowGameConsole] = useState(false);
   const [showPartyManager, setShowPartyManager] = useState(false);
-  const [chatHeight, setChatHeight] = useState(300);
-  const [isChatMinimized, setIsChatMinimized] = useState(false);
+  const [showCharacterSheet, setShowCharacterSheet] = useState(false);
   const [activeTool, setActiveTool] = useState(null);
   const [toolPreview, setToolPreview] = useState(null);
   const [isPlayerView, setIsPlayerView] = useState(false);
@@ -117,6 +116,32 @@ const BattleMapSimple = () => {
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>Ruler</TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant={selectedTool === 'cone' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setSelectedTool('cone')}
+                  >
+                    <Triangle className="w-4 h-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Cone Tool</TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant={selectedTool === 'circle' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setSelectedTool('circle')}
+                  >
+                    <Circle className="w-4 h-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Circle Tool</TooltipContent>
               </Tooltip>
 
               <Tooltip>
@@ -224,9 +249,9 @@ const BattleMapSimple = () => {
               />
             </div>
 
-            {/* Grid Size Slider */}
+            {/* Grid Size Slider - elevated to avoid layering issues */}
             {gridEnabled && (
-              <Card className="absolute top-4 left-4 p-3 bg-gray-800/95 border-gray-700">
+              <Card className="absolute top-4 left-4 p-3 bg-gray-800/95 border-gray-700 z-10">
                 <div className="flex items-center gap-3">
                   <Grid3X3 className="w-4 h-4" />
                   <span className="text-sm">Grid: {gridSize}px</span>
@@ -242,55 +267,40 @@ const BattleMapSimple = () => {
               </Card>
             )}
 
-            {/* Status */}
-            <Card className="absolute bottom-4 right-4 p-2 bg-gray-800/95 border-gray-700">
+            {/* Status - elevated to avoid layering issues */}
+            <Card className="absolute bottom-4 right-4 p-2 bg-gray-800/95 border-gray-700 z-10">
               <div className="text-sm">
                 <div>Tokens: {tokens.length}</div>
                 <div>Zoom: {Math.round(camera.scale * 100)}%</div>
               </div>
             </Card>
-
-            {/* Chat Window at Bottom */}
-            {!isChatMinimized && (
-              <div 
-                className="absolute bottom-0 left-16 right-0 bg-gray-800 border-t border-gray-700"
-                style={{ height: `${chatHeight}px` }}
-              >
-                <PermanentChatWindow
-                  defaultHeight={chatHeight}
-                  onHeightChange={setChatHeight}
-                  isMinimized={isChatMinimized}
-                  onToggleMinimize={() => setIsChatMinimized(!isChatMinimized)}
-                />
-              </div>
-            )}
-
-            {/* Minimized Chat Tab */}
-            {isChatMinimized && (
-              <Button
-                className="absolute bottom-0 left-16 bg-gray-800 border border-gray-700 rounded-t-md rounded-b-none"
-                size="sm"
-                onClick={() => setIsChatMinimized(false)}
-              >
-                <MessageSquare className="w-4 h-4 mr-2" />
-                Chat
-                <ChevronUp className="w-4 h-4 ml-2" />
-              </Button>
-            )}
           </div>
         </div>
 
         {/* Left Side Panel - Game Console */}
         {showGameConsole && (
-          <div className="absolute left-16 top-20 bottom-0 w-80 z-50">
+          <div className="absolute left-16 top-20 bottom-0 w-80 z-40 pointer-events-auto">
             <ChatDiceInitiative onClose={() => setShowGameConsole(false)} />
           </div>
         )}
 
         {/* Left Side Panel - Party Manager */}
         {showPartyManager && (
-          <div className="absolute left-16 top-20 bottom-0 w-80 z-50">
+          <div className="absolute left-16 top-20 bottom-0 w-80 z-40 pointer-events-auto">
             <PartyManager onClose={() => setShowPartyManager(false)} />
+          </div>
+        )}
+
+        {/* Right Side Panel - Character Sheet */}
+        {showCharacterSheet && selectedToken && (
+          <div className="absolute right-0 top-20 bottom-0 w-96 z-40 bg-gray-900 border-l border-gray-700 pointer-events-auto">
+            <CharacterSheet
+              token={selectedToken}
+              onClose={() => {
+                setShowCharacterSheet(false);
+                selectToken(null); // Unselect the token
+              }}
+            />
           </div>
         )}
       </div>
