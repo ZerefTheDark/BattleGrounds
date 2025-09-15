@@ -652,7 +652,7 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
         ref={backgroundCanvasRef}
         className="absolute inset-0 pointer-events-none"
         style={{ 
-          zIndex: 1,
+          zIndex: -3,
           width: '100%',
           height: '100%',
           display: 'block'
@@ -662,7 +662,7 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
         ref={gridCanvasRef}
         className="absolute inset-0 pointer-events-none"
         style={{ 
-          zIndex: 2,
+          zIndex: -2,
           width: '100%',
           height: '100%',
           display: 'block'
@@ -672,7 +672,7 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
         ref={tokensCanvasRef}
         className="absolute inset-0 pointer-events-none"
         style={{ 
-          zIndex: 3,
+          zIndex: -1,
           width: '100%',
           height: '100%',
           display: 'block'
@@ -682,7 +682,7 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
         ref={toolsCanvasRef}
         className="absolute inset-0 pointer-events-none"
         style={{ 
-          zIndex: 4,
+          zIndex: 0,
           width: '100%',
           height: '100%',
           display: 'block'
