@@ -34,18 +34,14 @@ import {
   UserPlus
 } from 'lucide-react';
 import CanvasLayers from './CanvasLayers';
-import PermanentChatWindow from './PermanentChatWindow';
-import ChatDiceInitiative from './ChatDiceInitiative';
+import UnifiedChatPanel from './UnifiedChatPanel';
 import PartyManager from './PartyManager';
 import { useBattleMapStore } from '../store/battleMapStore';
 
 const BattleMapSimple = () => {
   const canvasRef = useRef(null);
   const [selectedTool, setSelectedTool] = useState('move');
-  const [showGameConsole, setShowGameConsole] = useState(false);
   const [showPartyManager, setShowPartyManager] = useState(false);
-  const [chatHeight, setChatHeight] = useState(300);
-  const [isChatMinimized, setIsChatMinimized] = useState(false);
   const [activeTool, setActiveTool] = useState(null);
   const [toolPreview, setToolPreview] = useState(null);
   const [isPlayerView, setIsPlayerView] = useState(false);
@@ -182,20 +178,6 @@ const BattleMapSimple = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
-                  variant={showGameConsole ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setShowGameConsole(!showGameConsole)}
-                  className="w-12 h-12"
-                >
-                  <MessageSquare className="w-5 h-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">Game Console</TooltipContent>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
                   variant={showPartyManager ? 'default' : 'ghost'}
                   size="sm"
                   onClick={() => setShowPartyManager(!showPartyManager)}
@@ -208,8 +190,8 @@ const BattleMapSimple = () => {
             </Tooltip>
           </div>
 
-          {/* Center Canvas Area */}
-          <div className="flex-1 relative">
+          {/* Center Canvas Area - adjusted for fixed chat panel */}
+          <div className="flex-1 relative ml-96"> {/* ml-96 to account for fixed chat panel */}
             {/* Canvas Container - constrains the canvas to this area */}
             <div className="absolute inset-0 overflow-hidden">
               <CanvasLayers
@@ -249,43 +231,11 @@ const BattleMapSimple = () => {
                 <div>Zoom: {Math.round(camera.scale * 100)}%</div>
               </div>
             </Card>
-
-            {/* Chat Window at Bottom - positioned to not interfere with UI buttons */}
-            {!isChatMinimized && (
-              <div 
-                className="absolute bottom-0 left-16 right-0 bg-gray-800 border-t border-gray-700 pointer-events-auto"
-                style={{ height: `${chatHeight}px`, zIndex: 30 }}
-              >
-                <PermanentChatWindow
-                  defaultHeight={chatHeight}
-                  onHeightChange={setChatHeight}
-                  isMinimized={isChatMinimized}
-                  onToggleMinimize={() => setIsChatMinimized(!isChatMinimized)}
-                />
-              </div>
-            )}
-
-            {/* Minimized Chat Tab - elevated to ensure visibility */}
-            {isChatMinimized && (
-              <Button
-                className="absolute bottom-0 left-16 bg-gray-800 border border-gray-700 rounded-t-md rounded-b-none z-35"
-                size="sm"
-                onClick={() => setIsChatMinimized(false)}
-              >
-                <MessageSquare className="w-4 h-4 mr-2" />
-                Chat
-                <ChevronUp className="w-4 h-4 ml-2" />
-              </Button>
-            )}
           </div>
         </div>
 
-        {/* Left Side Panel - Game Console */}
-        {showGameConsole && (
-          <div className="absolute left-16 top-20 bottom-0 w-80 z-40 pointer-events-auto">
-            <ChatDiceInitiative onClose={() => setShowGameConsole(false)} />
-          </div>
-        )}
+        {/* Unified Chat Panel - Fixed position */}
+        <UnifiedChatPanel />
 
         {/* Left Side Panel - Party Manager */}
         {showPartyManager && (
