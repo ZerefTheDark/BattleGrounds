@@ -31,6 +31,26 @@
   
   /* Thorny Vine Pattern */
   --thorny-vine-pattern: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%2310b981' stroke-width='1.5' stroke-opacity='0.7'%3E%3Cpath d='M0,20 Q10,10 20,20 Q30,30 40,20' /%3E%3Cpath d='M5,15 L8,12 M15,8 L18,5 M25,32 L28,35 M35,25 L38,22' stroke='%23dc2626' stroke-width='2' stroke-opacity='0.6'/%3E%3Ccircle cx='8' cy='12' r='1' fill='%23dc2626' fill-opacity='0.8'/%3E%3Ccircle cx='18' cy='5' r='1' fill='%23dc2626' fill-opacity='0.8'/%3E%3Ccircle cx='28' cy='35' r='1' fill='%23dc2626' fill-opacity='0.8'/%3E%3Ccircle cx='38' cy='22' r='1' fill='%23dc2626' fill-opacity='0.8'/%3E%3C/g%3E%3C/svg%3E");
+
+  /* Gothic Theme Colors for Unified Chat */
+  --gothic-lime: #32cd32;
+  --gothic-lime-bright: #7fff00;
+  --gothic-lime-dark: #228b22;
+  --onyx-black: #0f0f23;
+  --onyx-black-light: #1a1a2e;
+  --onyx-black-lighter: #16213e;
+  
+  /* Gothic Shadows and Glows */
+  --gothic-glow: 0 0 15px rgba(50, 205, 50, 0.4),
+                 0 0 30px rgba(50, 205, 50, 0.2),
+                 0 0 45px rgba(50, 205, 50, 0.1);
+  
+  --gothic-shadow: 0 6px 20px rgba(15, 15, 35, 0.8),
+                   0 2px 10px rgba(15, 15, 35, 0.6),
+                   inset 0 1px 0 rgba(50, 205, 50, 0.1);
+
+  /* Thorny Border Pattern for Gothic Theme */
+  --thorny-border: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cpath d='M2,10 Q5,5 10,10 Q15,15 18,10' stroke='%2332cd32' stroke-width='1' stroke-opacity='0.8'/%3E%3Cpath d='M3,7 L5,5 M8,3 L10,1 M12,17 L14,19 M17,8 L19,6' stroke='%2332cd32' stroke-width='1.5' stroke-opacity='0.6'/%3E%3Ccircle cx='5' cy='5' r='0.5' fill='%237fff00'/%3E%3Ccircle cx='10' cy='1' r='0.5' fill='%237fff00'/%3E%3Ccircle cx='14' cy='19' r='0.5' fill='%237fff00'/%3E%3Ccircle cx='19' cy='6' r='0.5' fill='%237fff00'/%3E%3C/g%3E%3C/svg%3E");
   
   /* Magical Glows */
   --gold-glow: 0 0 20px rgba(251, 191, 36, 0.4),
@@ -833,5 +853,333 @@
     opacity: 0.8;
     transform: translate(-50%, -50%) scale(1.1);
     filter: brightness(1.3) saturate(1.2);
+  }
+}
+
+/* Gothic Unified Chat Panel Styles */
+.gothic-chat-panel {
+  background: linear-gradient(145deg, var(--onyx-black), var(--onyx-black-light));
+  border: 3px solid var(--gothic-lime);
+  border-radius: 12px;
+  box-shadow: var(--gothic-shadow);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.gothic-chat-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--thorny-border);
+  opacity: 0.3;
+  pointer-events: none;
+  animation: gothicPulse 4s ease-in-out infinite alternate;
+}
+
+.gothic-chat-panel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid var(--gothic-lime-bright);
+  border-radius: 10px;
+  opacity: 0.2;
+  pointer-events: none;
+  animation: gothicBorder 6s linear infinite;
+}
+
+@keyframes gothicPulse {
+  0% { opacity: 0.2; filter: hue-rotate(0deg); }
+  100% { opacity: 0.4; filter: hue-rotate(20deg); }
+}
+
+@keyframes gothicBorder {
+  0% { border-color: var(--gothic-lime); opacity: 0.3; }
+  25% { border-color: var(--gothic-lime-bright); opacity: 0.6; }
+  50% { border-color: var(--gothic-lime); opacity: 0.3; }
+  75% { border-color: var(--gothic-lime-dark); opacity: 0.4; }
+  100% { border-color: var(--gothic-lime); opacity: 0.3; }
+}
+
+.gothic-chat-header {
+  background: linear-gradient(135deg, var(--onyx-black-light), var(--onyx-black-lighter));
+  border-bottom: 2px solid var(--gothic-lime);
+  color: var(--gothic-lime-bright);
+  font-weight: bold;
+  text-shadow: 0 0 10px var(--gothic-lime);
+  position: relative;
+}
+
+.gothic-chat-header::before {
+  content: '🗡️';
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  filter: hue-rotate(120deg);
+}
+
+.gothic-chat-header::after {
+  content: '⚔️';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  filter: hue-rotate(120deg);
+}
+
+.gothic-chat-message {
+  background: linear-gradient(135deg, var(--onyx-black-light), rgba(26, 26, 46, 0.8));
+  border: 1px solid rgba(50, 205, 50, 0.3);
+  border-radius: 8px;
+  color: #ffffff;
+  margin: 8px 0;
+  padding: 12px;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(15, 15, 35, 0.6);
+  animation: gothicMessageSlide 0.5s ease-out;
+}
+
+.gothic-chat-message::before {
+  content: '🌿';
+  position: absolute;
+  left: -8px;
+  top: 8px;
+  color: var(--gothic-lime);
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.gothic-chat-message.dice-roll {
+  border-color: rgba(127, 255, 0, 0.5);
+  background: linear-gradient(135deg, 
+    rgba(50, 205, 50, 0.1), 
+    var(--onyx-black-light)
+  );
+  box-shadow: 0 0 15px rgba(50, 205, 50, 0.3);
+}
+
+.gothic-chat-message.dice-roll::before {
+  content: '🎲';
+  color: var(--gothic-lime-bright);
+}
+
+.gothic-chat-message.critical-roll {
+  border-color: #ffd700;
+  background: linear-gradient(135deg, 
+    rgba(255, 215, 0, 0.2), 
+    var(--onyx-black-light)
+  );
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  animation: criticalPulse 2s ease-in-out infinite;
+}
+
+.gothic-chat-message.critical-roll::before {
+  content: '⭐';
+  color: #ffd700;
+  animation: criticalSpin 1s linear infinite;
+}
+
+@keyframes gothicMessageSlide {
+  0% { 
+    opacity: 0; 
+    transform: translateX(-20px) scale(0.9); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateX(0) scale(1); 
+  }
+}
+
+@keyframes criticalPulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    border-color: #ffd700;
+  }
+  50% { 
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+    border-color: #ffed4e;
+  }
+}
+
+@keyframes criticalSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.gothic-dice-button {
+  background: linear-gradient(135deg, var(--onyx-black-lighter), var(--onyx-black-light));
+  border: 2px solid var(--gothic-lime);
+  border-radius: 6px;
+  color: var(--gothic-lime-bright);
+  font-weight: bold;
+  padding: 8px 12px;
+  text-shadow: 0 0 8px var(--gothic-lime);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.gothic-dice-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, transparent, rgba(50, 205, 50, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.gothic-dice-button:hover {
+  border-color: var(--gothic-lime-bright);
+  box-shadow: var(--gothic-glow);
+  transform: scale(1.05);
+}
+
+.gothic-dice-button:hover::before {
+  transform: translateX(100%);
+}
+
+.gothic-dice-button.d20 {
+  border-color: #ffd700;
+  color: #ffd700;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.gothic-dice-button.d20:hover {
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+.gothic-input {
+  background: linear-gradient(135deg, var(--onyx-black), var(--onyx-black-light));
+  border: 2px solid var(--gothic-lime-dark);
+  border-radius: 8px;
+  color: var(--gothic-lime-bright);
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.gothic-input:focus {
+  border-color: var(--gothic-lime-bright);
+  box-shadow: var(--gothic-glow);
+  outline: none;
+}
+
+.gothic-input::placeholder {
+  color: rgba(50, 205, 50, 0.5);
+}
+
+.gothic-scrollbar::-webkit-scrollbar {
+  width: 12px;
+}
+
+.gothic-scrollbar::-webkit-scrollbar-track {
+  background: var(--onyx-black);
+  border-radius: 6px;
+  border: 1px solid var(--gothic-lime-dark);
+}
+
+.gothic-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--gothic-lime-dark), var(--gothic-lime));
+  border-radius: 6px;
+  border: 1px solid var(--onyx-black-light);
+}
+
+.gothic-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--gothic-lime), var(--gothic-lime-bright));
+}
+
+.gothic-tab {
+  background: linear-gradient(135deg, var(--onyx-black-light), var(--onyx-black-lighter));
+  border: 2px solid var(--gothic-lime-dark);
+  border-radius: 8px 8px 0 0;
+  color: var(--gothic-lime);
+  font-weight: bold;
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.gothic-tab:hover {
+  border-color: var(--gothic-lime);
+  color: var(--gothic-lime-bright);
+  box-shadow: 0 -4px 12px rgba(50, 205, 50, 0.3);
+}
+
+.gothic-tab.active {
+  border-color: var(--gothic-lime-bright);
+  color: var(--gothic-lime-bright);
+  background: linear-gradient(135deg, var(--gothic-lime-dark), var(--onyx-black-lighter));
+  box-shadow: 0 -6px 16px rgba(50, 205, 50, 0.4);
+}
+
+.gothic-window {
+  background: linear-gradient(145deg, var(--onyx-black), var(--onyx-black-light));
+  border: 3px solid var(--gothic-lime);
+  border-radius: 12px;
+  box-shadow: var(--gothic-shadow);
+  position: absolute;
+  z-index: 1000;
+  overflow: hidden;
+  backdrop-filter: blur(15px);
+}
+
+.gothic-window-header {
+  background: linear-gradient(135deg, var(--onyx-black-light), var(--onyx-black-lighter));
+  border-bottom: 2px solid var(--gothic-lime);
+  color: var(--gothic-lime-bright);
+  cursor: move;
+  padding: 12px 16px;
+  font-weight: bold;
+  text-shadow: 0 0 10px var(--gothic-lime);
+}
+
+.epic-d20-display {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 9999;
+  animation: epicD20 3s ease-out forwards;
+  pointer-events: none;
+}
+
+.epic-d20-display.critical-success {
+  color: #ffd700;
+  text-shadow: 0 0 30px #ffd700;
+  font-size: 120px;
+  font-weight: 900;
+}
+
+.epic-d20-display.critical-fail {
+  color: #ff4444;
+  text-shadow: 0 0 30px #ff4444;
+  font-size: 120px;
+  font-weight: 900;
+}
+
+@keyframes epicD20 {
+  0% { 
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  30% { 
+    transform: translate(-50%, -50%) scale(1.5) rotate(180deg);
+    opacity: 1;
+  }
+  70% { 
+    transform: translate(-50%, -50%) scale(1.2) rotate(360deg);
+    opacity: 1;
+  }
+  100% { 
+    transform: translate(-50%, -50%) scale(0) rotate(540deg);
+    opacity: 0;
   }
 }
