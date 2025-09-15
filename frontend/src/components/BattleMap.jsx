@@ -36,7 +36,7 @@ import {
 import CanvasLayers from './CanvasLayers';
 import TokenPanel from './TokenPanel';
 import CharacterSheet from './CharacterSheetEnhanced';
-import ChatDiceInitiative from './ChatDiceInitiative';
+
 import SubmapManager from './SubmapManager';
 import StoragePanel from './StoragePanel';
 import UploadExpansion from './UploadExpansion';
@@ -58,7 +58,7 @@ const BattleMap = () => {
   const [isPlayerView, setIsPlayerView] = useState(false); // Player view toggle
   const [showTokenPanel, setShowTokenPanel] = useState(false);
   const [showCharacterSheet, setShowCharacterSheet] = useState(false);
-  const [showChatPanel, setShowChatPanel] = useState(false);
+
   const [showSubmapManager, setShowSubmapManager] = useState(false);
   const [showStoragePanel, setShowStoragePanel] = useState(false);
   const [showUploadExpansion, setShowUploadExpansion] = useState(false);
@@ -691,15 +691,7 @@ const BattleMap = () => {
               </div>
             )}
 
-            {/* Chat/Dice/Initiative Combined Panel */}
-            {showChatPanel && (
-              <div className="w-80 max-w-[320px] h-full border-l-2 border-green-500/30 bg-gray-900 pointer-events-auto">
-                <ChatDiceInitiative 
-                  onClose={() => setShowChatPanel(false)} 
-                  isPlayerView={isPlayerView} 
-                />
-              </div>
-            )}
+
 
             {/* Submap Manager */}
             {showSubmapManager && (
@@ -749,7 +741,6 @@ const BattleMap = () => {
                     setShowConsolidatedPanel(!showConsolidatedPanel);
                     if (showTokenPanel) setShowTokenPanel(false);
                     if (showCharacterSheet) setShowCharacterSheet(false);
-                    if (showChatPanel) setShowChatPanel(false);
                     if (showSubmapManager) setShowSubmapManager(false);
                     if (showStoragePanel) setShowStoragePanel(false);
                     if (showUploadExpansion) setShowUploadExpansion(false);

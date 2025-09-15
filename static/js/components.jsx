@@ -35,7 +35,7 @@ import {
 } from 'lucide-react';
 import CanvasLayers from './CanvasLayers';
 import PermanentChatWindow from './PermanentChatWindow';
-import ChatDiceInitiative from './ChatDiceInitiative';
+
 import PartyManager from './PartyManager';
 import { useBattleMapStore } from '../store/battleMapStore';
 
@@ -283,7 +283,7 @@ const BattleMapSimple = () => {
         {/* Left Side Panel - Game Console */}
         {showGameConsole && (
           <div className="absolute left-16 top-20 bottom-0 w-80 z-50">
-            <ChatDiceInitiative onClose={() => setShowGameConsole(false)} />
+            {/* ChatDiceInitiative component removed - functionality moved to UnifiedChatPanel */}
           </div>
         )}
 
