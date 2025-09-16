@@ -74,6 +74,31 @@ const BattleMap = () => {
   // Draggable windows state
   const [draggableWindows, setDraggableWindows] = useState([]);
   
+  // DEBUG: Add test draggable window for layering testing
+  useEffect(() => {
+    const testWindow = {
+      id: 'test-layering-window',
+      title: 'Test Layering Window',
+      icon: MessageSquare,
+      content: (
+        <div className="p-4">
+          <h3>Layering Test Window</h3>
+          <p>This window should appear ABOVE the map canvas.</p>
+          <p>If you can see the map through this window, there's a layering issue.</p>
+          <div style={{ height: '200px', backgroundColor: 'rgba(255,0,0,0.3)' }}>
+            Red background area - should be solid
+          </div>
+        </div>
+      ),
+      position: { x: 150, y: 150 },
+      size: { width: 350, height: 400 },
+      zIndex: 1000
+    };
+    
+    setDraggableWindows([testWindow]);
+    console.log('[DEBUG] Test draggable window created for layering testing');
+  }, []);
+  
   const {
     camera,
     gridSize,
