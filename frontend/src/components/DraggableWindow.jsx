@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { X, Maximize2, Minimize2 } from 'lucide-react';
@@ -16,7 +17,8 @@ const DraggableWindow = ({
   zIndex = 1000,
   isFullscreen = false,
   onFullscreenToggle,
-  canFullscreen = false
+  canFullscreen = false,
+  usePortal = true // Add prop to control portal usage for backwards compatibility
 }) => {
   const [position, setPosition] = useState(defaultPosition);
   const [size, setSize] = useState({ width: defaultWidth, height: defaultHeight });
@@ -30,8 +32,10 @@ const DraggableWindow = ({
   const headerRef = useRef(null);
 
   // Handle dragging
-  // Note: Using position.x/y directly instead of getBoundingClientRect() 
-  // to avoid coordinate system mismatches when parent containers have transforms/scroll
+  // NOTE: This component uses a React Portal to render directly to document.body,
+  // ensuring the window position is always relative to the viewport and not affected
+  // by parent container transforms, scrolling, or flex/grid layouts.
+  // This prevents coordinate system mismatches that cause window jumping on drag start.
   const handleMouseDown = useCallback((e) => {
     if (e.target.closest('.resize-handle') || e.target.closest('button') || isFullscreen) return;
     
@@ -156,6 +160,8 @@ const DraggableWindow = ({
   }, [isFullscreen, position, size, lastPosition, lastSize, onFullscreenToggle]);
 
   // Window style based on fullscreen state
+  // Always use position: fixed to ensure window is positioned relative to viewport
+  // when rendered via React Portal to document.body
   const windowStyle = isFullscreen 
     ? {
         position: 'fixed',
@@ -176,7 +182,8 @@ const DraggableWindow = ({
         cursor: isDragging ? 'grabbing' : 'default'
       };
 
-  return (
+  // Window content - the actual draggable window element
+  const windowContent = (
     <div
       ref={windowRef}
       className="draggable-window fantasy-card text-white shadow-2xl border-2 border-green-500/30"
@@ -265,6 +272,15 @@ const DraggableWindow = ({
       )}
     </div>
   );
+
+  // Render via Portal to document.body to avoid parent container layout effects
+  // This ensures the window is always positioned relative to the viewport
+  if (usePortal) {
+    return createPortal(windowContent, document.body);
+  }
+
+  // Fallback to regular rendering for backwards compatibility
+  return windowContent;
 };
 
 export default DraggableWindow;
