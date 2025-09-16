@@ -30,17 +30,20 @@ const DraggableWindow = ({
   const headerRef = useRef(null);
 
   // Handle dragging
+  // Note: Using position.x/y directly instead of getBoundingClientRect() 
+  // to avoid coordinate system mismatches when parent containers have transforms/scroll
   const handleMouseDown = useCallback((e) => {
     if (e.target.closest('.resize-handle') || e.target.closest('button') || isFullscreen) return;
     
     setIsDragging(true);
-    const rect = windowRef.current.getBoundingClientRect();
+    // Calculate offset based on current position state, not DOM rect
+    // This ensures consistent behavior regardless of parent layout changes
     setDragOffset({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
+      x: e.clientX - position.x,
+      y: e.clientY - position.y
     });
     e.preventDefault();
-  }, [isFullscreen]);
+  }, [isFullscreen, position.x, position.y]);
 
   const handleMouseMove = useCallback((e) => {
     if (isDragging && !isFullscreen) {
