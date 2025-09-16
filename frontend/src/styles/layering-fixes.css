@@ -1,84 +1,215 @@
-/* Layering and Pointer Events Fixes for D&D Battle Map
- * Addresses visual glitches and UI button responsiveness issues
+/* =============================================================================
+ * LAYERING AND STACKING CONTEXT FIXES FOR D&D BATTLE MAP
+ * =============================================================================
  * 
- * Z-Index Hierarchy:
- * -3: Background Canvas (lowest layer)
- * -2: Grid Canvas  
- * -1: Tokens Canvas
- *  0: Tools Canvas (rulers, fog tools)
- *  1-9: Reserved for future map elements
- * 10: Grid and Status controls (above map, below panels)
- * 30-40: Chat and communication panels
- * 100-200: Interactive buttons and controls
- * 1000+: Modal windows and draggable panels
+ * Addresses visual glitches, UI button responsiveness issues, and ensures
+ * draggable windows always appear above map canvas elements.
+ * 
+ * COMPREHENSIVE Z-INDEX HIERARCHY:
+ * ================================
+ * -10 to -1: Map Canvas Layers (lowest layer)
+ *   -10: Background/Environment Canvas
+ *   -5:  Canvas Container (with stacking context isolation)
+ *   -4:  Grid overlay
+ *   -3:  Background Canvas elements
+ *   -2:  Grid Canvas elements
+ *   -1:  Token Canvas elements
+ *    0:  Tools Canvas (rulers, fog tools)
+ * 
+ * 1-99: Map UI Controls (above canvas, below panels)
+ *   10:  Grid and Status controls
+ *   20:  Map tools and overlays
+ *   30:  Chat and communication panels
+ *   40:  Game console
+ *   50:  Notifications and alerts
+ * 
+ * 100-999: Interactive UI Elements
+ *   100: Standard interactive buttons and controls
+ *   200: Specialized buttons (dice, actions)
+ *   500: Tooltips and context menus
+ * 
+ * 1000+: Modal/Overlay Elements (highest priority)
+ *   1000: Standard draggable windows
+ *   2000: Fullscreen draggable windows
+ *   5000: Critical system dialogs
+ *   9999: Debug tools and overlays
+ * 10000: Emergency override layer
+ * =============================================================================
  */
 
-/* Fix Game Console z-index to prevent interference with UI buttons */
+/* Force new stacking context on body to isolate layers */
+body {
+  isolation: isolate;
+  position: relative;
+}
+
+/* =============================================================================
+ * UI ELEMENT LAYER FIXES
+ * =============================================================================
+ */
+
+/* Game Console z-index to prevent interference with UI buttons */
 .absolute.left-16.top-20.bottom-0.w-80 {
   z-index: 40 !important;
   pointer-events: auto !important;
+  position: absolute !important;
+  isolation: isolate !important;
 }
 
-/* Ensure chat window has proper layering and doesn't expand outside bounds */
+/* Chat window proper layering */
 .absolute.bottom-0.left-16.right-0.bg-gray-800.border-t.border-gray-700 {
   z-index: 30 !important;
   pointer-events: auto !important;
   contain: layout style !important;
+  position: absolute !important;
 }
 
-/* Fantasy cards should allow child interactions and not block events */
+/* Grid and Status cards - above canvas but below panels */
+.absolute.top-4.left-4,
+.absolute.bottom-4.right-4 {
+  z-index: 10 !important;
+  pointer-events: auto !important;
+  position: absolute !important;
+}
+
+/* Minimized chat tab layering */
+.absolute.bottom-0.left-16.rounded-t-md {
+  z-index: 35 !important;
+  position: absolute !important;
+}
+
+/* =============================================================================
+ * INTERACTIVE ELEMENT FIXES
+ * =============================================================================
+ */
+
+/* Fantasy cards should allow child interactions */
 .fantasy-card {
   pointer-events: auto !important;
   position: relative !important;
   isolation: isolate !important;
 }
 
-/* Ensure all interactive elements can receive clicks */
+/* All interactive elements */
 button, input, textarea, select {
   pointer-events: auto !important;
   position: relative !important;
   z-index: 100 !important;
 }
 
-/* Specifically target dice buttons to ensure they're always clickable */
+/* Specialized buttons (dice, actions) */
 button[class*="border-purple-600/50"] {
   pointer-events: auto !important;
   position: relative !important;
   z-index: 200 !important;
 }
 
-/* Fix Grid and Status cards z-index to stay above canvas but below panels */
-.absolute.top-4.left-4,
-.absolute.bottom-4.right-4 {
-  z-index: 10 !important;
-  pointer-events: auto !important;
-}
-
-/* Ensure minimized chat tab is properly layered */
-.absolute.bottom-0.left-16.rounded-t-md {
-  z-index: 35 !important;
-}
-
-/* Canvas area should be clickable when no overlays interfere */
-.cursor-crosshair {
-  pointer-events: auto !important;
-  z-index: -4 !important; /* Ensure canvas container is below all UI elements */
-}
-
-/* DEBUG: Ensure canvas container is properly layered below draggable windows */
-.canvas-container {
-  z-index: -5 !important; /* Force canvas container below all UI elements */
-  position: relative !important; /* Ensure z-index takes effect */
-}
-
-/* Ensure container divs don't accidentally block child elements */
+/* Ensure container divs don't block child elements */
 .flex.gap-1.flex-wrap,
 .border-t.border-gray-700 {
   pointer-events: auto !important;
 }
 
-/* DEBUG: Ensure draggable windows are always on top of canvas */
+/* =============================================================================
+ * PORTAL AND STACKING CONTEXT SUPPORT
+ * =============================================================================
+ */
+
+/* Ensure React Portal containers don't interfere */
+body > div[data-portal="true"],
+body > .draggable-window {
+  z-index: 1000 !important;
+  position: fixed !important;
+  isolation: isolate !important;
+}
+
+/* Specific targeting for draggable windows with data attributes */
+div[data-window-title][data-z-index] {
+  position: fixed !important;
+  isolation: isolate !important;
+  /* Use the data-z-index value with CSS custom properties fallback */
+}
+
+/* High priority override for any draggable window */
+[data-window-title][data-z-index="1000"] {
+  z-index: 1000 !important;
+}
+
+[data-window-title][data-z-index="1500"] {
+  z-index: 1500 !important;
+}
+
+[data-window-title][data-z-index="2000"] {
+  z-index: 2000 !important;
+}
+
+/* Prevent transforms from parent containers affecting portals */
+[style*="transform"] .draggable-window {
+  transform: none !important;
+}
+
+/* =============================================================================
+ * CANVAS AND MAP LAYER FIXES
+ * =============================================================================
+ */
+
+/* Canvas container - Create isolated stacking context below all UI */
+.canvas-container {
+  z-index: -5 !important;
+  position: relative !important;
+  isolation: isolate !important; /* Create new stacking context */
+  contain: layout style !important; /* Optimize performance */
+}
+
+/* Canvas area should be clickable when no overlays interfere */
+.cursor-crosshair {
+  pointer-events: auto !important;
+  z-index: -4 !important;
+  position: relative !important;
+}
+
+/* Map canvas elements - ensure they stay below everything */
+.canvas-container > * {
+  position: relative !important;
+  z-index: inherit !important;
+}
+
+/* =============================================================================
+ * DRAGGABLE WINDOW LAYER FIXES
+ * =============================================================================
+ */
+
+/* Primary draggable window styling - HIGHEST PRIORITY */
 .draggable-window {
-  z-index: 1000 !important; /* Force minimum z-index for draggable windows */
-  position: fixed !important; /* Ensure proper stacking context */
+  /* Force creation of new stacking context */
+  position: fixed !important;
+  z-index: 1000 !important;
+  isolation: isolate !important;
+  
+  /* Ensure proper rendering context */
+  transform: translateZ(0) !important; /* Force hardware acceleration */
+  will-change: transform !important; /* Optimize for movement */
+  
+  /* Prevent parent container interference */
+  contain: layout style !important;
+  
+  /* Debug outline for identification */
+  /* outline: 2px solid rgba(0, 255, 0, 0.3) !important; */
+}
+
+/* Higher specificity for inline styled draggable windows */
+div[data-portal="true"].draggable-window,
+div[style*="position: fixed"].draggable-window,
+.draggable-window.fantasy-card[data-z-index] {
+  position: fixed !important;
+  /* Use CSS custom property if available, fallback to 1000 */
+  z-index: var(--draggable-z-index, 1000) !important;
+}
+
+/* Override fantasy-card positioning for draggable windows */
+.draggable-window.fantasy-card {
+  position: fixed !important; /* Override the relative positioning from fantasy-card */
+  z-index: inherit !important;
+  pointer-events: auto !important;
+  isolation: isolate !important;
 }
