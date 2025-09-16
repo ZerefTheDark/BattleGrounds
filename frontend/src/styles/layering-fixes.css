@@ -1,5 +1,16 @@
 /* Layering and Pointer Events Fixes for D&D Battle Map
  * Addresses visual glitches and UI button responsiveness issues
+ * 
+ * Z-Index Hierarchy:
+ * -3: Background Canvas (lowest layer)
+ * -2: Grid Canvas  
+ * -1: Tokens Canvas
+ *  0: Tools Canvas (rulers, fog tools)
+ *  1-9: Reserved for future map elements
+ * 10: Grid and Status controls (above map, below panels)
+ * 30-40: Chat and communication panels
+ * 100-200: Interactive buttons and controls
+ * 1000+: Modal windows and draggable panels
  */
 
 /* Fix Game Console z-index to prevent interference with UI buttons */
@@ -51,6 +62,7 @@ button[class*="border-purple-600/50"] {
 /* Canvas area should be clickable when no overlays interfere */
 .cursor-crosshair {
   pointer-events: auto !important;
+  z-index: -4 !important; /* Ensure canvas container is below all UI elements */
 }
 
 /* Ensure container divs don't accidentally block child elements */
