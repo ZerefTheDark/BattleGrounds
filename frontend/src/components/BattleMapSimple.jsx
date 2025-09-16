@@ -86,8 +86,10 @@ const BattleMapSimple = () => {
         <div className="bg-gray-800 border-b border-gray-700 p-3 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <h1 className="text-xl font-bold text-green-400">D&D Battle Map</h1>
-            
-            {/* Tools */}
+          </div>
+          
+          {/* Centered Tools */}
+          <div className="flex items-center justify-center flex-1">
             <div className="flex gap-2">
               <Tooltip>
                 <TooltipTrigger asChild>
