@@ -51,10 +51,23 @@ button[class*="border-purple-600/50"] {
 /* Canvas area should be clickable when no overlays interfere */
 .cursor-crosshair {
   pointer-events: auto !important;
+  z-index: -4 !important; /* Ensure canvas container is below all UI elements */
+}
+
+/* DEBUG: Ensure canvas container is properly layered below draggable windows */
+.canvas-container {
+  z-index: -5 !important; /* Force canvas container below all UI elements */
+  position: relative !important; /* Ensure z-index takes effect */
 }
 
 /* Ensure container divs don't accidentally block child elements */
 .flex.gap-1.flex-wrap,
 .border-t.border-gray-700 {
   pointer-events: auto !important;
+}
+
+/* DEBUG: Ensure draggable windows are always on top of canvas */
+.draggable-window {
+  z-index: 1000 !important; /* Force minimum z-index for draggable windows */
+  position: fixed !important; /* Ensure proper stacking context */
 }

@@ -648,6 +648,11 @@ const CanvasLayers = forwardRef(({ selectedTool, onTokenSelect, activeTool, tool
         minHeight: '100%'
       }}
     >
+      {/* DEBUG: Log canvas container info */}
+      {(() => {
+        console.log('[CanvasLayers] Rendering canvas container with cursor-crosshair class');
+        return null;
+      })()}
       <canvas
         ref={backgroundCanvasRef}
         className="absolute inset-0 pointer-events-none"
