@@ -270,18 +270,18 @@ const UnifiedChatPanel = () => {
 
   return (
     <>
-      {/* Main Chat Panel - Fixed Left Position */}
-      <div className="fixed left-4 top-4 bottom-4 w-96 z-50">
-        <Card className="gothic-chat-panel h-full flex flex-col">
-          <CardHeader className="gothic-chat-header pb-3">
+      {/* Main Chat Panel - Fixed Left Position with Max Height */}
+      <div className="fixed left-4 top-4 w-96 z-50" style={{ maxHeight: 'calc(100vh - 2rem)' }}>
+        <Card className="gothic-chat-panel flex flex-col" style={{ maxHeight: 'inherit' }}>
+          <CardHeader className="gothic-chat-header pb-3 flex-shrink-0">
             <CardTitle className="text-center text-lg text-gothic-lime-bright font-bold">
               ⚔️ Battle Chat & Dice ⚔️
             </CardTitle>
           </CardHeader>
           
-          <CardContent className="flex-1 flex flex-col p-4 space-y-4">
-            {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto gothic-scrollbar pr-2">
+          <CardContent className="flex-1 flex flex-col p-4 space-y-4 min-h-0">
+            {/* Messages Area with Internal Scrolling */}
+            <div className="flex-1 overflow-y-auto gothic-scrollbar pr-2 min-h-0">
               {chatMessages.length === 0 ? (
                 <div className="text-center text-gothic-lime py-8">
                   <Swords className="w-12 h-12 mx-auto mb-4 opacity-50" />
@@ -298,7 +298,7 @@ const UnifiedChatPanel = () => {
             </div>
 
             {/* Quick Dice Buttons */}
-            <div className="border-t border-gothic-lime-dark pt-3">
+            <div className="border-t border-gothic-lime-dark pt-3 flex-shrink-0">
               <div className="text-xs text-gothic-lime mb-2 font-bold">Quick Rolls:</div>
               <div className="grid grid-cols-6 gap-1">
                 {quickRolls.map((roll) => (
@@ -317,7 +317,7 @@ const UnifiedChatPanel = () => {
             </div>
 
             {/* Custom Dice Roll */}
-            <div className="space-y-2">
+            <div className="space-y-2 flex-shrink-0">
               <div className="flex gap-2">
                 <Input
                   value={customRoll}
@@ -338,7 +338,7 @@ const UnifiedChatPanel = () => {
 
             {/* Speaking As */}
             {selectedToken && (
-              <div className="text-center">
+              <div className="text-center flex-shrink-0">
                 <Badge className="bg-gothic-lime-dark text-onyx-black text-xs">
                   Speaking as: {selectedToken.name}
                 </Badge>
@@ -346,7 +346,7 @@ const UnifiedChatPanel = () => {
             )}
 
             {/* Message Input */}
-            <div className="space-y-2">
+            <div className="space-y-2 flex-shrink-0">
               <div className="flex gap-1">
                 <Button
                   variant={messageType === 'say' ? 'default' : 'outline'}
