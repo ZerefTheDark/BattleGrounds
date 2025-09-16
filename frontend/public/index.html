@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
-        <meta name="description" content="A product of emergent.sh" />
+        <meta name="description" content="The Dragon Stones - D&D Battle Map with enhanced draggable windows and fantasy UI" />
         <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -18,11 +18,78 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-        <title>Emergent | Fullstack App</title>
+        <title>The Dragon Stones - D&D Battle Map</title>
     </head>
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <div id="root"></div>
+        
+        <!-- Feature Update Banner for DraggableWindow Fix -->
+        <div
+            id="feature-update-banner"
+            style="
+                position: fixed !important;
+                top: 20px;
+                left: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #2d1b69 0%, #1e3a8a 50%, #047857 100%) !important;
+                border: 2px solid #059669 !important;
+                border-radius: 12px !important;
+                padding: 16px 20px !important;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+                z-index: 10000 !important;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+                backdrop-filter: blur(10px) !important;
+                animation: slideDown 0.5s ease-out !important;
+            "
+        >
+            <div style="display: flex; align-items: center; justify-content: space-between; color: white;">
+                <div style="display: flex; align-items: center;">
+                    <span style="font-size: 24px; margin-right: 12px;">⚔️🐉</span>
+                    <div>
+                        <h3 style="margin: 0; font-size: 18px; font-weight: 600; color: #fbbf24;">
+                            🎉 New Feature: Enhanced Draggable Windows
+                        </h3>
+                        <p style="margin: 4px 0 0 0; font-size: 14px; opacity: 0.9;">
+                            Fixed jumping behavior with React Portal technology - Now enjoy smooth, precise window dragging! 
+                            <strong style="color: #34d399;">PR #12</strong>
+                        </p>
+                    </div>
+                </div>
+                <button
+                    onclick="document.getElementById('feature-update-banner').style.display='none'"
+                    style="
+                        background: rgba(255, 255, 255, 0.2) !important;
+                        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+                        border-radius: 6px !important;
+                        color: white !important;
+                        padding: 8px 12px !important;
+                        cursor: pointer !important;
+                        font-size: 12px !important;
+                        font-weight: 500 !important;
+                        transition: all 0.2s ease !important;
+                    "
+                    onmouseover="this.style.background='rgba(255, 255, 255, 0.3)'"
+                    onmouseout="this.style.background='rgba(255, 255, 255, 0.2)'"
+                >
+                    Dismiss
+                </button>
+            </div>
+        </div>
+        
+        <style>
+            @keyframes slideDown {
+                from {
+                    transform: translateY(-100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+        </style>
+        
         <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
