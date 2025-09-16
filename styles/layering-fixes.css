@@ -54,7 +54,7 @@ button[class*="border-purple-600/50"] {
   z-index: -4 !important; /* Ensure canvas container is below all UI elements */
 }
 
-/* DEBUG: Ensure canvas container is properly layered below draggable windows */
+/* Ensure canvas container is properly layered below draggable windows */
 .canvas-container {
   z-index: -5 !important; /* Force canvas container below all UI elements */
   position: relative !important; /* Ensure z-index takes effect */
@@ -66,7 +66,7 @@ button[class*="border-purple-600/50"] {
   pointer-events: auto !important;
 }
 
-/* DEBUG: Ensure draggable windows are always on top of canvas */
+/* Ensure draggable windows are always on top of canvas */
 .draggable-window {
   z-index: 1000 !important; /* Force minimum z-index for draggable windows */
   position: fixed !important; /* Ensure proper stacking context */

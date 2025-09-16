@@ -182,11 +182,6 @@ const DraggableWindow = ({
         cursor: isDragging ? 'grabbing' : 'default'
       };
 
-  // DEBUG: Log z-index info for diagnostic purposes
-  useEffect(() => {
-    console.log(`[DraggableWindow] ${title} - zIndex: ${zIndex}, isFullscreen: ${isFullscreen}, usePortal: ${usePortal}`);
-  }, [title, zIndex, isFullscreen, usePortal]);
-
   // Window content - the actual draggable window element
   const windowContent = (
     <div

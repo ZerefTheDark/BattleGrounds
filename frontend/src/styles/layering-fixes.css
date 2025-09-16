@@ -2,7 +2,9 @@
  * Addresses visual glitches and UI button responsiveness issues
  * 
  * Z-Index Hierarchy:
- * -3: Background Canvas (lowest layer)
+ * -5: Canvas Container (lowest layer - canvas-container class)
+ * -4: Canvas Interaction Layer (cursor-crosshair class)
+ * -3: Background Canvas (lowest canvas layer)
  * -2: Grid Canvas  
  * -1: Tokens Canvas
  *  0: Tools Canvas (rulers, fog tools)
@@ -10,7 +12,7 @@
  * 10: Grid and Status controls (above map, below panels)
  * 30-40: Chat and communication panels
  * 100-200: Interactive buttons and controls
- * 1000+: Modal windows and draggable panels
+ * 1000+: Modal windows and draggable panels (enforced minimum)
  */
 
 /* Fix Game Console z-index to prevent interference with UI buttons */
@@ -65,7 +67,7 @@ button[class*="border-purple-600/50"] {
   z-index: -4 !important; /* Ensure canvas container is below all UI elements */
 }
 
-/* DEBUG: Ensure canvas container is properly layered below draggable windows */
+/* Ensure canvas container is properly layered below draggable windows */
 .canvas-container {
   z-index: -5 !important; /* Force canvas container below all UI elements */
   position: relative !important; /* Ensure z-index takes effect */
@@ -77,7 +79,7 @@ button[class*="border-purple-600/50"] {
   pointer-events: auto !important;
 }
 
-/* DEBUG: Ensure draggable windows are always on top of canvas */
+/* Ensure draggable windows are always on top of canvas */
 .draggable-window {
   z-index: 1000 !important; /* Force minimum z-index for draggable windows */
   position: fixed !important; /* Ensure proper stacking context */

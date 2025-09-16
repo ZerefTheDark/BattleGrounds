@@ -1,6 +1,6 @@
 import React from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
-import LayeringTest from './components/LayeringTest'; // Use LayeringTest to verify our fix
+import BattleMapSimple from './components/BattleMapSimple'; // Restore original component
 import { WindowManagerProvider } from './components/WindowManager';
 import './App.css';
 import './styles/enhanced-graphics.css';
@@ -12,7 +12,7 @@ function App() {
       <WindowManagerProvider>
         <HashRouter>
           <Routes>
-            <Route path="/" element={<LayeringTest />} />
+            <Route path="/" element={<BattleMapSimple />} />
           </Routes>
         </HashRouter>
       </WindowManagerProvider>
