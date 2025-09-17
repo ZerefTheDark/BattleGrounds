@@ -169,8 +169,11 @@ const DraggableWindow = ({
         left: 0,
         width: '100vw',
         height: '100vh',
-        zIndex: zIndex + 1000,
-        margin: 0
+        zIndex: zIndex + 1000, // Fullscreen gets +1000 boost
+        margin: 0,
+        isolation: 'isolate', // Create new stacking context
+        transform: 'translateZ(0)', // Force hardware acceleration
+        willChange: 'transform'
       }
     : {
         position: 'fixed',
@@ -178,21 +181,70 @@ const DraggableWindow = ({
         top: position.y,
         width: size.width,
         height: size.height,
-        zIndex: zIndex,
-        cursor: isDragging ? 'grabbing' : 'default'
+        zIndex: Math.max(1000, zIndex), // Ensure minimum z-index of 1000
+        cursor: isDragging ? 'grabbing' : 'default',
+        isolation: 'isolate', // Create new stacking context
+        transform: 'translateZ(0)', // Force hardware acceleration
+        willChange: 'transform',
+        contain: 'layout style' // Optimize performance
       };
 
-  // DEBUG: Log z-index info for diagnostic purposes
+  // DEBUG: Enhanced logging for diagnostic purposes
   useEffect(() => {
-    console.log(`[DraggableWindow] ${title} - zIndex: ${zIndex}, isFullscreen: ${isFullscreen}, usePortal: ${usePortal}`);
-  }, [title, zIndex, isFullscreen, usePortal]);
+    const actualZIndex = Math.max(1000, zIndex);
+    console.log(`[DraggableWindow] ${title}:`, {
+      zIndex: actualZIndex,
+      isFullscreen,
+      usePortal,
+      position,
+      size,
+      windowStyle: {
+        zIndex: windowStyle.zIndex,
+        position: windowStyle.position,
+        isolation: windowStyle.isolation
+      }
+    });
+    
+    // Additional debug: Check if element is actually rendered with correct z-index
+    setTimeout(() => {
+      const windowElement = windowRef.current;
+      if (windowElement) {
+        const computedStyle = window.getComputedStyle(windowElement);
+        console.log(`[DraggableWindow] ${title} Computed Style:`, {
+          zIndex: computedStyle.zIndex,
+          position: computedStyle.position,
+          isolation: computedStyle.isolation,
+          transform: computedStyle.transform
+        });
+        
+        // Force apply critical styles if they're not taking effect
+        if (computedStyle.zIndex === 'auto' || parseInt(computedStyle.zIndex) < 1000) {
+          console.warn(`[DraggableWindow] ${title} - Z-index not applied correctly, forcing inline styles`);
+          windowElement.style.zIndex = windowStyle.zIndex;
+          windowElement.style.position = 'fixed';
+          windowElement.style.isolation = 'isolate';
+        }
+      }
+    }, 100);
+  }, [title, zIndex, isFullscreen, usePortal, position, size]);
 
   // Window content - the actual draggable window element
   const windowContent = (
     <div
       ref={windowRef}
       className="draggable-window fantasy-card text-white shadow-2xl border-2 border-green-500/30"
-      style={windowStyle}
+      style={{
+        ...windowStyle,
+        // Force these critical styles to override any CSS conflicts
+        position: 'fixed',
+        zIndex: windowStyle.zIndex,
+        isolation: 'isolate',
+        // Set CSS custom property for potential CSS usage
+        '--draggable-z-index': windowStyle.zIndex
+      }}
+      data-window-title={title}
+      data-z-index={windowStyle.zIndex}
+      data-portal={usePortal}
     >
       {/* Window Header */}
       <CardHeader

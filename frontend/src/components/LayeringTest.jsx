@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MessageSquare } from 'lucide-react';
 import DraggableWindow from './DraggableWindow';
+import ZIndexDebugger from './ZIndexDebugger';
 import '../styles/enhanced-graphics.css';
 import '../styles/layering-fixes.css';
 
@@ -8,39 +9,70 @@ const LayeringTest = () => {
   const [draggableWindows, setDraggableWindows] = useState([]);
 
   useEffect(() => {
-    // Create test draggable window
-    const testWindow = {
-      id: 'test-layering-window',
-      title: 'Layering Test Window',
-      icon: MessageSquare,
-      content: (
-        <div className="p-4">
-          <h3 className="text-xl font-bold mb-4">Layering Test Window</h3>
-          <p className="mb-2">This window should appear ABOVE the map canvas.</p>
-          <p className="mb-4">If you can see the map through this window, there's a layering issue.</p>
-          <div style={{ 
-            height: '200px', 
-            backgroundColor: 'rgba(255,0,0,0.5)',
-            border: '2px solid red',
-            borderRadius: '8px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'white',
-            fontWeight: 'bold'
-          }}>
-            RED TEST AREA - Should be solid
+    // Create multiple test draggable windows with different z-indexes
+    const testWindows = [
+      {
+        id: 'test-layering-window-1',
+        title: 'High Priority Window (z-index: 1500)',
+        icon: MessageSquare,
+        content: (
+          <div className="p-4">
+            <h3 className="text-xl font-bold mb-4 text-yellow-400">High Priority Test Window</h3>
+            <p className="mb-2">This window has z-index: 1500</p>
+            <p className="mb-4">It should appear ABOVE the standard window and the map canvas.</p>
+            <div style={{ 
+              height: '150px', 
+              backgroundColor: 'rgba(255,255,0,0.7)',
+              border: '2px solid yellow',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'black',
+              fontWeight: 'bold'
+            }}>
+              YELLOW HIGH PRIORITY - Should be on top
+            </div>
+            <p className="mt-4 text-sm">Drag me around to test layering!</p>
           </div>
-          <p className="mt-4">You should be able to drag this window around!</p>
-        </div>
-      ),
-      position: { x: 300, y: 200 },
-      size: { width: 400, height: 500 },
-      zIndex: 1000
-    };
+        ),
+        position: { x: 200, y: 150 },
+        size: { width: 400, height: 400 },
+        zIndex: 1500
+      },
+      {
+        id: 'test-layering-window-2',
+        title: 'Standard Window (z-index: 1000)',
+        icon: MessageSquare,
+        content: (
+          <div className="p-4">
+            <h3 className="text-xl font-bold mb-4 text-red-400">Standard Test Window</h3>
+            <p className="mb-2">This window has z-index: 1000</p>
+            <p className="mb-4">It should appear ABOVE the map canvas but BELOW the high priority window.</p>
+            <div style={{ 
+              height: '150px', 
+              backgroundColor: 'rgba(255,0,0,0.7)',
+              border: '2px solid red',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontWeight: 'bold'
+            }}>
+              RED STANDARD - Should be behind yellow
+            </div>
+            <p className="mt-4 text-sm">Try dragging both windows to test overlap!</p>
+          </div>
+        ),
+        position: { x: 300, y: 200 },
+        size: { width: 400, height: 400 },
+        zIndex: 1000
+      }
+    ];
     
-    setDraggableWindows([testWindow]);
-    console.log('[LayeringTest] Test draggable window created');
+    setDraggableWindows(testWindows);
+    console.log('[LayeringTest] Multiple test draggable windows created');
   }, []);
 
   return (
@@ -117,10 +149,15 @@ const LayeringTest = () => {
       {/* Status info */}
       <div className="absolute bottom-4 left-4 z-10">
         <div className="bg-gray-800/90 text-white p-3 rounded border border-green-500/50">
-          <p><strong>Test Status:</strong></p>
+          <p><strong>Layering Test Status:</strong></p>
           <p>Draggable Windows: {draggableWindows.length}</p>
-          <p>Expected z-index: 1000</p>
+          <p>Window z-indexes: 1000, 1500</p>
           <p>Canvas z-index: -5 to 0</p>
+          <p className="text-yellow-400 text-sm mt-2">
+            • Yellow window should be on top<br/>
+            • Red window should be middle<br/>
+            • Canvas should be on bottom
+          </p>
         </div>
       </div>
 
@@ -139,6 +176,9 @@ const LayeringTest = () => {
           {window.content}
         </DraggableWindow>
       ))}
+
+      {/* Z-Index Debugger for testing and verification */}
+      <ZIndexDebugger />
     </div>
   );
 };
